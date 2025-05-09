@@ -30,6 +30,11 @@
 
 <body class="bg-light d-flex min-vh-100 align-items-center justify-content-center m-0">
     <main class="container-fluid">
+      <header class="mb-3">
+            <h1>
+                <?= $title ?>
+            </h1>
+        </header>
         <?php require '_flash_message.phtml'; ?>
         <?php require $view ?>
     </main>
