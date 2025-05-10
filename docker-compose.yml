@@ -27,16 +27,15 @@ services:
       - db
 
   db:
-    image: mysql:8.4.0
+    image: postgres:16
     env_file:
       - .env
     environment:
-      MYSQL_DATABASE: "$DB_DATABASE"
-      MYSQL_USER: "$DB_USERNAME"
-      MYSQL_PASSWORD: "$DB_PASSWORD"
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - dbdata:/var/lib/mysql
+      - dbdata:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -64,10 +63,10 @@ services:
     environment:
       APP_ENV: testing
       DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: problem_test
-      DB_USERNAME: root
-      DB_PASSWORD: ""
+      DB_PORT: 5432
+      DB_DATABASE: genbook_test
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
 
 networks:
   app-network:

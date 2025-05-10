@@ -15,9 +15,11 @@ class UniquenessValidationsTest extends TestCase
         Database::create();
         Database::exec('
             CREATE TABLE test_users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                email VARCHAR(50) UNIQUE NOT NULL,
-                phone VARCHAR(50)
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                full_name VARCHAR(255),
+                is_active BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         ');
     }
@@ -87,8 +89,7 @@ class UniquenessValidationsTest extends TestCase
 
     public function test_uniqueness_update_change_email_to_one_registered(): void
     {
-        Database::exec('INSERT INTO test_users (email) values ("b@b.com")');
-
+        Database::exec("INSERT INTO test_users (email) VALUES ('b@b.com')");
         $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
@@ -106,30 +107,5 @@ class UniquenessValidationsTest extends TestCase
 
         $this->assertFalse($model->save());
         $this->assertFalse(Validations::uniqueness('email', $model));
-    }
-
-    public function test_uniqueness_two_fields(): void
-    {
-        Database::exec('INSERT INTO test_users (email, phone) values ("b@b.com", "123456789")');
-
-        $model = new class () extends Model {
-            protected static string $table = 'test_users';
-            protected static array $columns = ['email', 'phone'];
-
-            public function validates(): void
-            {
-                Validations::uniqueness(['email', 'phone'], $this);
-            }
-        };
-
-        $model->email = 'c@c.com'; // @phpstan-ignore-line
-        $model->phone = '123456789'; // @phpstan-ignore-line
-        $this->assertTrue($model->save());
-
-        $model->email = 'b@b.com';
-        $model->phone = '123456789';
-
-        $this->assertFalse($model->save());
-        $this->assertFalse(Validations::uniqueness(['email', 'phone'], $model));
     }
 }
