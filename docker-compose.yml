@@ -64,9 +64,9 @@ services:
       APP_ENV: testing
       DB_HOST: db
       DB_PORT: 5432
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: genbook_test
+      DB_USERNAME: root
+      DB_PASSWORD: ""
 
 networks:
   app-network:

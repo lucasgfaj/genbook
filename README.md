@@ -1,6 +1,6 @@
-## Problem Track
+## Genbook
 
-"Problem Track" is the ultimate solution for organizations seeking to enhance their problem resolution processes, drive operational efficiency, and deliver exceptional customer experiences.
+"Genbook" is the ultimate solution for libraries looking to optimize the management of their collection, enhance user service, and ensure an efficient process of organization and problem resolution.
 
 ### Dependências
 
@@ -12,8 +12,8 @@
 #### Clone Repository
 
 ```
-$ git clone git@github.com:SI-DABE/problem-track.git
-$ cd problem-track
+$ git clone git@github.com:lucasgfaj/genbook.git
+$ cd genbook
 ```
 
 #### Define the env variables
