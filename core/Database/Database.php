@@ -1,5 +1,4 @@
 <?php
-
 namespace Core\Database;
 
 use Core\Constants\Constants;
@@ -15,7 +14,8 @@ class Database
         $port = $_ENV['DB_PORT'];
         $db   = $_ENV['DB_DATABASE'];
 
-        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
+        // Alterado para PostgreSQL
+        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
@@ -28,7 +28,8 @@ class Database
         $host = $_ENV['DB_HOST'];
         $port = $_ENV['DB_PORT'];
 
-        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port, $user, $pwd);
+        // Alterado para PostgreSQL
+        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port, $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
@@ -36,12 +37,14 @@ class Database
 
     public static function create(): void
     {
-        $sql = 'CREATE DATABASE IF NOT EXISTS ' . $_ENV['DB_DATABASE'] . ';';
+        // Alterado para PostgreSQL
+        $sql = 'CREATE DATABASE ' . $_ENV['DB_DATABASE'] . ';';
         self::getConn()->exec($sql);
     }
 
     public static function drop(): void
     {
+        // Alterado para PostgreSQL
         $sql = 'DROP DATABASE IF EXISTS ' . $_ENV['DB_DATABASE'] . ';';
         self::getConn()->exec($sql);
     }
