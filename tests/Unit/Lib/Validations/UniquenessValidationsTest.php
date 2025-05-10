@@ -31,7 +31,7 @@ class UniquenessValidationsTest extends TestCase
 
     public function test_uniqueness_true_when_no_registers(): void
     {
-        $model = new class() extends Model {
+        $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
         };
@@ -41,7 +41,7 @@ class UniquenessValidationsTest extends TestCase
 
     public function test_uniqueness_true_with_same_register(): void
     {
-        $model = new class() extends Model {
+        $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
         };
@@ -53,7 +53,7 @@ class UniquenessValidationsTest extends TestCase
 
     public function test_uniqueness_update(): void
     {
-        $model = new class() extends Model {
+        $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
 
@@ -70,7 +70,7 @@ class UniquenessValidationsTest extends TestCase
 
     public function test_uniqueness_update_with_another_email(): void
     {
-        $model = new class() extends Model {
+        $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
 
@@ -90,7 +90,7 @@ class UniquenessValidationsTest extends TestCase
     public function test_uniqueness_update_change_email_to_one_registered(): void
     {
         Database::exec("INSERT INTO test_users (email) VALUES ('b@b.com')");
-        $model = new class() extends Model {
+        $model = new class () extends Model {
             protected static string $table = 'test_users';
             protected static array $columns = ['email'];
 
