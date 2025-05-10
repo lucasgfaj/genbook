@@ -1,4 +1,5 @@
 <?php
+
 namespace Core\Database;
 
 use Core\Constants\Constants;
@@ -6,48 +7,41 @@ use PDO;
 
 class Database
 {
-    public static function getDatabaseConn(): PDO
+    private static function connect(string $dbName): PDO
     {
         $user = $_ENV['DB_USERNAME'];
         $pwd  = $_ENV['DB_PASSWORD'];
         $host = $_ENV['DB_HOST'];
         $port = $_ENV['DB_PORT'];
-        $db   = $_ENV['DB_DATABASE'];
 
-        // Alterado para PostgreSQL
-        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
+        $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbName", $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
     }
 
-    public static function getConn(): PDO
+    public static function getDatabaseConn(): PDO
     {
-        $user = $_ENV['DB_USERNAME'];
-        $pwd  = $_ENV['DB_PASSWORD'];
-        $host = $_ENV['DB_HOST'];
-        $port = $_ENV['DB_PORT'];
-        $db   = $_ENV['DB_DATABASE'];
-
-        // Alterado para PostgreSQL
-        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        return $pdo;
+        return self::connect($_ENV['DB_DATABASE']);
     }
 
     public static function create(): void
     {
-        // Alterado para PostgreSQL
-        $sql = 'CREATE DATABASE ' . $_ENV['DB_DATABASE'] . ';';
-        self::getConn()->exec($sql);
+        $db = $_ENV['DB_DATABASE'];
+
+        // Conectando ao banco padrão "postgres" para criar outro banco
+        $conn = self::connect('postgres');
+        $conn->exec("DROP DATABASE IF EXISTS $db;");
+        $conn->exec("CREATE DATABASE $db;");
     }
 
     public static function drop(): void
     {
-        // Alterado para PostgreSQL
-        $sql = 'DROP DATABASE IF EXISTS ' . $_ENV['DB_DATABASE'] . ';';
-        self::getConn()->exec($sql);
+        $db = $_ENV['DB_DATABASE'];
+
+        // Conectando ao banco padrão para conseguir dropar o banco alvo
+        $conn = self::connect('postgres');
+        $conn->exec("DROP DATABASE IF EXISTS $db;");
     }
 
     public static function migrate(): void
