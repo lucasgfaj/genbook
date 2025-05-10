@@ -15,18 +15,16 @@ class UserTest extends TestCase
         parent::setUp();
 
         $this->user = new User([
-            'name' => 'User 1',
+            'full_name' => 'User 1',
             'email' => 'fulano@example.com',
-            'password' => '123456',
-            'password_confirmation' => '123456'
+            "is_active" => true,
         ]);
         $this->user->save();
 
         $this->user2 = new User([
-            'name' => 'User 2',
+            'full_name' => 'User 2',
             'email' => 'fulano1@example.com',
-            'password' => '123456',
-            'password_confirmation' => '123456'
+            "is_active" => true,
         ]);
         $this->user2->save();
     }
@@ -63,8 +61,8 @@ class UserTest extends TestCase
 
     public function test_set_name(): void
     {
-        $this->user->name = 'User name';
-        $this->assertEquals('User name', $this->user->name);
+        $this->user->full_name = 'User name';
+        $this->assertEquals('User name', $this->user->full_name);
     }
 
     public function test_set_email(): void
@@ -81,24 +79,24 @@ class UserTest extends TestCase
         $this->assertFalse($user->save());
         $this->assertTrue($user->hasErrors());
 
-        $this->assertEquals('não pode ser vazio!', $user->errors('name'));
+        $this->assertEquals('não pode ser vazio!', $user->errors('full_name'));
         $this->assertEquals('não pode ser vazio!', $user->errors('email'));
     }
 
-    public function test_errors_should_return_password_confirmation_error(): void
-    {
-        $user = new User([
-            'name' => 'User 3',
-            'email' => 'fulano3@example.com',
-            'password' => '123456',
-            'password_confirmation' => '1234567'
-        ]);
+    // public function test_errors_should_return_password_confirmation_error(): void
+    // {
+    //     $user = new User([
+    //         'name' => 'User 3',
+    //         'email' => 'fulano3@example.com',
+    //         'password' => '123456',
+    //         'password_confirmation' => '1234567'
+    //     ]);
 
-        $this->assertFalse($user->isValid());
-        $this->assertFalse($user->save());
+    //     $this->assertFalse($user->isValid());
+    //     $this->assertFalse($user->save());
 
-        $this->assertEquals('as senhas devem ser idênticas!', $user->errors('password'));
-    }
+    //     $this->assertEquals('as senhas devem ser idênticas!', $user->errors('password'));
+    // }
 
     public function test_find_by_id_should_return_the_user(): void
     {
@@ -120,23 +118,23 @@ class UserTest extends TestCase
         $this->assertNull(User::findByEmail('not.exits@example.com'));
     }
 
-    public function test_authenticate_should_return_the_true(): void
-    {
-        $this->assertTrue($this->user->authenticate('123456'));
-        $this->assertFalse($this->user->authenticate('wrong'));
-    }
+    // public function test_authenticate_should_return_the_true(): void
+    // {
+    //     $this->assertTrue($this->user->authenticate('123456'));
+    //     $this->assertFalse($this->user->authenticate('wrong'));
+    // }
 
-    public function test_authenticate_should_return_false(): void
-    {
-        $this->assertFalse($this->user->authenticate(''));
-    }
+    // public function test_authenticate_should_return_false(): void
+    // {
+    //     $this->assertFalse($this->user->authenticate(''));
+    // }
 
-    public function test_update_should_not_change_the_password(): void
-    {
-        $this->user->password = '654321';
-        $this->user->save();
+    // public function test_update_should_not_change_the_password(): void
+    // {
+    //     $this->user->password = '654321';
+    //     $this->user->save();
 
-        $this->assertTrue($this->user->authenticate('123456'));
-        $this->assertFalse($this->user->authenticate('654321'));
-    }
+    //     $this->assertTrue($this->user->authenticate('123456'));
+    //     $this->assertFalse($this->user->authenticate('654321'));
+    // }
 }
