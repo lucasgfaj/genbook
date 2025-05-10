@@ -27,9 +27,10 @@ class Database
         $pwd  = $_ENV['DB_PASSWORD'];
         $host = $_ENV['DB_HOST'];
         $port = $_ENV['DB_PORT'];
+        $db   = $_ENV['DB_DATABASE'];
 
         // Alterado para PostgreSQL
-        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port, $user, $pwd);
+        $pdo = new PDO('pgsql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;

@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS class_assignments, classes, staff, clients, alerts, compens
 fines, loans, materials, book_categories, categories, book_authors, authors,
 books, users CASCADE;
 
+DROP DATABASE genbook_test;
 -- USERS
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
