@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $title = 'Home Page';
+        $title = 'GenBook';
         $this->render('home/index', compact('title'));
     }
     public function login(): void
