@@ -11,9 +11,5 @@ class HomeController extends Controller
         $title = 'GenBook';
         $this->render('home/index', compact('title'));
     }
-    public function login(): void
-    {
-        $title = 'Login';
-        $this->render('login/login', compact('title'));
-    }
 }
+// Compare this snippet from app/Views/home/index.php:
