@@ -38,8 +38,4 @@ class Staff extends User
         Validations::notEmpty('employee_id', $this);
         Validations::uniqueness('email', $this);
     }
-
-    
-
-
 }

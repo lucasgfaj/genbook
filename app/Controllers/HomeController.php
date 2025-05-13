@@ -12,4 +12,3 @@ class HomeController extends Controller
         $this->render('home/index', compact('title'));
     }
 }
-// Compare this snippet from app/Views/home/index.php:
