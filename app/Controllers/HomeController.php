@@ -12,9 +12,9 @@ class HomeController extends Controller
         $title = 'GenBook';
         $this->render('home/index', compact('title'));
     }
-     public function auth(): void
+    public function auth(): void
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             $this->redirectTo(route('users.login'));
         }
         $this->index();
