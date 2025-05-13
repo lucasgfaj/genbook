@@ -23,7 +23,7 @@ use App\Models\User;
  * @property string $employee_id
  * @property string $hire_date
  * @property bool $admin
- * @property User $user
+ * @property int $user_id
  */
 class Staff extends User
 {
@@ -32,14 +32,10 @@ class Staff extends User
 
     public function validates(): void
     {
-        Validations::notEmpty('full_name', $this);
-        Validations::notEmpty('email', $this);
         Validations::notEmpty('password', $this);
         Validations::notEmpty('employee_id', $this);
-        Validations::uniqueness('email', $this);
     }
-<<<<<<< HEAD
-=======
+
 
     public function user(): User
     {
@@ -55,5 +51,4 @@ class Staff extends User
     {
         return Staff::findBy(['user_id' => $userId]);
     }
->>>>>>> 36350de22249cc8c053f72b7c3106fa1b3422e71
 }
