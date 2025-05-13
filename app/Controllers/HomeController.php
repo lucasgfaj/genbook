@@ -3,17 +3,20 @@
 namespace App\Controllers;
 
 use Core\Http\Controllers\Controller;
+use Lib\Authentication\Auth;
 
 class HomeController extends Controller
 {
     public function index(): void
     {
-        $title = 'Home Page';
+        $title = 'GenBook';
         $this->render('home/index', compact('title'));
     }
-    public function login(): void
+    public function auth(): void
     {
-        $title = 'Login';
-        $this->render('login/login', compact('title'));
+        if (!Auth::check()) {
+            $this->redirectTo(route('users.login'));
+        }
+        $this->index();
     }
 }
