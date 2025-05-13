@@ -17,12 +17,10 @@ class AuthController extends Controller
     {
         $this->render('auth/auth');
     }
-     public function authenticate(Request $request): void
+    public function authenticate(Request $request): void
     {
         $params = $request->getParam('user');
-        
         $user = User::findByEmail($params['email']);
-
         if ($user) {
             $staff = Staff::findByUserId($user->id);
 
@@ -30,7 +28,7 @@ class AuthController extends Controller
                 Auth::login($staff);
 
                 FlashMessage::success('Login realizado com sucesso!');
-                $this->redirectTo(route('problems.index'));
+                $this->redirectTo(route('users.home'));
             } else {
                 FlashMessage::danger('Email e/ou senha inválidos!');
                 $this->redirectTo(route('users.login'));
@@ -40,12 +38,10 @@ class AuthController extends Controller
             $this->redirectTo(route('users.login'));
         }
     }
-
     public function destroy(): void
     {
         Auth::logout();
         FlashMessage::success('Logout realizado com sucesso!');
         $this->redirectTo(route('users.login'));
     }
-
 }
