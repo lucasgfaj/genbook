@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     protected string $layout = 'login';
 
-    public function auth(): void
+    public function index(): void
     {
         $this->render('auth/auth');
     }
