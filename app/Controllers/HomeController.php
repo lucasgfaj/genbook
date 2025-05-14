@@ -11,5 +11,5 @@ class HomeController extends Controller
     {
         $title = 'GenBook';
         $this->render('home/index', compact('title'));
-    } 
+    }
 }
