@@ -12,27 +12,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/assets/css/application.css">
     <link rel="stylesheet" href="/assets/css/login.css">
-
-    <style>
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
 </head>
 
-<body class="bg-light d-flex min-vh-100 align-items-center justify-content-center m-0">
+<body class="bg-light d-flex min-vh-100 m-0">
     <main class="container-fluid">
       <header class="mb-3">
+            <h1 class="text-center text-primary">GenBook</h1>           
+            <form action="/logout" method="get">
+                <button type="submit" class="btn btn-danger float-end">Logout</button>  
+            </form>            
         </header>
         <?php require '_flash_message.phtml'; ?>
         <?php require $view ?>
