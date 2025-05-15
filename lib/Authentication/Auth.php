@@ -2,6 +2,7 @@
 
 namespace Lib\Authentication;
 
+use App\Models\Staff;
 use App\Models\User;
 
 class Auth
@@ -21,6 +22,15 @@ class Auth
         return null;
     }
 
+    public static function staff(): ?Staff
+    {
+        if (isset($_SESSION['user']['id'])) {
+            $id = $_SESSION['user']['id'];
+            return Staff::findByUserId($id);
+        }
+        return null;
+    }
+
     public static function check(): bool
     {
         return isset($_SESSION['user']['id']) && self::user() !== null;
@@ -29,5 +39,10 @@ class Auth
     public static function logout(): void
     {
         unset($_SESSION['user']['id']);
+    }
+
+    public static function isAdmin(): bool
+    {
+        return self::staff()->isAdmin($_SESSION['user']['id']);
     }
 }
