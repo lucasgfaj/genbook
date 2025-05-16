@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index(): void
     {
         $title = 'GenBook';
-        $user = Auth::user();
+        $user = Auth::userWithAdmin();
         $this->render('home/index', compact('title', 'user'));
     }
 }

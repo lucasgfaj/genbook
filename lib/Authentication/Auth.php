@@ -10,6 +10,11 @@ class Auth
     public static function login($user): void
     {
         $_SESSION['user']['id'] = $user->id ?? " ";
+        if ($user instanceof Staff) {
+            $_SESSION['user']['admin'] = $user->admin;
+        } else {
+            $_SESSION['user']['admin'] = false;
+        }
     }
 
     public static function user(): ?User
@@ -22,13 +27,15 @@ class Auth
         return null;
     }
 
-    public static function staff(): ?Staff
+    public static function userWithAdmin(): mixed
     {
-        if (isset($_SESSION['user']['id'])) {
-            $id = $_SESSION['user']['id'];
-            return Staff::findByUserId($id);
-        }
-        return null;
+
+        $user = $_SESSION['user']['id'];
+        $admin = Auth::isAdmin();
+        return [
+            'user' => $user,
+            'admin' => $admin
+        ];
     }
 
     public static function check(): bool
@@ -38,7 +45,7 @@ class Auth
 
     public static function logout(): void
     {
-        unset($_SESSION['user']['id']);
+        unset($_SESSION['user']);
     }
 
     public static function isAdmin(): bool

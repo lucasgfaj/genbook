@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 use Core\Http\Controllers\Controller;
+use Lib\Authentication\Auth;
 
 class AdminController extends Controller
 {
     public function index(): void
     {
         $title = 'Admin Dashboard';
-        $this->render('admin/index', compact('title'));
+        $user = Auth::userWithAdmin();
+        $this->render('admin/index', compact('title', 'user'));
     }
 }
