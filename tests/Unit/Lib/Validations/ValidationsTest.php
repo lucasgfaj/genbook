@@ -11,12 +11,28 @@ class ValidationsTest extends TestCase
     public function test_not_empty(): void
     {
         $model = new class () extends Model {
-            protected static array $columns = ['full_name'];
+            protected static array $columns = ['name'];
         };
 
-        $this->assertFalse(Validations::notEmpty('full_name', $model));
+        $this->assertFalse(Validations::notEmpty('name', $model));
 
-        $model->full_name = 'Diego'; // @phpstan-ignore-line
-        $this->assertTrue(Validations::notEmpty('full_name', $model));
+        $model->name = 'Diego'; // @phpstan-ignore-line
+        $this->assertTrue(Validations::notEmpty('name', $model));
+    }
+
+    public function test_password_confirmation(): void
+    {
+        $model = new class () extends Model {
+            protected ?string $password = null;
+            protected ?string $password_confirmation = null;
+        };
+
+        $model->password = '123456'; // @phpstan-ignore-line
+        $model->password_confirmation = 'wrong'; // @phpstan-ignore-line
+
+        $this->assertFalse(Validations::passwordConfirmation($model));
+
+        $model->password_confirmation = '123456'; // @phpstan-ignore-line
+        $this->assertTrue(Validations::passwordConfirmation($model));
     }
 }

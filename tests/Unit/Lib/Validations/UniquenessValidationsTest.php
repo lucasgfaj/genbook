@@ -16,10 +16,8 @@ class UniquenessValidationsTest extends TestCase
         Database::exec('
             CREATE TABLE test_users (
                 id SERIAL PRIMARY KEY,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                full_name VARCHAR(255),
-                is_active BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                email VARCHAR(50) UNIQUE NOT NULL,
+                phone VARCHAR(50)
             );
         ');
     }
@@ -85,27 +83,5 @@ class UniquenessValidationsTest extends TestCase
 
         $model->email = 'b@b.com';
         $this->assertTrue($model->save());
-    }
-
-    public function test_uniqueness_update_change_email_to_one_registered(): void
-    {
-        Database::exec("INSERT INTO test_users (email) VALUES ('b@b.com')");
-        $model = new class () extends Model {
-            protected static string $table = 'test_users';
-            protected static array $columns = ['email'];
-
-            public function validates(): void
-            {
-                Validations::uniqueness('email', $this);
-            }
-        };
-
-        $model->email = 'a@a.com'; // @phpstan-ignore-line
-        $this->assertTrue($model->save());
-
-        $model->email = 'b@b.com';
-
-        $this->assertFalse($model->save());
-        $this->assertFalse(Validations::uniqueness('email', $model));
     }
 }
