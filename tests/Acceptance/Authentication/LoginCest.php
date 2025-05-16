@@ -76,6 +76,6 @@ class LoginCest extends BaseAcceptanceCest
 
         $page->see('Login realizado com sucesso!');
 
-        $page->seeInCurrentUrl('/home');
+        $page->seeInCurrentUrl('/admin');
     }
 }
