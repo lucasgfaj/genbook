@@ -43,6 +43,10 @@ class Auth
 
     public static function isAdmin(): bool
     {
-        return self::staff()->isAdmin($_SESSION['user']['id']);
+        if (!isset($_SESSION['user']['id'])) {
+            return false;
+        }
+
+        return Staff::isAdmin($_SESSION['user']['id']);
     }
 }

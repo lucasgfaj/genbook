@@ -9,8 +9,13 @@ use Lib\FlashMessage;
 
 class AdminAuthenticate implements Middleware
 {
-    public function handle(Request $request): void
+  public function handle(Request $request): void
     {
+        if (!Auth::check()) {
+            FlashMessage::danger('Você deve estar logado para acessar essa página');
+            $this->redirectTo(route("users.login"));
+        }
+
         if (!Auth::isAdmin()) {
             FlashMessage::danger('Você deve ser um administrador para acessar essa página');
             $this->redirectTo(route("users.home"));

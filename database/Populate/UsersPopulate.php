@@ -41,6 +41,7 @@ class UsersPopulate
         $user3->save();
         $staff3 = new Staff([
             'user_id' => $user3->id,
+            'admin' => false, 
             'password' => password_hash('123456', PASSWORD_DEFAULT),
             'employee_id' => '789012',
             'hire_date' => date('Y-m-d'),

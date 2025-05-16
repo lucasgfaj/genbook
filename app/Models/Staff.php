@@ -41,9 +41,10 @@ class Staff extends User
     {
         return Staff::findBy(['user_id' => $userId]);
     }
-    
+
     public static function isAdmin(int $user_id): bool
     {
-        return Staff::findBy(['user_id' => $user_id])->admin;
+        $staff = Staff::findBy(['user_id' => $user_id]);
+        return $staff?->admin ?? false;
     }
 }
