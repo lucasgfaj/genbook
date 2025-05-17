@@ -1,0 +1,10 @@
+<h1>Voce é um admin!</h1>
+
+<p>Você pode acessar o painel de administração do sistema.</p>
+<?php
+// Exibe o nome do usuário logado
+if (isset($user)) {
+    var_dump($user);
+} else {
+    echo "<p>Você não está logado.</p>";
+}

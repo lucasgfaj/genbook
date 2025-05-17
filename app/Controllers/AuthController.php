@@ -23,10 +23,8 @@ class AuthController extends Controller
         $user = User::findByEmail($params['email']);
         if ($user) {
             $staff = Staff::findByUserId($user->id);
-
             if ($staff && $staff->authenticate($params['password'])) {
-                Auth::login($staff);
-
+                Auth::login($user);
                 FlashMessage::success('Login realizado com sucesso!');
                 $this->redirectTo(route('users.home'));
             } else {

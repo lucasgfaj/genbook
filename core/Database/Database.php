@@ -28,8 +28,6 @@ class Database
     public static function create(): void
     {
         $db = $_ENV['DB_DATABASE'];
-
-        // Conectando ao banco padrão "postgres" para criar outro banco
         $conn = self::connect('postgres');
         $conn->exec("DROP DATABASE IF EXISTS $db;");
         $conn->exec("CREATE DATABASE $db;");
@@ -38,8 +36,6 @@ class Database
     public static function drop(): void
     {
         $db = $_ENV['DB_DATABASE'];
-
-        // Conectando ao banco padrão para conseguir dropar o banco alvo
         $conn = self::connect('postgres');
         $conn->exec("DROP DATABASE IF EXISTS $db;");
     }

@@ -110,7 +110,6 @@ class Router
 
                 $controller = new $class();
                 $controller->$action($request);
-
                 return $controller;
             }
         }

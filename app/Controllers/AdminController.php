@@ -5,12 +5,12 @@ namespace App\Controllers;
 use Core\Http\Controllers\Controller;
 use Lib\Authentication\Auth;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Admin Dashboard';
         $user = Auth::userWithAdmin();
-        $this->render('home/index', compact('title', 'user'));
+        $this->render('admin/index', compact('title', 'user'));
     }
 }

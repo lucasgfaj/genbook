@@ -136,52 +136,57 @@ abstract class Model
     public function validates(): void {}
 
     /* ------------------- DATABASE METHODS ------------------- */
-    public function save(): bool
-    {
-        if ($this->isValid()) {
-            $pdo = Database::getDatabaseConn();
-            if ($this->newRecord()) {
-                $table = static::$table;
-                $attributes = implode(', ', static::$columns);
-                $values = ':' . implode(', :', static::$columns);
+ public function save(): bool
+{
+    if ($this->isValid()) {
+        $pdo = Database::getDatabaseConn();
+        if ($this->newRecord()) {
+            $table = static::$table;
+            $attributes = implode(', ', static::$columns);
+            $values = ':' . implode(', :', static::$columns);
 
-                $sql = <<<SQL
-                    INSERT INTO {$table} ({$attributes}) VALUES ({$values});
-                SQL;
+            $sql = <<<SQL
+                INSERT INTO {$table} ({$attributes}) VALUES ({$values});
+            SQL;
 
-                $stmt = $pdo->prepare($sql);
-                foreach (static::$columns as $column) {
-                    $stmt->bindValue($column, $this->$column);
-                }
-
-                $stmt->execute();
-
-                $this->id = (int) $pdo->lastInsertId();
-            } else {
-                $table = static::$table;
-
-                $sets = array_map(function ($column) {
-                    return "{$column} = :{$column}";
-                }, static::$columns);
-                $sets = implode(', ', $sets);
-
-                $sql = <<<SQL
-                    UPDATE {$table} set {$sets} WHERE id = :id;
-                SQL;
-
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindValue(':id', $this->id);
-
-                foreach (static::$columns as $column) {
-                    $stmt->bindValue($column, $this->$column);
-                }
-
-                $stmt->execute();
+            $stmt = $pdo->prepare($sql);
+            foreach (static::$columns as $column) {
+                $value = $this->$column;
+                $paramType = is_bool($value) ? \PDO::PARAM_BOOL : \PDO::PARAM_STR;
+                $stmt->bindValue(':' . $column, $value, $paramType);
             }
-            return true;
+
+            $stmt->execute();
+
+            $this->id = (int) $pdo->lastInsertId();
+        } else {
+            $table = static::$table;
+
+            $sets = array_map(function ($column) {
+                return "{$column} = :{$column}";
+            }, static::$columns);
+            $sets = implode(', ', $sets);
+
+            $sql = <<<SQL
+                UPDATE {$table} set {$sets} WHERE id = :id;
+            SQL;
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            foreach (static::$columns as $column) {
+                $value = $this->$column;
+                $paramType = is_bool($value) ? PDO::PARAM_BOOL : PDO::PARAM_STR;
+                $stmt->bindValue(':' . $column, $value, $paramType);
+            }
+
+            $stmt->execute();
         }
-        return false;
+        return true;
     }
+    return false;
+}
+
 
     /**
      * @param array<string, mixed> $data

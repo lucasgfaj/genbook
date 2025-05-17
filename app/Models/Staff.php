@@ -5,15 +5,6 @@ namespace App\Models;
 use Lib\Validations;
 use App\Models\User;
 
-// -- STAFF
-// CREATE TABLE staff (
-//     id SERIAL PRIMARY KEY,
-//     user_id INTEGER REFERENCES users(id),
-//     password VARCHAR(255),
-//     admin BOOLEAN DEFAULT FALSE,
-//     employee_id VARCHAR(50),
-//     hire_date DATE
-// );
 /**
  * @property int $id
  * @property string $full_name
@@ -36,7 +27,6 @@ class Staff extends User
         Validations::notEmpty('employee_id', $this);
     }
 
-
     public function user(): User
     {
         return User::findById($this->user_id);
@@ -50,5 +40,10 @@ class Staff extends User
     public static function findByUserId(int $userId): ?Staff
     {
         return Staff::findBy(['user_id' => $userId]);
+    }
+
+    public static function isAdmin(int $user_id): bool
+    {
+        return Staff::findBy(['user_id' => $user_id])->admin;
     }
 }
