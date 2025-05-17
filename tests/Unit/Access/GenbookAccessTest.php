@@ -6,7 +6,7 @@ use App\Models\Staff;
 use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class GenbookAccessTest extends TestCase
 {
@@ -16,6 +16,7 @@ class GenbookAccessTest extends TestCase
 
     public function setup(): void
     {
+        parent::setup();
         $this->client = new Client([
             'allow_redirects' => false, // Disable following redirects
             'base_uri' => 'http://web:8080'

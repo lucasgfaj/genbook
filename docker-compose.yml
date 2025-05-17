@@ -31,12 +31,11 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - dbdata:/var/lib/postgresql/data
-      - ./init-db:/docker-entrypoint-initdb.d
 
     networks:
       - app-network

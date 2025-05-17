@@ -75,13 +75,11 @@ function git:clean:branchs {
 
 function db:console {
     docker compose exec db psql -U ${DB_USERNAME} -d ${DB_DATABASE}
-    docker compose exec db psql -U ${DB_USERNAME} -d genbook_test -f /tmp/schema.sql
 }
 
 function db:reset {
     docker compose cp database/schema.sql db:/tmp/
     docker compose exec db psql -U ${DB_USERNAME} -d ${DB_DATABASE} -f /tmp/schema.sql
-     docker compose exec db psql -U ${DB_USERNAME} -d genbook_test -f /tmp/schema.sql
 }
 
 
