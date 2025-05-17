@@ -24,7 +24,7 @@ class ErrorsHandler
             ob_end_clean(); // Discard the buffered output
 
             if ($e instanceof HTTPException) {
-                header('HTTP/1.1 ' . $e->getStatusCode() . ' ' . $e->getMessage());
+                header('Location: ' . route('error.notfound'));
             } else {
                 header('HTTP/1.1 500 Internal Server Error');
             }

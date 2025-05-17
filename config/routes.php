@@ -6,7 +6,7 @@ use App\Controllers\AuthController;
 use App\Controllers\ErrorController;
 use Core\Router\Route;
 
-Route::get('/notfound', [ErrorController::class, 'notFound'])->name('error.notFound');
+Route::get('/*', [ErrorController::class, 'notfound'])->name('error.notfound');
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('users.login');

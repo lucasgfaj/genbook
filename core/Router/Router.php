@@ -113,8 +113,7 @@ class Router
                 return $controller;
             }
         }
-        header('Location: ' . route('error.notFound'));
-        exit;
+        throw new HTTPException('URI ' . $request->getUri() . ' not found.', 404);
     }
 
     public static function init(): void
