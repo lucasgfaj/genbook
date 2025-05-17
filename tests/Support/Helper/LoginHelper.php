@@ -12,7 +12,7 @@ class LoginHelper extends Module
     {
         /** @var \Tests\Support\AcceptanceTester $page */
         $page = $this->getModule('WebDriver');
-        $page->amOnPage('/login');
+        $page->amOnPage('/');
         $page->fillField('user[email]', $username);
         $page->fillField('user[password]', $password);
         $page->click('Entrar');
@@ -22,7 +22,6 @@ class LoginHelper extends Module
     {
         /** @var \Tests\Support\AcceptanceTester $page */
         $page = $this->getModule('WebDriver');
-        $page->click('fulano@example.com');
         $page->click('Sair');
     }
 }
