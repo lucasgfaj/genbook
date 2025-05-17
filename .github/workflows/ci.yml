@@ -30,17 +30,6 @@ jobs:
       - name: Up containers
         run: ./run up -d
 
-        - name: Wait for database to be ready
-        run: |
-          for i in {1..15}; do
-            if ./run db:check; then
-              echo "Database is ready!"
-              break
-            fi
-            echo "Waiting for database..."
-            sleep 3
-          done
-
       - name: Reset database (create schema)
         run: ./run db:reset
 
@@ -67,17 +56,6 @@ jobs:
 
       - name: Up containers
         run: ./run up -d
-      
-      - name: Wait for database to be ready
-        run: |
-          for i in {1..15}; do
-            if ./run db:check; then
-              echo "Database is ready!"
-              break
-            fi
-            echo "Waiting for database..."
-            sleep 3
-          done
 
       - name: Reset database (create schema)
         run: ./run db:reset
