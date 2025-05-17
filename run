@@ -5,14 +5,6 @@ set -o pipefail
 
 source .env
 
-function wait_for_db() {
-  echo "Waiting for database to be ready..."
-  until docker compose exec db pg_isready -U "${DB_USERNAME}" > /dev/null 2>&1; do
-    sleep 1
-  done
-  echo "Database is ready!"
-}
-
 function ps {
     docker compose ps
 }
@@ -36,7 +28,8 @@ function nginx:check {
     docker compose exec web nginx -t
 }
 
-function nginx:status {
+function nginx:status {    docker compose exec db psql -U ${DB_USERNAME} -d genbook_test -f /tmp/schema.sql
+
     docker compose exec web service nginx status
 }
 
@@ -65,7 +58,8 @@ function test:browser {
 function phpcs {
     TEST_PATH="${@:-.}"
     docker compose run --rm php ./vendor/bin/phpcs ${TEST_PATH}
-}
+}    docker compose exec db psql -U ${DB_USERNAME} -d genbook_test -f /tmp/schema.sql
+
 
 function phpcbf {
     TEST_PATH="${@:-.}"
@@ -86,10 +80,9 @@ function db:console {
 }
 
 function db:reset {
-    wait_for_db
     docker compose cp database/schema.sql db:/tmp/
-    docker compose exec db psql -U ${DB_USERNAME} -d ${DB_DATABASE} -f /tmp/schema.sql
     docker compose exec db psql -U ${DB_USERNAME} -d genbook_test -f /tmp/schema.sql
+    docker compose exec db psql -U ${DB_USERNAME} -d ${DB_DATABASE} -f /tmp/schema.sql
 }
 
 
