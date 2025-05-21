@@ -1,4 +1,4 @@
-body {
+/* body {
   margin-top: 60px;
 }
 
@@ -38,4 +38,78 @@ nav.navbar {
 .avatar {
   width: 315px;
   height: 315px;
+} */
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+.header {
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.search-bar {
+  max-width: 400px;
+  width: 100%;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.notification {
+  position: relative;
+  margin-right: 20px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #0d6efd;
+  color: white;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.sidebar h5 {
+  font-weight: bold;
+}
+
+.sidebar .nav-link {
+  color: white;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.content-area {
+  padding: 1rem;
 }
