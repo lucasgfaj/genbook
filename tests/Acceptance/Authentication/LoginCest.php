@@ -34,7 +34,7 @@ class LoginCest extends BaseAcceptanceCest
 
         $page->see('Login realizado com sucesso!');
         $page->seeInCurrentUrl('/home');
-        $page->click(['class' => 'menu-button']);
+        $page->click('.menu-button');
         $page->see('Admin');
         $page->click('Admin');
         $page->seeInCurrentUrl('/admin');
@@ -108,7 +108,7 @@ class LoginCest extends BaseAcceptanceCest
 
         $page->seeInCurrentUrl('/home');
 
-        $page->click(['class' => 'menu-button']);
+        $page->click('.menu-button');
         $page->see('Sair');
         $page->click('Sair');
 
