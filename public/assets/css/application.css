@@ -58,7 +58,7 @@ html {
 }
 
 .search-bar {
-  max-width: 400px;
+  max-width: 200px;
   width: 100%;
 }
 
@@ -112,4 +112,42 @@ html {
 
 .content-area {
   padding: 1rem;
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        z-index: 1040;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .user-info {
+        display: none;
+    }
+}
+
+.menu-button {
+   margin-right: .3125rem;
+    border: none;
+    background-color: #fff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.menu-button.active {
+    background-color: #f8d7da; /* cor suave de alerta */
+    color: #721c24;
 }
