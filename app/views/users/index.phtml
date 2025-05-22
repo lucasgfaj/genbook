@@ -1,0 +1,93 @@
+<div class="container my-5">
+    <h2 class="mb-4">Usuários</h2>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gerenciar Usuários</h5>
+            <button class="btn btn-primary">Novo Usuário</button>
+        </div>
+        <div class="card-body">
+            <div class="mb-3 d-flex justify-content-between">
+                <input type="text" class="form-control me-2" placeholder="Buscar usuário por nome ou matrícula..." style="max-width: 300px;">
+                <select class="form-select" style="max-width: 200px;">
+                    <option selected>Filtrar por tipo</option>
+                    <option>Estudante</option>
+                    <option>Professor</option>
+                    <option>Funcionário</option>
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Matrícula/ID</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Maria Silva</td>
+                            <td>maria.silva@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2023001</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>João Pereira</td>
+                            <td>joao.pereira@escola.edu.br</td>
+                            <td>Professor</td>
+                            <td>T10045</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ana Oliveira</td>
+                            <td>ana.oliveira@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2023056</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Santos</td>
+                            <td>carlos.santos@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2022089</td>
+                            <td><span class="badge bg-danger">Inativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patrícia Lima</td>
+                            <td>patricia.lima@escola.edu.br</td>
+                            <td>Funcionário</td>
+                            <td>S20015</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
