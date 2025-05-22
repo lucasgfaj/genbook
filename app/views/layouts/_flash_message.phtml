@@ -1,6 +1,6 @@
 <?php foreach (\Lib\FlashMessage::get() as $type => $msg) : ?>
-    <div class="alert alert-<?= $type ?> alert-dismissible" role="alert">
+    <div class="alert alert-<?= $type ?> alert-dismissible fade show position-fixed top-0 end-0 m-3 d-flex align-items-center justify-content-center gap-2" style="z-index: 1080;" role="alert">
         <div><?= $msg ?></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="transform: scale(0.7); opacity: 0.7; filter: grayscale(50%);"></button>
     </div>
 <?php endforeach; ?>
