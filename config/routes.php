@@ -12,6 +12,9 @@ use App\Controllers\BookController;
 use App\Controllers\ConfigController;
 use Core\Router\Route;
 
+
+Route::get('/*', [ErrorController::class, 'notfound'])->name('error.notfound');
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('users.login');
     Route::get('/login', [AuthController::class, 'index'])->name('users.login');
