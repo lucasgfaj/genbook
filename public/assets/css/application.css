@@ -151,3 +151,12 @@ html {
     background-color: #f8d7da; /* cor suave de alerta */
     color: #721c24;
 }
+
+.notification-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0.75rem 0.5rem;
+  transition: background 0.2s;
+}
+.notification-item:hover {
+  background-color: #f8f9fa;
+}

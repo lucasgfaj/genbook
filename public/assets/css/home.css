@@ -1,0 +1,16 @@
+.dropdown-menu {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Impede scroll horizontal */
+  word-break: break-word; /* Quebra palavra longa */
+  white-space: normal; /* Permite múltiplas linhas */
+}
+
+/* Scrollbar bonita (opcional) */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
