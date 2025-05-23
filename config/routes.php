@@ -12,7 +12,6 @@ use App\Controllers\BookController;
 use App\Controllers\ConfigController;
 use Core\Router\Route;
 
-
 Route::get('/*', [ErrorController::class, 'notfound'])->name('error.notfound');
 
 Route::middleware('guest')->group(function () {
@@ -24,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'destroy'])->name('users.logout');
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     Route::get('/books', [BookController::class, 'index'])->name('users.books');
+    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('users.books.show');
     Route::get('/materials', [MaterialController::class, 'index'])->name('users.materials');
     Route::get('/loans', [LoanController::class, 'index'])->name('users.loans');
     Route::get('/users', [UserController::class, 'index'])->name('users.users');
