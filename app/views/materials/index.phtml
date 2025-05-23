@@ -21,22 +21,24 @@
       </button>
 
       <!-- Botão de adicionar -->
-      <a href="/books/create" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm">
+      <button type="button" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal"
+        data-bs-target="#addMaterialModal">
         <i class="bi bi-box"></i>
         Adicionar Material
-      </a>
+      </button>
+
     </div>
   </div>
-
-  <table class="table table-bordered table-hover">
+<div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
+  <table class="table table-bordered table-hover align-middle mb-0 bg-white rounded-3">
     <thead class="table-light">
       <tr>
-        <th>Nome</th>
-        <th>Tipo</th>
-        <th>Categoria</th>
-        <th>Data de Validade</th>
-        <th>Disponível / Total</th>
-        <th>Ações</th>
+        <th><i class="bi bi-tag-fill me-1"></i>Nome</th>
+        <th><i class="bi bi-box-fill me-1"></i>Tipo</th>
+        <th><i class="bi bi-collection-fill me-1"></i>Categoria</th>
+        <th><i class="bi bi-calendar-event-fill me-1"></i>Data de Validade</th>
+        <th><i class="bi bi-stack me-1"></i>Disponível / Total</th>
+        <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -47,8 +49,12 @@
         <td>15/06/2025</td>
         <td>7 / 10</td>
         <td>
-          <a href="#" class="text-primary">Editar</a> |
-          <a href="#" class="text-success">Emprestar</a>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
         </td>
       </tr>
       <tr>
@@ -58,8 +64,12 @@
         <td>N/A</td>
         <td>3 / 5</td>
         <td>
-          <a href="#" class="text-primary">Editar</a> |
-          <a href="#" class="text-success">Emprestar</a>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
         </td>
       </tr>
       <tr>
@@ -69,8 +79,12 @@
         <td>N/A</td>
         <td>4 / 8</td>
         <td>
-          <a href="#" class="text-primary">Editar</a> |
-          <a href="#" class="text-success">Emprestar</a>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
         </td>
       </tr>
       <tr>
@@ -80,8 +94,12 @@
         <td>22/08/2023</td>
         <td>9 / 12</td>
         <td>
-          <a href="#" class="text-primary">Editar</a> |
-          <a href="#" class="text-success">Emprestar</a>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
         </td>
       </tr>
       <tr>
@@ -91,11 +109,81 @@
         <td>N/A</td>
         <td>15 / 20</td>
         <td>
-          <a href="#" class="text-primary">Editar</a> |
-          <a href="#" class="text-success">Emprestar</a>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+
+
+</div>
+</div>
+
+
+<div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMaterialModalLabel">Adicionar Novo Material</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+
+          <div class="mb-3">
+            <label for="materialName" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="materialName" placeholder="Nome do material">
+          </div>
+
+          <div class="mb-3">
+            <label for="materialType" class="form-label">Tipo</label>
+            <input type="text" class="form-control" id="materialType" placeholder="Tipo do material">
+          </div>
+
+          <div class="mb-3">
+            <label for="materialCategory" class="form-label">Categoria</label>
+            <input type="text" class="form-control" id="materialCategory" placeholder="Categoria do material">
+          </div>
+
+          <div class="mb-3">
+            <label for="materialValidity" class="form-label">Data de Validade</label>
+            <input type="date" class="form-control" id="materialValidity" placeholder="dd/mm/aaaa">
+            <small class="form-text text-muted">Opcional - para materiais com prazo de validade</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="materialQuantity" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="materialQuantity" value="1" min="1">
+          </div>
+
+          <div class="mb-3">
+            <label for="materialDescription" class="form-label">Descrição</label>
+            <textarea class="form-control" id="materialDescription" rows="3"
+              placeholder="Descreva o material (opcional)"></textarea>
+            <small class="form-text text-muted">Opcional - adicione detalhes sobre o material</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="materialImage" class="form-label">Imagem do Material</label>
+            <input type="file" class="form-control" id="materialImage" accept="image/*">
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Adicionar Material</button>
+      </div>
+
+    </div>
+  </div>
 </div>
