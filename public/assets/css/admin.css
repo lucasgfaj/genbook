@@ -1,0 +1,16 @@
+.card-title {
+  font-weight: 600;
+  color: #343a40;
+}
+
+.list-group-item button {
+  transition: 0.2s ease-in-out;
+}
+
+.list-group-item button:hover {
+  transform: scale(1.1);
+}
+
+.btn i {
+  vertical-align: middle;
+}
