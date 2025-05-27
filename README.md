@@ -12,62 +12,57 @@
 #### Clone Repository
 
 ```
-$ git clone git@github.com:lucasgfaj/genbook.git
-$ cd genbook
+ git clone git@github.com:lucasgfaj/genbook.git
+ cd genbook
 ```
 
 #### Define the env variables
 
 ```
-$ cp .env.example .env
+ cp .env.example .env
 ```
 
 #### Install the dependencies
 
 ```
-$ ./run composer install
+ ./run composer install
 ```
 
 #### Up the containers
 
 ```
-$ docker compose up -d
+ docker compose up -d
 ```
 
 ou
 
 ```
-$ ./run up -d
+ ./run up -d
 ```
 
 #### Create database and tables
 
 ```
-$ ./run db:reset
+ ./run db:reset
 ```
 
 #### Populate database
 
 ```
-$ ./run db:populate
+ ./run db:populate
 ```
 
-### Fixed uploads folder permission
-
-```
-sudo chown www-data:www-data public/assets/uploads
-```
 
 #### Run the tests
 
 ```
-$ docker compose run --rm php ./vendor/bin/phpunit tests --color
+ docker compose run --rm php ./vendor/bin/phpunit tests --color
 ```
 
 ou
 
 ```
-$ ./run test
+ ./run test
 ```
 
 #### Run the linters
@@ -75,13 +70,13 @@ $ ./run test
 [PHPCS](https://github.com/PHPCSStandards/PHP_CodeSniffer/)
 
 ```
-$ ./run phpcs
+ ./run phpcs
 ```
 
 [PHPStan](https://phpstan.org/)
 
 ```
-$ ./run phpstan
+ ./run phpstan
 ```
 
 Access [localhost](http://localhost)

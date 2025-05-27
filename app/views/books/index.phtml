@@ -1,0 +1,175 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2 flex-column flex-md-row">
+
+    <!-- Título -->
+    <h2 class="fw-bold m-0 text-center text-md-start w-100 w-md-auto">Livros</h2>
+
+    <!-- Grupo de busca e botões -->
+    <div class="d-flex align-items-stretch flex-wrap gap-2 w-100 justify-content-center justify-content-md-end">
+      <!-- Campo de busca -->
+      <div class="input-group shadow-sm rounded" style="min-width: 250px; max-width: 300px;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" class="form-control border-start-0" placeholder="Buscar livros...">
+      </div>
+
+      <!-- Botão de buscar -->
+      <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+        <i class="bi bi-search"></i>
+        Buscar
+      </button>
+
+      <!-- Botão de adicionar -->
+      <button type="button" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal"
+        data-bs-target="#addBookModal">
+        <i class="bi bi-journal-plus"></i>
+        Adicionar Livro
+      </button>
+
+    </div>
+  </div>
+
+ <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
+  <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+    <thead class="table-light">
+      <tr>
+        <th><i class="bi bi-book-fill me-1"></i>Título</th>
+        <th><i class="bi bi-person-fill me-1"></i>Autor</th>
+        <th><i class="bi bi-upc-scan me-1"></i>ISBN</th>
+        <th><i class="bi bi-tags-fill me-1"></i>Categoria</th>
+        <th><i class="bi bi-calendar3 me-1"></i>Ano</th>
+        <th><i class="bi bi-stack me-1"></i>Disponível / Total</th>
+        <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dom Casmurro</td>
+        <td>Machado de Assis</td>
+        <td>9788535902202</td>
+        <td>Literatura Brasileira</td>
+        <td>1899</td>
+        <td>3 / 5</td>
+        <td>
+          <a href="/books/show/1" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>O Pequeno Príncipe</td>
+        <td>Antoine de Saint-Exupéry</td>
+        <td>9788574069197</td>
+        <td>Literatura Estrangeira</td>
+        <td>1943</td>
+        <td>5 / 8</td>
+        <td>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Matemática para o Ensino Médio</td>
+        <td>Maria Eduarda Santos</td>
+        <td>9788576894518</td>
+        <td>Didático</td>
+        <td>2018</td>
+        <td>9 / 12</td>
+        <td>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Harry Potter e a Pedra Filosofal</td>
+        <td>J.K. Rowling</td>
+        <td>9788532511010</td>
+        <td>Literatura Fantástica</td>
+        <td>1997</td>
+        <td>2 / 6</td>
+        <td>
+          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+            <i class="bi bi-box-arrow-up-right"></i> Emprestar
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBookModalLabel">Adicionar Novo Livro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="bookTitle" class="form-label">Título</label>
+            <input type="text" class="form-control" id="bookTitle" placeholder="Título do livro">
+          </div>
+          
+          <div class="mb-3">
+            <label for="bookAuthor" class="form-label">Autor</label>
+            <input type="text" class="form-control" id="bookAuthor" placeholder="Nome do autor">
+          </div>
+          
+          <div class="mb-3">
+            <label for="bookISBN" class="form-label">ISBN</label>
+            <input type="text" class="form-control" id="bookISBN" placeholder="ISBN do livro">
+          </div>
+          
+          <div class="mb-3">
+            <label for="bookCategory" class="form-label">Categoria</label>
+            <input type="text" class="form-control" id="bookCategory" placeholder="Categoria do livro">
+          </div>
+          
+          <div class="mb-3">
+            <label for="bookYear" class="form-label">Ano de Publicação</label>
+            <input type="number" class="form-control" id="bookYear" value="2025" min="0">
+          </div>
+
+          <div class="mb-3">
+            <label for="materialValidity" class="form-label">Data de Validade</label>
+            <input type="date" class="form-control" id="materialValidity" placeholder="dd/mm/aaaa">
+          </div>
+          
+          <div class="mb-3">
+            <label for="bookQuantity" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="bookQuantity" value="1" min="1">
+          </div>
+
+          <div class="mb-3">
+            <label for="bookImage" class="form-label">Imagem do Livro</label>
+            <input type="file" class="form-control" id="bookImage" accept="image/*">
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Adicionar Livro</button>
+      </div>
+      
+    </div>
+  </div>
+</div>

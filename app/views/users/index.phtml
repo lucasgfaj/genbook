@@ -1,0 +1,163 @@
+<div class="container my-5">
+    <h2 class="mb-4">Usuários</h2>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gerenciar Usuários</h5>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novoUsuarioModal">
+                Novo Usuário
+            </button>
+
+        </div>
+        <div class="card-body">
+            <div class="mb-3 d-flex justify-content-between">
+                <input type="text" class="form-control me-2" placeholder="Buscar usuário por nome ou matrícula..."
+                    style="max-width: 300px;">
+                <select class="form-select" style="max-width: 200px;">
+                    <option selected>Filtrar por tipo</option>
+                    <option>Estudante</option>
+                    <option>Professor</option>
+                    <option>Funcionário</option>
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Matrícula/ID</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Maria Silva</td>
+                            <td>maria.silva@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2023001</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                        class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>João Pereira</td>
+                            <td>joao.pereira@escola.edu.br</td>
+                            <td>Professor</td>
+                            <td>T10045</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                        class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ana Oliveira</td>
+                            <td>ana.oliveira@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2023056</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                        class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Santos</td>
+                            <td>carlos.santos@escola.edu.br</td>
+                            <td>Estudante</td>
+                            <td>2022089</td>
+                            <td><span class="badge bg-danger">Inativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                        class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Patrícia Lima</td>
+                            <td>patricia.lima@escola.edu.br</td>
+                            <td>Funcionário</td>
+                            <td>S20015</td>
+                            <td><span class="badge bg-success">Ativo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                        class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Novo Usuário -->
+<div class="modal fade" id="novoUsuarioModal" tabindex="-1" aria-labelledby="novoUsuarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="novoUsuarioModalLabel">Adicionar Novo Usuário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+
+          <div class="mb-3">
+            <label for="usuarioNome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="usuarioNome" placeholder="Nome completo" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="usuarioEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="usuarioEmail" placeholder="email@exemplo.com" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="usuarioTipo" class="form-label">Tipo</label>
+            <select class="form-select" id="usuarioTipo" required>
+              <option value="" selected disabled>Selecione o tipo</option>
+              <option>Estudante</option>
+              <option>Professor</option>
+              <option>Funcionário</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="usuarioMatricula" class="form-label">Matrícula/ID</label>
+            <input type="text" class="form-control" id="usuarioMatricula" placeholder="Número de matrícula ou ID" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="usuarioStatus" class="form-label">Status</label>
+            <select class="form-select" id="usuarioStatus" required>
+              <option value="" selected disabled>Selecione o status</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Adicionar Usuário</button>
+      </div>
+
+    </div>
+  </div>
+</div>

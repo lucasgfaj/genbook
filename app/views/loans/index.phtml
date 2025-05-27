@@ -1,0 +1,171 @@
+<div class="container py-4">
+  <h2 class="mb-4">Empréstimos</h2>
+
+  <!-- Filtros e Ações -->
+  <div class="row mb-4 align-items-end">
+    <div class="col-md-3">
+      <label for="filtroAluno" class="form-label">Buscar por Aluno</label>
+      <input type="text" id="filtroAluno" class="form-control" placeholder="Nome do aluno">
+    </div>
+    <div class="col-md-3">
+      <label for="filtroItem" class="form-label">Buscar por Livro/Item</label>
+      <input type="text" id="filtroItem" class="form-control" placeholder="Nome do livro ou item">
+    </div>
+    <div class="col-md-3">
+      <label for="filtroStatus" class="form-label">Status</label>
+      <select id="filtroStatus" class="form-select">
+        <option value="">Todos</option>
+        <option value="ativo">Ativo</option>
+        <option value="atrasado">Atrasado</option>
+        <option value="devolvido">Devolvido</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-end">
+      <button class="btn btn-primary mt-3 w-100" data-bs-toggle="modal" data-bs-target="#modalEmprestimo">
+        <i class="bi bi-plus-lg me-1"></i> Novo Empréstimo
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabela de Empréstimos -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="mb-3">Lista de Empréstimos</h5>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-nowrap">
+          <thead class="table-light">
+            <tr>
+              <th>Aluno</th>
+              <th>Livro/Item</th>
+              <th>Data Empréstimo</th>
+              <th>Data Devolução</th>
+              <th>Taxa de Multa</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-bs-toggle="modal" data-bs-target="#modalDetalhes">
+              <td>Lucas Ferreira</td>
+              <td>HTML e CSS</td>
+              <td>20/05/2025</td>
+              <td>27/05/2025</td>
+              <td>R$ 0,00</td>
+              <td><span class="badge bg-success">Ativo</span></td>
+            </tr>
+            <tr data-bs-toggle="modal" data-bs-target="#modalDetalhes">
+              <td>Maria Santos</td>
+              <td>JavaScript Avançado</td>
+              <td>15/05/2025</td>
+              <td>22/05/2025</td>
+              <td>R$ 3,00</td>
+              <td><span class="badge bg-danger">Atrasado</span></td>
+            </tr>
+            <tr data-bs-toggle="modal" data-bs-target="#modalDetalhes">
+              <td>Pedro Oliveira</td>
+              <td>Python para Iniciantes</td>
+              <td>10/05/2025</td>
+              <td>17/05/2025</td>
+              <td>R$ 0,00</td>
+              <td><span class="badge bg-secondary">Devolvido</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Novo Empréstimo -->
+  <div class="modal fade" id="modalEmprestimo" tabindex="-1" aria-labelledby="modalEmprestimoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEmprestimoLabel"><i class="bi bi-book"></i> Novo Empréstimo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body row g-3">
+            <div class="col-md-6">
+              <label for="aluno" class="form-label">Aluno</label>
+              <input type="text" id="aluno" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="tipoItem" class="form-label">Tipo</label>
+              <select id="tipoItem" class="form-select" onchange="atualizarOpcoes()">
+                <option value="livro">Livro</option>
+                <option value="material">Material</option>
+              </select>
+            </div>
+
+            <div class="col-md-12">
+              <label for="item" class="form-label">Selecionar</label>
+              <select id="item" class="form-select" required>
+                <!-- Será preenchido dinamicamente -->
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="dataEmprestimo" class="form-label">Data do Empréstimo</label>
+              <input type="date" id="dataEmprestimo" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="dataDevolucao" class="form-label">Data da Devolução</label>
+              <input type="date" id="dataDevolucao" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="multa" class="form-label">Taxa de Multa (R$)</label>
+              <input type="number" step="0.01" id="multa" class="form-control" placeholder="Ex: 2.50">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i> Salvar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Detalhes -->
+  <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-labelledby="modalDetalhesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDetalhesLabel"><i class="bi bi-info-circle"></i> Detalhes do Empréstimo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="row">
+            <dt class="col-sm-3">Aluno</dt>
+            <dd class="col-sm-9">Lucas Ferreira</dd>
+
+            <dt class="col-sm-3">Livro/Item</dt>
+            <dd class="col-sm-9">HTML e CSS</dd>
+
+            <dt class="col-sm-3">Data Empréstimo</dt>
+            <dd class="col-sm-9">20/05/2025</dd>
+
+            <dt class="col-sm-3">Data Devolução</dt>
+            <dd class="col-sm-9">27/05/2025</dd>
+
+            <dt class="col-sm-3">Dias Atraso</dt>
+            <dd class="col-sm-9 text-danger">3 dias</dd>
+
+            <dt class="col-sm-3">Multa</dt>
+            <dd class="col-sm-9">R$ 4,50</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9"><span class="badge bg-danger">Atrasado</span></dd>
+          </dl>
+          <hr>
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-warning"><i class="bi bi-arrow-left-right me-1"></i> Permutar</button>
+            <button class="btn btn-danger"><i class="bi bi-person-x me-1"></i> Restringir Usuário</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

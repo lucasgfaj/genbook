@@ -1,0 +1,195 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2 flex-column flex-md-row">
+
+    <!-- Título -->
+    <h2 class="fw-bold m-0 text-center text-md-start w-100 w-md-auto">Materiais</h2>
+
+    <!-- Grupo de busca e botões -->
+    <div class="d-flex align-items-stretch flex-wrap gap-2 w-100 justify-content-center justify-content-md-end">
+      <!-- Campo de busca -->
+      <div class="input-group shadow-sm rounded" style="min-width: 250px; max-width: 300px;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" class="form-control border-start-0" placeholder="Buscar materiais...">
+      </div>
+
+      <!-- Botão de buscar -->
+      <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+        <i class="bi bi-search"></i>
+        Buscar
+      </button>
+
+      <!-- Botão de adicionar -->
+      <button type="button" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal"
+        data-bs-target="#addMaterialModal">
+        <i class="bi bi-box-seam"></i>
+        Adicionar Material
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
+    <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+      <thead class="table-light">
+        <tr>
+          <th><i class="bi bi-box-fill me-1"></i>Nome</th>
+          <th><i class="bi bi-tools me-1"></i>Tipo</th>
+          <th><i class="bi bi-tags-fill me-1"></i>Categoria</th>
+          <th><i class="bi bi-calendar-event-fill me-1"></i>Validade</th>
+          <th><i class="bi bi-stack me-1"></i>Disponível / Total</th>
+          <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kit de Laboratório de Biologia</td>
+          <td>Laboratório</td>
+          <td>Ciências</td>
+          <td>15/06/2025</td>
+          <td>7 / 10</td>
+          <td>
+            <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+              <i class="bi bi-box-arrow-up-right"></i> Emprestar
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Mapa Mundi</td>
+          <td>Material Didático</td>
+          <td>Geografia</td>
+          <td>N/A</td>
+          <td>3 / 5</td>
+          <td>
+            <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+              <i class="bi bi-box-arrow-up-right"></i> Emprestar
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Microscópio Digital</td>
+          <td>Equipamento</td>
+          <td>Ciências</td>
+          <td>N/A</td>
+          <td>4 / 8</td>
+          <td>
+            <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+              <i class="bi bi-box-arrow-up-right"></i> Emprestar
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Kit de Química 101</td>
+          <td>Laboratório</td>
+          <td>Ciências</td>
+          <td>22/08/2023</td>
+          <td>9 / 12</td>
+          <td>
+            <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+              <i class="bi bi-box-arrow-up-right"></i> Emprestar
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Conjunto de Réguas Geométricas</td>
+          <td>Material Didático</td>
+          <td>Matemática</td>
+          <td>N/A</td>
+          <td>15 / 20</td>
+          <td>
+            <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+              <i class="bi bi-box-arrow-up-right"></i> Emprestar
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para adicionar material -->
+<div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Alterado para modal-lg -->
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMaterialModalLabel">Adicionar Novo Material</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="row g-3"> <!-- Começo da grid responsiva -->
+
+            <div class="col-md-6">
+              <label for="materialName" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="materialName" placeholder="Nome do material">
+            </div>
+
+            <div class="col-md-6">
+              <label for="materialType" class="form-label">Tipo</label>
+              <input type="text" class="form-control" id="materialType" placeholder="Tipo de material">
+            </div>
+
+            <div class="col-12">
+              <label for="materialDescription" class="form-label">Descrição</label>
+              <textarea class="form-control" id="materialDescription" rows="3" placeholder="Descrição detalhada"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label for="materialBrand" class="form-label">Marca</label>
+              <input type="text" class="form-control" id="materialBrand" placeholder="Marca">
+            </div>
+
+            <div class="col-md-6">
+              <label for="materialModel" class="form-label">Modelo</label>
+              <input type="text" class="form-control" id="materialModel" placeholder="Modelo">
+            </div>
+
+            <div class="col-md-6">
+              <label for="materialSerial" class="form-label">Número de Série</label>
+              <input type="text" class="form-control" id="materialSerial" placeholder="Número de série">
+            </div>
+
+            <div class="col-md-3">
+              <label for="materialQuantity" class="form-label">Quantidade</label>
+              <input type="number" class="form-control" id="materialQuantity" value="1" min="1">
+            </div>
+
+            <div class="col-md-3">
+              <label for="materialUnit" class="form-label">Unidade</label>
+              <input type="text" class="form-control" id="materialUnit" placeholder="unidade, caixa...">
+            </div>
+
+            <div class="col-md-6">
+              <label for="materialLocation" class="form-label">Localização</label>
+              <input type="text" class="form-control" id="materialLocation" placeholder="Ex: Laboratório, Almoxarifado...">
+            </div>
+
+          </div> <!-- fim .row -->
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Adicionar Material</button>
+      </div>
+
+    </div>
+  </div>
+</div>
