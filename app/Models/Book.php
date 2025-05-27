@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Lib\Validations;
 use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\BelongsToMany;
+use Core\Database\ActiveRecord\HasMany;
 use Core\Database\ActiveRecord\Model;
 
 /**
  * @property int $id
  * @property string $title
- * @property string[] $author_id
+ * @property int[] $author_id
  * @property string $category_id
  * @property string $publisher
  * @property string $isbn
@@ -27,27 +29,23 @@ class Book extends Model
 {
     protected static string $table = 'books';
     protected static array $columns = [
-        'title', 'author_id', 'category_id', 'publisher',
-        'isbn', 'edition', 'year', 'quantity',
-        'shelf_location', 'is_active', 'cover_photo'
+        'title',
+        'author_id',
+        'category_id',
+        'publisher',
+        'isbn',
+        'edition',
+        'year',
+        'quantity',
+        'shelf_location',
+        'is_active',
+        'cover_photo'
     ];
 
-    public function validates(): void
+    public function authors(): BelongsToMany
     {
-        Validations::notEmpty('title', $this);
-        Validations::notEmpty('author_id', $this);
-        Validations::notEmpty('category_id', $this);
-        Validations::notEmpty('isbn', $this);
-        Validations::notEmpty('edition', $this);
-        Validations::notEmpty('year', $this);
-        Validations::notEmpty('quantity', $this);
+        return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id');
     }
-
-    public function author(): BelongsTo
-    {
-        return $this->belongsTo(Author::class, 'author_id');
-    }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -59,14 +57,6 @@ class Book extends Model
     public function getCoverPhotoUrl(): string
     {
         return $this->cover_photo ? '/uploads/' . $this->cover_photo : '/images/default-cover.jpg';
-    }
-    public function getCreatedAtFormatted(): string
-    {
-        return date('Y-m-d H:i:s', strtotime($this->created_at));
-    }
-    public function getUpdatedAtFormatted(): string
-    {
-        return date('Y-m-d H:i:s', strtotime($this->updated_at));
     }
     public static function findByTitle(string $title): ?Book
     {
@@ -83,5 +73,16 @@ class Book extends Model
     public static function findByIsbn(string $isbn): ?Book
     {
         return Book::findBy(['isbn' => $isbn]);
+    }
+
+    public function validates(): void
+    {
+        Validations::notEmpty('title', $this);
+        Validations::notEmpty('author_id', $this);
+        Validations::notEmpty('category_id', $this);
+        Validations::notEmpty('isbn', $this);
+        Validations::notEmpty('edition', $this);
+        Validations::notEmpty('year', $this);
+        Validations::notEmpty('quantity', $this);
     }
 }

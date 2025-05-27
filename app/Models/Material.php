@@ -53,4 +53,8 @@ class Material extends Model
     {
         return $this->is_active;
     }
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
 }

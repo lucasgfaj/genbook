@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum LoanType: int
+enum LoanTypeEnum: int
 {
-    case Book = 1;
-    case Material = 2;
+    case BOOK = 1;
+    case MATERIAL = 2;
 }
