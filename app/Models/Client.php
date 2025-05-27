@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Lib\Validations;
-use App\Models\User;
+use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\Model;
 
 /**
  * @property int $id
@@ -12,10 +13,15 @@ use App\Models\User;
  * @property string $registration_number
  */
 
-class Client extends User
+class Client extends Model
 {
     protected static string $table = 'clients';
     protected static array $columns = ['user_id', 'role', 'registration_number'];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function validates(): void
     {

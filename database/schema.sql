@@ -126,8 +126,8 @@ CREATE TABLE loans (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     staff_id INTEGER REFERENCES staff(id),
+    enum_type INTEGER,      -- 1 = Book, 2 = Material
     type_id INTEGER,  -- Refers to books or materials
-    type INTEGER,      -- 1 = Book, 2 = Material
     loan_date DATE,
     due_date DATE,
     return_date DATE,

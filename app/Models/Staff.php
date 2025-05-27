@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Lib\Validations;
-use App\Models\User;
+use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\Model;
 
 /**
  * @property int $id
@@ -16,7 +17,7 @@ use App\Models\User;
  * @property bool $admin
  * @property int $user_id
  */
-class Staff extends User
+class Staff extends Model
 {
     protected static string $table = 'staff';
     protected static array $columns = ['user_id', 'password', 'admin', 'employee_id', 'hire_date'];
@@ -27,9 +28,9 @@ class Staff extends User
         Validations::notEmpty('employee_id', $this);
     }
 
-    public function user(): User
+    public function user(): BelongsTo
     {
-        return User::findById($this->user_id);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function authenticate(string $password): bool
