@@ -62,10 +62,10 @@ class Book extends Model
     {
         return Book::findBy(['title' => $title]);
     }
-    public static function findAllAuthorId(int $authorId): array
-    {
-        return Book::all(['author_id' => $authorId]);
-    }
+    // public static function findAllAuthorId(int $authorId): array
+    // {
+    //     return Book::all(['author_id' => $authorId]);
+    // }
     public static function findByCategoryId(int $categoryId): ?Book
     {
         return Book::findBy(['category_id' => $categoryId]);
