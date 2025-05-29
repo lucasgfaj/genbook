@@ -85,4 +85,3 @@ class Book extends Model
         Validations::notEmpty('quantity', $this);
     }
 }
-
