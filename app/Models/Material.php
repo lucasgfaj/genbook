@@ -5,18 +5,6 @@ namespace App\Models;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 
-// id SERIAL PRIMARY KEY,
-//     name VARCHAR(100),
-//     type VARCHAR(50),
-//     description TEXT,
-//     brand VARCHAR(100),
-//     model VARCHAR(100),
-//     serial_number VARCHAR(100),
-//     quantity INTEGER,
-//     unit VARCHAR(20),
-//     location VARCHAR(100),
-//     is_active BOOLEAN DEFAULT TRUE,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 /**
  * @property int $id
  * @property string $name

@@ -4,9 +4,9 @@ DO $$ BEGIN
 END $$;
 
 DROP TABLE IF EXISTS class_assignments, classes, staff, clients, alerts, compensations, penalties,
-fines, loans, materials, book_categories, categories, book_authors, authors,
+fines, loans, materials, categories, book_authors, authors,
 books, users CASCADE;
-
+DROP TYPE IF EXISTS loan_enum;
 -- USERS
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -67,28 +67,6 @@ CREATE TABLE authors (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- BOOKS
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    publisher VARCHAR(255),
-    isbn VARCHAR(20),
-    edition VARCHAR(50),
-    year INTEGER,
-    quantity INTEGER,
-    shelf_location VARCHAR(100),
-    is_active BOOLEAN DEFAULT TRUE,
-    cover_photo VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- BOOK_AUTHORS
-CREATE TABLE book_authors (
-    book_id INTEGER REFERENCES books(id),
-    author_id INTEGER REFERENCES authors(id),
-    PRIMARY KEY (book_id, author_id)
-);
 
 -- CATEGORIES
 CREATE TABLE categories (
@@ -98,13 +76,27 @@ CREATE TABLE categories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- BOOK_CATEGORIES
-CREATE TABLE book_categories (
+-- BOOKS
+CREATE TABLE books (
     id SERIAL PRIMARY KEY,
-    book_id INTEGER REFERENCES books(id),
-    category_id INTEGER REFERENCES categories(id)
+    title VARCHAR(255),
+    category_id INTEGER REFERENCES categories(id),
+    publisher VARCHAR(255),
+    isbn VARCHAR(20),
+    edition VARCHAR(50),
+    year INTEGER,
+    quantity INTEGER,
+    shelf_location VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    cover_name VARCHAR(255),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+-- BOOK_AUTHORS
+CREATE TABLE book_authors (
+    book_id INTEGER REFERENCES books(id),
+    author_id INTEGER REFERENCES authors(id),
+    PRIMARY KEY (book_id, author_id)
+);
 -- MATERIALS
 CREATE TABLE materials (
     id SERIAL PRIMARY KEY,
@@ -120,13 +112,15 @@ CREATE TABLE materials (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+-- LOAN ENUM
+CREATE TYPE loan_enum AS ENUM ('book', 'material');
 
 -- LOANS
 CREATE TABLE loans (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     staff_id INTEGER REFERENCES staff(id),
-    enum_type INTEGER,      -- 1 = Book, 2 = Material
+    enum_type VARCHAR(20) CHECK (enum_type IN ('book', 'material')),
     type_id INTEGER,  -- Refers to books or materials
     loan_date DATE,
     due_date DATE,

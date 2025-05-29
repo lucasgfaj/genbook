@@ -80,4 +80,14 @@ class BelongsToMany
 
         return $rows[0]['total'];
     }
+
+    public function attach(int $id): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "INSERT INTO {$this->pivot_table} ({$this->from_foreign_key}, {$this->to_foreign_key}) VALUES (:from_id, :to_id)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->bindValue(':to_id', $id);
+        $stmt->execute();
+    }
 }
