@@ -22,6 +22,8 @@ use Core\Database\ActiveRecord\Model;
  * @property string $cover_name
  * @property string $created_at
  * @property string $updated_at
+ * @property Author[] $book_authors
+ * @property Category $category
  */
 
 class Book extends Model
@@ -38,10 +40,12 @@ class Book extends Model
         'quantity',
         'shelf_location',
         'is_active',
-        'cover_name'
+        'cover_name',
+        'created_at',
+        'updated_at',
     ];
 
-    public function authors(): BelongsToMany
+    public function bookAuthors(): BelongsToMany
     {
         return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id');
     }
@@ -59,17 +63,14 @@ class Book extends Model
     {
         return (new BookCover($this))->path();
     }
-
+    public function getById(int $id): ?Book
+    {
+        return Book::findBy(['id' => $id]);
+    }
     public static function findByTitle(string $title): ?Book
     {
         return Book::findBy(['title' => $title]);
     }
-
-    public static function findByCategoryId(int $categoryId): ?Book
-    {
-        return Book::findBy(['category_id' => $categoryId]);
-    }
-
     public static function findByIsbn(string $isbn): ?Book
     {
         return Book::findBy(['isbn' => $isbn]);
@@ -83,5 +84,17 @@ class Book extends Model
         Validations::notEmpty('edition', $this);
         Validations::notEmpty('year', $this);
         Validations::notEmpty('quantity', $this);
+    }
+
+    /** @return array<mixed, mixed>*/
+    public static function getAll(): array
+    {
+        $books = Book::all();
+        foreach ($books as $book) {
+            $book->bookAuthors()->get();
+            $book->category()->get();
+        }
+
+        return $books;
     }
 }

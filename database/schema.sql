@@ -88,7 +88,8 @@ CREATE TABLE books (
     quantity INTEGER,
     shelf_location VARCHAR(100),
     is_active BOOLEAN DEFAULT TRUE,
-    cover_name VARCHAR(255),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cover_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- BOOK_AUTHORS

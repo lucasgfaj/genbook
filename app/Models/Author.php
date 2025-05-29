@@ -12,8 +12,6 @@ use Core\Database\ActiveRecord\Model;
  * @property string $bio
  * @property string $nationality
  * @property string $birth_date
- * @property string $created_at
- * @property string $updated_at
  */
 
 class Author extends Model

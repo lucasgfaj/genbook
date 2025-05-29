@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     Route::get('/books', [BookController::class, 'index'])->name('users.books');
     Route::get('/books/show/{id}', [BookController::class, 'show'])->name('users.books.show');
+    Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
+    Route::post('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
     Route::get('/materials', [MaterialController::class, 'index'])->name('users.materials');
     Route::get('/loans', [LoanController::class, 'index'])->name('users.loans');
     Route::get('/users', [UserController::class, 'index'])->name('users.users');

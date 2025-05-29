@@ -32,10 +32,12 @@ class BooksPopulate
             'quantity' => 3,
             'shelf_location' => 'A1',
             'is_active' => true,
-            'cover_name' => 'dom-casmurro.jpg'
+            'cover_name' => 'dom-casmurro.jpg',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book1->save();
-        $book1->authors()->attach($machado->id);
+        $book1->bookAuthors()->attach($machado->id);
 
         // Livro 2
         $book2 = new Book([
@@ -48,10 +50,12 @@ class BooksPopulate
             'quantity' => 5,
             'shelf_location' => 'B3',
             'is_active' => true,
-            'cover_name' => 'sitio.jpg'
+            'cover_name' => 'sitio.jpg',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book2->save();
-        $book2->authors()->attach($monteiro->id);
+        $book2->bookAuthors()->attach($monteiro->id);
 
         // Livro 3 - dois autores
         $book3 = new Book([
@@ -64,10 +68,12 @@ class BooksPopulate
             'quantity' => 2,
             'shelf_location' => 'C2',
             'is_active' => true,
-            'cover_name' => 'encontros.jpg'
+            'cover_name' => 'encontros.jpg',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book3->save();
-        $book3->authors()->attach($clarice->id);
-        $book3->authors()->attach($jorge->id);
+        $book3->bookAuthors()->attach($clarice->id);
+        $book3->bookAuthors()->attach($jorge->id);
     }
 }
