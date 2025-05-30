@@ -90,4 +90,26 @@ class BelongsToMany
         $stmt->bindValue(':to_id', $id);
         $stmt->execute();
     }
+
+    public function detach(int $id): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "DELETE FROM {$this->pivot_table} WHERE {$this->from_foreign_key} = :from_id AND {$this->to_foreign_key} = :to_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->bindValue(':to_id', $id);
+        $stmt->execute();
+    }
+    public function sync(array $ids): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "DELETE FROM {$this->pivot_table} WHERE {$this->from_foreign_key} = :from_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->execute();
+
+        foreach ($ids as $id) {
+            $this->attach($id);
+        }
+    }
 }

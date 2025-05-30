@@ -56,7 +56,6 @@ class BookController extends Controller
     {
         $params = $request->getParams();
         $book = Book::findById($params['id']);
-        $coverService = new BookCover($book);
 
         if (!$book) {
             $this->redirectTo(route('users.books'));
@@ -75,9 +74,15 @@ class BookController extends Controller
         $book->category_id = (int) $request->getParam('category_id', $book->category_id);
 
         $book->save();
-
         // Atualiza autores
         $book->bookAuthors()->$request->getParams('authors');
+        
+        $book->validates();
+        if ($book->hasErrors()) {
+            FlashMessage::danger('Erro ao atualizar o livro: ' . implode(', ', $book->errors()));
+            $this->redirectTo(route('books.edit', ['id' => $book->id]));
+            return;
+        }
 
         // Atualiza capa (caso enviada)
         if ($request->getParam('cover_name')) {
@@ -85,7 +90,6 @@ class BookController extends Controller
                 'extension' => ['jpg', 'jpeg', 'png', 'webp'],
                 'size' => 2 * 1024 * 1024, // 2MB
             ]);
-
             $success = $bookCover->update($request->getParam('cover_name'));
 
             if (!$success) {
