@@ -13,8 +13,7 @@ class BelongsToMany
         private string $pivot_table,
         private string $from_foreign_key,
         private string $to_foreign_key,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<Model>
@@ -100,6 +99,10 @@ class BelongsToMany
         $stmt->bindValue(':to_id', $id);
         $stmt->execute();
     }
+    
+    /**
+     * @param array<int, Model> $ids
+     */
     public function sync(array $ids): void
     {
         $pdo = Database::getDatabaseConn();
@@ -108,7 +111,8 @@ class BelongsToMany
         $stmt->bindValue(':from_id', $this->model->id);
         $stmt->execute();
 
-        foreach ($ids as $id) {
+
+        foreach ($ids as $id => $value) {            
             $this->attach($id);
         }
     }

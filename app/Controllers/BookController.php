@@ -76,10 +76,10 @@ class BookController extends Controller
         $book->save();
         // Atualiza autores
         $book->bookAuthors()->$request->getParams('authors');
-        
+
         $book->validates();
         if ($book->hasErrors()) {
-            FlashMessage::danger('Erro ao atualizar o livro: ' . implode(', ', $book->errors()));
+            FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
             $this->redirectTo(route('books.edit', ['id' => $book->id]));
             return;
         }
