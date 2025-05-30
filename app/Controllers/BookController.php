@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Books';
         $user = Auth::userWithAdmin();
         $books = Book::getAll();
         $this->render('books/index', compact('title', 'user', 'books'));

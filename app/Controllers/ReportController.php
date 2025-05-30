@@ -9,7 +9,7 @@ class ReportController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Reports';
         $user = Auth::userWithAdmin();
         $this->render('reports/index', compact('title', 'user'));
     }

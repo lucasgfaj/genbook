@@ -9,7 +9,7 @@ class ConfigController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Configurations';
         $user = Auth::userWithAdmin();
         $this->render('config/index', compact('title', 'user'));
     }

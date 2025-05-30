@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function index(): void
     {
-        $title = 'Admin Dashboard';
+        $title = 'Admin';
         $user = Auth::userWithAdmin();
         $this->render('admin/index', compact('title', 'user'));
     }

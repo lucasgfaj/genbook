@@ -9,7 +9,7 @@ class LoanController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Loans';
         $user = Auth::userWithAdmin();
         $this->render('loans/index', compact('title', 'user'));
     }

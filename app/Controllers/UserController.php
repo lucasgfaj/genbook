@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Users';
         $user = Auth::userWithAdmin();
         $this->render('users/index', compact('title', 'user'));
     }
