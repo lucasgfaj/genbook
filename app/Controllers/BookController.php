@@ -75,7 +75,7 @@ class BookController extends Controller
 
         $book->save();
         // Atualiza autores
-        $book->bookAuthors()->$request->getParams('authors');
+        $book->bookAuthors();
 
         $book->validates();
         if ($book->hasErrors()) {
@@ -84,19 +84,51 @@ class BookController extends Controller
             return;
         }
 
-        // Atualiza capa (caso enviada)
-        if ($request->getParam('cover_name')) {
-            $bookCover = new BookCover($book, [
-                'extension' => ['jpg', 'jpeg', 'png', 'webp'],
-                'size' => 2 * 1024 * 1024, // 2MB
-            ]);
-            $success = $bookCover->update($request->getParam('cover_name'));
+        $this->redirectTo(route('users.books'));
+    }
+    public function create(Request $request): void
+    {
+        var_dump($request); // Adicionado var_dump para depuração
 
-            if (!$success) {
-                FlashMessage::danger('Erro ao atualizar a imagem de capa.');
+        $book = new Book();
+        $book->title = $request->getParam('bookTitle');
+        $book->publisher = $request->getParam('publisher');
+        $book->isbn = $request->getParam('bookISBN');
+        $book->edition = $request->getParam('edition');
+        $book->year = (int) $request->getParam('bookYear');
+        $book->quantity = (int) $request->getParam('bookQuantity');
+        $book->shelf_location = $request->getParam('shelf_location');
+        $book->is_active = (bool) $request->getParam('is_active');
+        $book->category_id = (int) $request->getParam('bookCategory', 0);
+        $book->created_at = date('Y-m-d H:i:s');
+        $book->updated_at = date('Y-m-d H:i:s');
+        $book->save();
+
+        if ($request->hasFile('bookImage')) {
+            $coverService = new BookCover($book, $request->file('bookImage'));
+            if (!$coverService->update($request->file('bookImage'))) {
+                FlashMessage::danger('Erro ao atualizar a capa do livro: ');
+                $this->redirectTo(route('users.books'));
+                return;
             }
+            $book->cover_name = $coverService->path();
         }
 
-        $this->redirectTo(route('users.books'));
+        // Validações
+        $book->validates();
+        if (!$book->hasErrors()) {
+            FlashMessage::danger('Erro ao criar o livro: ' . $book->errors());
+            $this->redirectTo(route('users.books'));
+            return;
+        }
+        // Salva o livro
+        if ($book->save()) {
+            FlashMessage::success('Livro criado com sucesso!');
+            $this->redirectTo(route('users.books'));
+            return;
+        }
+
+
+        FlashMessage::danger('Erro ao criar o livro.');
     }
 }

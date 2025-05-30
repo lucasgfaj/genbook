@@ -69,65 +69,64 @@
         </tbody>
     </table>
   </div>
+</div>
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-  <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title" id="addBookModalLabel">Adicionar Novo Livro</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="bookTitle" class="form-label">Título</label>
-              <input type="text" class="form-control" id="bookTitle" placeholder="Título do livro">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookAuthor" class="form-label">Autor</label>
-              <input type="text" class="form-control" id="bookAuthor" placeholder="Nome do autor">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookISBN" class="form-label">ISBN</label>
-              <input type="text" class="form-control" id="bookISBN" placeholder="ISBN do livro">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookCategory" class="form-label">Categoria</label>
-              <input type="text" class="form-control" id="bookCategory" placeholder="Categoria do livro">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookYear" class="form-label">Ano de Publicação</label>
-              <input type="number" class="form-control" id="bookYear" value="2025" min="0">
-            </div>
-
-            <div class="mb-3">
-              <label for="materialValidity" class="form-label">Data de Validade</label>
-              <input type="date" class="form-control" id="materialValidity" placeholder="dd/mm/aaaa">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookQuantity" class="form-label">Quantidade</label>
-              <input type="number" class="form-control" id="bookQuantity" value="1" min="1">
-            </div>
-
-            <div class="mb-3">
-              <label for="bookImage" class="form-label">Imagem do Livro</label>
-              <input type="file" class="form-control" id="bookImage" accept="image/*">
-            </div>
-          </form>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Adicionar Livro</button>
-        </div>
-
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBookModalLabel">Adicionar Novo Livro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
+
+      <div class="modal-body">
+        <form method="POST" action="/books/create" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="bookTitle" class="form-label">Título</label>
+            <input type="text" class="form-control" id="bookTitle" placeholder="Título do livro">
+          </div>
+          <div class="mb-3">
+            <label for="bookAuthor" class="form-label">Autor</label>
+            <input type="text" class="form-control" id="bookAuthor" placeholder="Nome do autor">
+          </div>
+
+          <div class="mb-3">
+            <label for="bookISBN" class="form-label">ISBN</label>
+            <input type="text" class="form-control" id="bookISBN" placeholder="ISBN do livro">
+          </div>
+
+          <div class="mb-3">
+            <label for="bookCategory" class="form-label">Categoria</label>
+            <input type="text" class="form-control" id="bookCategory" placeholder="Categoria do livro">
+          </div>
+
+          <div class="mb-3">
+            <label for="bookYear" class="form-label">Ano de Publicação</label>
+            <input type="number" class="form-control" id="bookYear" value="2025" min="0">
+          </div>
+
+          <!-- <div class="mb-3">
+              <label for="vali" class="form-label">Data de Validade</label>
+              <input type="date" class="form-control" id="vali" placeholder="dd/mm/aaaa">
+            </div> -->
+
+          <div class="mb-3">
+            <label for="bookQuantity" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="bookQuantity" value="1" min="1">
+          </div>
+
+          <div class="mb-3">
+            <label for="bookImage" class="form-label">Imagem do Livro</label>
+            <input type="file" class="form-control" id="bookImage" accept="image/*">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Adicionar Livro</button>
+          </div>
+        </form>
+      </div>
+
+
     </div>
   </div>
+</div>

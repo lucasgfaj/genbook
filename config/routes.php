@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/books/show/{id}', [BookController::class, 'show'])->name('users.books.show');
     Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
     Route::post('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
+    Route::post('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::get('/books/delete/{id}', [BookController::class, 'delete'])->name('books.delete');
     Route::get('/materials', [MaterialController::class, 'index'])->name('users.materials');
     Route::get('/loans', [LoanController::class, 'index'])->name('users.loans');
     Route::get('/users', [UserController::class, 'index'])->name('users.users');
