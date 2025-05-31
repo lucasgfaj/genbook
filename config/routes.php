@@ -13,7 +13,6 @@ use App\Controllers\CategoryController;
 use App\Controllers\BookController;
 use App\Controllers\ConfigController;
 use Core\Router\Route;
-use Core\Router\Router;
 
 // Error Routes
 Route::get('/*', [ErrorController::class, 'notfound'])->name('error.notfound');
@@ -49,7 +48,7 @@ Route::middleware('auth')->group(function () {
     // List Authors
     Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
     Route::get('/authors/page/{page}', [AuthorController::class, 'index'])->name('authors.paginate');
-    Route::get('authors/show/{id}', [AuthorController::class, 'show'])->name('authors.show');
+    Route::get('/authors/show/{id}', [AuthorController::class, 'show'])->name('authors.show');
 
     // Update Author
     Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
@@ -59,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
 
     // Deactivate Author
-    Route::post('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
+    Route::put('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
 
 
     // Categories

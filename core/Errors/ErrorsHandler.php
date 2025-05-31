@@ -23,11 +23,11 @@ class ErrorsHandler
         return function ($e) {
             ob_end_clean(); // Discard the buffered output
 
-            if ($e instanceof HTTPException) {
-                header('Location: ' . route('error.notfound'));
-            } else {
-                header('HTTP/1.1 500 Internal Server Error');
-            }
+            // if ($e instanceof HTTPException) {
+            //     header('Location: ' . route('error.notfound'));
+            // } else {
+            //     header('HTTP/1.1 500 Internal Server Error');
+            // }
 
             echo <<<HTML
                 <h1>{$e->getMessage()}</h1>

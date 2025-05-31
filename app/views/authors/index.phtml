@@ -20,8 +20,7 @@
         Buscar
       </button>
 
-      <!-- Botão para página de adicionar autor -->
-      <a href="/authors/new" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm">
+      <a href=<?= route('authors.new') ?>" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm">
         <i class="bi bi-person-plus"></i>
         Adicionar Autor
       </a>
@@ -48,7 +47,7 @@
             <td><?= htmlspecialchars($author->birth_date) ?></td>
             <!-- Biografia removida -->
             <td>
-              <a href="/authors/show/<?= $author->id ?> class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <a href="<?= route('authors.show', ['id' => $author->id]) ?>"class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
                 <i class="bi bi-pencil-square"></i> Editar
               </a>
             </td>
@@ -58,44 +57,6 @@
     </table>
 
     <!-- PAGINATOR -->
-    <nav aria-label="Page navigation" class="mt-4">
-      <ul class="pagination justify-content-end mb-0">
-
-        <?php if ($paginator->hasPreviousPage()) : ?>
-          <li class="page-item">
-            <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->previousPage()]) ?>" aria-label="Anterior">
-              <span aria-hidden="true">&laquo; Anterior</span>
-            </a>
-          </li>
-        <?php else : ?>
-          <li class="page-item disabled" aria-disabled="true">
-            <span class="page-link">&laquo; Anterior</span>
-          </li>
-        <?php endif; ?>
-
-        <?php for ($page = 1; $page <= $paginator->totalOfPages(); $page++) : ?>
-          <li class="page-item <?= $paginator->isPage($page) ? 'active' : '' ?>" aria-current="<?= $paginator->isPage($page) ? 'page' : '' ?>">
-            <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $page]) ?>"><?= $page ?></a>
-          </li>
-        <?php endfor; ?>
-
-        <?php if ($paginator->hasNextPage()) : ?>
-          <li class="page-item">
-            <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->nextPage()]) ?>" aria-label="Próxima">
-              <span aria-hidden="true">Próxima &raquo;</span>
-            </a>
-          </li>
-        <?php else : ?>
-          <li class="page-item disabled" aria-disabled="true">
-            <span class="page-link">Próxima &raquo;</span>
-          </li>
-        <?php endif; ?>
-
-      </ul>
-    </nav>
-
-    <div class="d-flex justify-content-end">
-      <small class="text-muted"><?= $paginator->entriesInfo() ?></small>
-    </div>
-  </div>
+<div class="mt-2 flex justify-center">
+    <?php $paginator->renderPagesNavigation(); ?>
 </div>

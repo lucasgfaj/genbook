@@ -25,7 +25,7 @@ class AuthorController extends Controller
         }
     }
 
-  public function show(Request $request): void
+    public function show(Request $request): void
     {
         $params = $request->getParams();
         $user = Auth::userWithAdmin();
@@ -36,7 +36,7 @@ class AuthorController extends Controller
             return;
         }
 
-        $this->render('author/show', compact('title', 'user', 'author'));
+        $this->render('authors/show', compact('title', 'user', 'author'));
     }
     public function new(): void
     {
@@ -79,21 +79,43 @@ class AuthorController extends Controller
 
         $this->persist($author, 'edit', 'Autor atualizado com sucesso!', 'Erro ao atualizar o autor.');
     }
-
     public function deactivate(Request $request): void
     {
         $user = Auth::userWithAdmin();
         $id = $request->getParam('id');
         $author = Author::findById($id);
 
-        if ($author && $author->deactivate()) {
-            FlashMessage::success("Autor #{$author->id} desativado com sucesso.");
+        if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        $author->is_active = false;
+
+        $this->persist(
+            $author,
+            'show',  // view para reexibir em caso de erro
+            "Autor #{$author->id} desativado com sucesso.",
+            "Erro ao desativar o autor."
+        );
+    }
+
+    public function destroy(Request $request): void
+    {
+        $user = Auth::userWithAdmin();
+        $id = $request->getParam('id');
+        $author = Author::findById($id);
+
+        if ($author && $author->destroy()) {
+            FlashMessage::success("Autor #{$author->id} excluído com sucesso.");
         } else {
-            FlashMessage::danger("Erro ao desativar o autor.");
+            FlashMessage::danger("Erro ao excluir o autor.");
         }
 
         $this->redirectTo(route('authors.index'));
     }
+
 
     private function persist(Author $author, string $view, string $successMsg, string $errorMsg): void
     {
