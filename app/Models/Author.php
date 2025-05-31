@@ -5,6 +5,7 @@ namespace App\Models;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\BelongsToMany;
 
 /**
  * @property int $id
@@ -36,19 +37,14 @@ class Author extends Model
         Validations::notEmpty('nationality', $this);
     }
 
-    public function deactivate(): bool
+    public function books(): BelongsToMany
     {
-        $this->is_active = false;
-        return $this->save();
+        return $this->belongsToMany(Book::class, 'book_authors', 'author_id', 'book_id');
     }
 
-    public function books(): BelongsTo
+    public function hasRelatedBooks(): bool
     {
-        return $this->belongsTo(Book::class, 'author_id');
-    }
-
-    public function categories(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
+        $books = $this->books()->get();
+        return !empty($books);
     }
 }

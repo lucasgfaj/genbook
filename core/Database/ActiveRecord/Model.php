@@ -136,18 +136,28 @@ abstract class Model
     public function validates(): void {}
 
     /* ------------------- DATABASE METHODS ------------------- */
- public function save(): bool
+public function save(): bool
 {
     if ($this->isValid()) {
         $pdo = Database::getDatabaseConn();
+
+        // Define timestamps agora
+        $now = date('Y-m-d H:i:s');
+
         if ($this->newRecord()) {
+            // Para novo registro, set created_at e updated_at se existir nas colunas
+            if (in_array('created_at', static::$columns)) {
+                $this->created_at = $now;
+            }
+            if (in_array('updated_at', static::$columns)) {
+                $this->updated_at = $now;
+            }
+
             $table = static::$table;
             $attributes = implode(', ', static::$columns);
             $values = ':' . implode(', :', static::$columns);
 
-            $sql = <<<SQL
-                INSERT INTO {$table} ({$attributes}) VALUES ({$values});
-            SQL;
+            $sql = "INSERT INTO {$table} ({$attributes}) VALUES ({$values});";
 
             $stmt = $pdo->prepare($sql);
             foreach (static::$columns as $column) {
@@ -160,6 +170,11 @@ abstract class Model
 
             $this->id = (int) $pdo->lastInsertId();
         } else {
+            // Para update, atualiza updated_at
+            if (in_array('updated_at', static::$columns)) {
+                $this->updated_at = $now;
+            }
+
             $table = static::$table;
 
             $sets = array_map(function ($column) {
@@ -167,9 +182,7 @@ abstract class Model
             }, static::$columns);
             $sets = implode(', ', $sets);
 
-            $sql = <<<SQL
-                UPDATE {$table} set {$sets} WHERE id = :id;
-            SQL;
+            $sql = "UPDATE {$table} SET {$sets} WHERE id = :id;";
 
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);

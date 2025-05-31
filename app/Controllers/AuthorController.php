@@ -70,14 +70,39 @@ class AuthorController extends Controller
 
         $this->render('authors/edit', compact('author', 'user', 'title'));
     }
-
     public function update(Request $request): void
     {
         $user = Auth::userWithAdmin();
         $id = $request->getParam('id');
+        $params = $request->getParam('author');
+
         $author = Author::findById($id);
 
-        $this->persist($author, 'edit', 'Autor atualizado com sucesso!', 'Erro ao atualizar o autor.');
+        if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        // Atualiza os dados do autor
+        $author->full_name = $params['full_name'] ?? $author->full_name;
+        $author->bio = $params['bio'] ?? $author->bio;
+        $author->nationality = $params['nationality'] ?? $author->nationality;
+        $author->birth_date = $params['birth_date'] ?? $author->birth_date;
+
+        // Atualiza o campo updated_at para o horário atual
+        $author->updated_at = date('Y-m-d H:i:s');
+
+        $author->validates();
+
+        if ($author->save()) {
+            FlashMessage::success('Author atualizado com sucesso!');
+            $this->redirectTo(route('authors.index'));
+        } else {
+            FlashMessage::danger('Existem dados incorretos! Por favor, verifique!');
+            $title = "Editar Author #{$author->id}";
+            $this->render('authors/edit', compact('author', 'user', 'title'));
+        }
     }
     public function deactivate(Request $request): void
     {
@@ -91,11 +116,17 @@ class AuthorController extends Controller
             return;
         }
 
+        if ($author->hasRelatedBooks()) {
+            FlashMessage::danger("Não é possível desativar o autor pois existem livros relacionados.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
         $author->is_active = false;
 
         $this->persist(
             $author,
-            'show',  // view para reexibir em caso de erro
+            'show',
             "Autor #{$author->id} desativado com sucesso.",
             "Erro ao desativar o autor."
         );
@@ -107,7 +138,19 @@ class AuthorController extends Controller
         $id = $request->getParam('id');
         $author = Author::findById($id);
 
-        if ($author && $author->destroy()) {
+        if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        if ($author->hasRelatedBooks()) {
+            FlashMessage::danger("Não é possível excluir o autor pois existem livros relacionados.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        if ($author->destroy()) {
             FlashMessage::success("Autor #{$author->id} excluído com sucesso.");
         } else {
             FlashMessage::danger("Erro ao excluir o autor.");
@@ -115,6 +158,7 @@ class AuthorController extends Controller
 
         $this->redirectTo(route('authors.index'));
     }
+
 
 
     private function persist(Author $author, string $view, string $successMsg, string $errorMsg): void

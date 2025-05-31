@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
     // List Authors
     Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
     Route::get('/authors/page/{page}', [AuthorController::class, 'index'])->name('authors.paginate');
-    Route::get('/authors/show/{id}', [AuthorController::class, 'show'])->name('authors.show');
+    Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
 
     // Update Author
     Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');

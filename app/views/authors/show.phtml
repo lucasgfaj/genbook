@@ -45,7 +45,8 @@
             <div class="col-md-6">
                 <label for="created_at" class="form-label">Cadastrado em</label>
                 <input id="created_at" type="text" class="form-control"
-                    value="<?= htmlspecialchars(date('d/m/Y H:i', strtotime($author->created_at))) ?>" disabled>
+                    value="<?= htmlspecialchars(date('d/m/Y', strtotime($author->created_at))) ?>"
+                    disabled>
             </div>
 
         </div>
@@ -71,10 +72,9 @@
                 </form>
             <?php else: ?>
                 <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
-                    <!-- Se seu framework usa token CSRF, inclua-o -->
-                    <input type="hidden" name="_method" value="PUT">
-                    <button type="submit" class="btn btn-warning">
-                        <i class="bi bi-trash"></i> Inativar
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Excluir
                     </button>
                 </form>
             <?php endif; ?>
