@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Lib\Validations;
-use Core\Database\ActiveRecord\BelongsTo;
 use Core\Database\ActiveRecord\Model;
+use Core\Database\ActiveRecord\BelongsTo;
 
 /**
  * @property int $id
@@ -12,12 +12,22 @@ use Core\Database\ActiveRecord\Model;
  * @property string $bio
  * @property string $nationality
  * @property string $birth_date
+ * @property bool $is_active
+ * @property string $created_at
+ * @property string $updated_at
  */
-
 class Author extends Model
 {
     protected static string $table = 'authors';
-    protected static array $columns = ['full_name', 'bio', 'nationality', 'birth_date'];
+    protected static array $columns = [
+        'full_name',
+        'bio',
+        'nationality',
+        'birth_date',
+        'is_active',
+        'created_at',
+        'updated_at'
+    ];
 
     public function validates(): void
     {
@@ -25,10 +35,18 @@ class Author extends Model
         Validations::notEmpty('bio', $this);
         Validations::notEmpty('nationality', $this);
     }
+
+    public function deactivate(): bool
+    {
+        $this->is_active = false;
+        return $this->save();
+    }
+
     public function books(): BelongsTo
     {
         return $this->belongsTo(Book::class, 'author_id');
     }
+
     public function categories(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');

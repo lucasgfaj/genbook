@@ -25,6 +25,7 @@ class Compensation extends Model
         'delivery_date',
         'resolved',
         'created_at'
+
     ];
 
     public function validates(): void

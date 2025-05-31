@@ -1,32 +1,43 @@
-<nav aria-label="Page navigation">
+<nav aria-label="Page navigation" class="mb-3">
     <ul class="pagination justify-content-end">
 
+        <!-- Botão Anterior -->
         <?php if ($paginator->hasPreviousPage()) : ?>
             <li class="page-item">
-                <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->previousPage()]) ?>">Anterior</a>
+                <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->previousPage()]) ?>" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo; Anterior</span>
+                </a>
             </li>
         <?php else : ?>
-            <li class="page-item disabled">
-                <a class="page-link">Anterior</a>
+            <li class="page-item disabled" aria-disabled="true">
+                <span class="page-link">&laquo; Anterior</span>
             </li>
         <?php endif; ?>
 
+        <!-- Links das páginas -->
         <?php for ($page = 1; $page <= $paginator->totalOfPages(); $page++) : ?>
-            <li class="page-item <?= $paginator->isPage($page) ? 'active' : '' ?>">
+            <li class="page-item <?= $paginator->isPage($page) ? 'active' : '' ?>" aria-current="<?= $paginator->isPage($page) ? 'page' : '' ?>">
                 <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $page]) ?>"><?= $page ?></a>
             </li>
         <?php endfor; ?>
 
+        <!-- Botão Próxima -->
         <?php if ($paginator->hasNextPage()) : ?>
             <li class="page-item">
-                <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->nextPage()]) ?>">Próxima</a>
+                <a class="page-link" href="<?= route($paginator->getRouteName(), ['page' => $paginator->nextPage()]) ?>" aria-label="Próxima">
+                    <span aria-hidden="true">Próxima &raquo;</span>
+                </a>
             </li>
         <?php else : ?>
-            <li class="page-item disabled">
-                <a class="page-link">Próxima</a>
+            <li class="page-item disabled" aria-disabled="true">
+                <span class="page-link">Próxima &raquo;</span>
             </li>
         <?php endif; ?>
+
     </ul>
 </nav>
 
-<div class="d-flex justify-content-end"><?= $paginator->entriesInfo() ?></div>
+<!-- Informações de quantos registros estão sendo exibidos -->
+<div class="d-flex justify-content-end">
+    <small class="text-muted"><?= $paginator->entriesInfo() ?></small>
+</div>

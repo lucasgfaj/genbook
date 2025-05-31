@@ -10,6 +10,7 @@ use Core\Database\ActiveRecord\Model;
  * @property int $id
  * @property string $name
  * @property string $description
+ * @property bool $is_active
  * @property string $created_at
  * @property string $updated_at
  */
@@ -17,7 +18,7 @@ use Core\Database\ActiveRecord\Model;
 class Category extends Model
 {
     protected static string $table = 'categories';
-    protected static array $columns = ['name', 'description'];
+    protected static array $columns = ['name', 'description', 'is_active', 'created_at', 'updated_at'];
 
     public function validates(): void
     {

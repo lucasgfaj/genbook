@@ -10,12 +10,16 @@ use Core\Database\ActiveRecord\BelongsTo;
  * @property int $user_id
  * @property string $role
  * @property string $registration_number
+ * @property bool $is_active
+ * @property string $created_at
+ * @property string $updated_at
+ *
  */
 
 class Client extends User
 {
     protected static string $table = 'clients';
-    protected static array $columns = ['user_id', 'role', 'registration_number'];
+    protected static array $columns = ['user_id', 'role', 'registration_number', 'is_active', 'created_at', 'updated_at'];
 
     public function user(): BelongsTo
     {

@@ -16,11 +16,23 @@ use Core\Database\ActiveRecord\Model;
  * @property string $hire_date
  * @property bool $admin
  * @property int $user_id
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Staff extends Model
 {
     protected static string $table = 'staff';
-    protected static array $columns = ['user_id', 'password', 'admin', 'employee_id', 'hire_date'];
+    protected static array $columns =
+    [
+        'user_id',
+        'password',
+        'admin',
+        'employee_id',
+        'hire_date',
+        'is_active',
+        'created_at',
+        'updated_at'
+    ];
 
     public function validates(): void
     {
