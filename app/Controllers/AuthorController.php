@@ -13,9 +13,10 @@ class AuthorController extends Controller
     public function index(Request $request): void
     {
         $user = Auth::userWithAdmin();
+        $page = (int) $request->getParam('page', 1);
 
         $paginator = Author::paginate(
-            page: $request->getParam('page', 1),
+            page: $page,
             per_page: 10,
             conditions: ['is_active' => true]
         );
@@ -32,11 +33,13 @@ class AuthorController extends Controller
 
     public function show(Request $request): void
     {
-        $params = $request->getParams();
+        $id = (int) $request->getParam('id');
         $user = Auth::userWithAdmin();
-        $title = "Visualização do Author #{$params['id']}";
-        $author = Author::findById($params['id']);
+        $title = "Visualização do Author #{$id}";
+        $author = Author::findById($id);
+
         if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
             $this->redirectTo(route('authors.index'));
             return;
         }
@@ -48,13 +51,14 @@ class AuthorController extends Controller
     {
         $user = Auth::userWithAdmin();
         $title = 'Novo Autor';
-        $author = new Author(); // cria uma nova instância vazia
+        $author = new Author();
         $this->render('authors/new', compact('author', 'user', 'title'));
     }
 
     public function create(Request $request): void
     {
-        $author = new Author($request->getParam('author'));
+        $authorData = $request->getParam('author');
+        $author = new Author($authorData);
         $user = Auth::userWithAdmin();
 
         if ($author->save()) {
@@ -70,8 +74,9 @@ class AuthorController extends Controller
     public function edit(Request $request): void
     {
         $user = Auth::userWithAdmin();
-        $id = $request->getParam('id');
+        $id = (int) $request->getParam('id');
         $author = Author::findById($id);
+
         if (!$author) {
             FlashMessage::danger("Autor não encontrado.");
             $this->redirectTo(route('authors.index'));
@@ -85,9 +90,8 @@ class AuthorController extends Controller
     public function update(Request $request): void
     {
         $user = Auth::userWithAdmin();
-        $id = $request->getParam('id');
+        $id = (int) $request->getParam('id');
         $params = $request->getParam('author');
-
         $author = Author::findById($id);
 
         if (!$author) {
@@ -96,16 +100,11 @@ class AuthorController extends Controller
             return;
         }
 
-        // Atualiza os dados do autor
         $author->full_name = $params['full_name'] ?? $author->full_name;
         $author->bio = $params['bio'] ?? $author->bio;
         $author->nationality = $params['nationality'] ?? $author->nationality;
         $author->birth_date = $params['birth_date'] ?? $author->birth_date;
-
-        // Atualiza o campo updated_at para o horário atual
         $author->updated_at = date('Y-m-d H:i:s');
-
-        $author->validates();
 
         if ($author->save()) {
             FlashMessage::success('Author atualizado com sucesso!');
@@ -116,10 +115,11 @@ class AuthorController extends Controller
             $this->render('authors/edit', compact('author', 'user', 'title'));
         }
     }
+
     public function deactivate(Request $request): void
     {
         $user = Auth::userWithAdmin();
-        $id = $request->getParam('id');
+        $id = (int) $request->getParam('id');
         $author = Author::findById($id);
 
         if (!$author) {
@@ -128,47 +128,30 @@ class AuthorController extends Controller
             return;
         }
 
-
-        if (!empty($user['admin'])) {
-            if ($author->hasRelatedBooks()) {
-                FlashMessage::danger("Não é possível inativar o autor pois existem livros relacionados.");
-                $this->redirectTo(route('authors.index'));
-                return;
-            }
-        } else {
-            if ($author->hasRelatedBooks()) {
-                FlashMessage::danger("Não é possível deletar o autor pois existem livros relacionados.");
-                $this->redirectTo(route('authors.index'));
-                return;
-            }
+        if ($author->hasRelatedBooks()) {
+            FlashMessage::danger("Não é possível inativar/deletar o autor pois existem livros relacionados.");
+            $this->redirectTo(route('authors.index'));
+            return;
         }
-
 
         $author->is_active = false;
         $author->updated_at = date('Y-m-d H:i:s');
 
         if ($author->save()) {
-            if (!empty($user['admin'])) {
-                FlashMessage::success('Autor inativado com sucesso!');
-            } else {
-                FlashMessage::success('Autor deletado com sucesso!');
-            }
+            $message = !empty($user['admin']) ? 'Autor inativado com sucesso!' : 'Autor deletado com sucesso!';
+            FlashMessage::success($message);
         } else {
-            if (!empty($user['admin'])) {
-                FlashMessage::success('Erro ao inativar o autor!');
-            } else {
-                FlashMessage::success('Erro ao deletar o autor!');
-            }
+            $message = !empty($user['admin']) ? 'Erro ao inativar o autor!' : 'Erro ao deletar o autor!';
+            FlashMessage::danger($message);
         }
 
         $this->redirectTo(route('authors.index'));
     }
 
-
     public function destroy(Request $request): void
     {
         $user = Auth::userWithAdmin();
-        $id = $request->getParam('id');
+        $id = (int) $request->getParam('id');
         $author = Author::findById($id);
 
         if (!$author) {

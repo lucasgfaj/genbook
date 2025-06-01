@@ -26,13 +26,12 @@ class AuthorAccessTest extends TestCase
         $this->cookieJar = new CookieJar();
     }
 
-    /**
-     */
     private function loginAsAdmin(): void
     {
         $email = 'admin@test.com';
         $password = '123456';
 
+        // Criar usuário admin
         $user = new User([
             'full_name' => 'Admin User',
             'email' => $email,
@@ -48,6 +47,7 @@ class AuthorAccessTest extends TestCase
         ]);
         $staff->save();
 
+        // Fazer login via HTTP client
         $loginResponse = $this->client->post('/login', [
             'form_params' => [
                 'user[email]' => $email,
@@ -56,7 +56,10 @@ class AuthorAccessTest extends TestCase
             'cookies' => $this->cookieJar,
         ]);
 
-        $this->assertTrue(in_array($loginResponse->getStatusCode(), [200, 302]), 'Login falhou.');
+        $this->assertTrue(
+            in_array($loginResponse->getStatusCode(), [200, 302]),
+            'Login falhou.'
+        );
     }
 
     public function test_should_access_the_route_admin_if_authenticated_as_admin(): void
@@ -82,6 +85,7 @@ class AuthorAccessTest extends TestCase
         $author->save();
 
         $response = $this->client->get("/authors/{$author->id}");
+        // Supondo que mostrar autor redirecione (exemplo: login ou página)
         $this->assertEquals(302, $response->getStatusCode());
     }
 
@@ -101,105 +105,96 @@ class AuthorAccessTest extends TestCase
             'cookies' => $this->cookieJar,
         ]);
 
-        // Normalmente redireciona após criação
+        // A criação normalmente redireciona (status 302)
         $this->assertEquals(302, $response->getStatusCode());
 
+        // Buscar autor criado
         $author = Author::findBy(['full_name' => 'New Author']);
-        $this->assertNotEmpty($author, "Autor não foi criado no banco");
+        $this->assertNotNull($author, "Autor não foi criado no banco");
     }
+
     public function test_should_update_author(): void
     {
         $this->loginAsAdmin();
 
         $author = new Author([
-        'full_name' => 'Author to Update',
-        'bio' => 'Old bio',
-        'nationality' => 'BR',
-        'birth_date' => '1960-01-01',
-        'is_active' => true,
+            'full_name' => 'Author to Update',
+            'bio' => 'Old bio',
+            'nationality' => 'BR',
+            'birth_date' => '1960-01-01',
+            'is_active' => true,
         ]);
         $author->save();
 
         $response = $this->client->post("/authors/{$author->id}", [
-        'form_params' => [
-            '_method' => 'PUT',
-            'author' => [
-                'full_name' => 'Author Updated',
-                'bio' => 'Updated bio',
-            ]
-        ],
-        'cookies' => $this->cookieJar,
+            'form_params' => [
+                '_method' => 'PUT',
+                'author' => [
+                    'full_name' => 'Author Updated',
+                    'bio' => 'Updated bio',
+                ]
+            ],
+            'cookies' => $this->cookieJar,
         ]);
 
+        // Alteração normalmente redireciona (302)
         $this->assertEquals(302, $response->getStatusCode());
 
+        // Buscar autor atualizado
         $authorUpdated = Author::findById($author->id);
         $this->assertEquals('Author Updated', $authorUpdated->full_name);
         $this->assertEquals('Updated bio', $authorUpdated->bio);
     }
 
+    public function test_should_deactivate_author(): void
+    {
+        $this->loginAsAdmin();
 
-public function test_should_deactivate_author(): void
-{
-    $this->loginAsAdmin();
-    $author = new Author([
-        'full_name' => 'Author to Deactivate',
-        'is_active' => true,
-    ]);
+        $author = new Author([
+            'full_name' => 'Author to Deactivate',
+            'bio' => 'Bio para desativação',
+            'nationality' => 'BR',
+            'birth_date' => '1970-01-01',
+            'is_active' => true,
+        ]);
+        $saveResult = $author->save();
+        $this->assertTrue($saveResult, "Falha ao salvar autor para desativação.");
 
-    // *** IMPORTANT: Check if save() is successful and ID is set ***
-    $saveResult = $author->save();
-    $this->assertTrue($saveResult, "Failed to save author for deactivation test.");
-    $this->assertNotNull($author->id, "Author ID is null after saving for deactivation test.");
-    $this->assertIsInt($author->id, "Author ID is not an integer after saving for deactivation test.");
+        $response = $this->client->put("/authors/{$author->id}/deactivate", [
+            'cookies' => $this->cookieJar,
+        ]);
 
+        // Normalmente desativar redireciona (302)
+        $this->assertEquals(302, $response->getStatusCode());
 
-    $response = $this->client->put("/authors/{$author->id}/deactivate", [
-        'cookies' => $this->cookieJar,
-    ]);
+        // Buscar autor desativado
+        $authorDeactivated = Author::findById($author->id);
+        $this->assertFalse($authorDeactivated->is_active, "Autor não foi desativado.");
+    }
 
-    // As discussed before, verify if this should be 200 or 302 based on your controller
-    // If controller redirects after deactivation (which is common for web apps)
-    // $this->assertEquals(302, $response->getStatusCode());
-    // If it truly returns 200 (e.g., API no redirect)
-    $this->assertEquals(200, $response->getStatusCode());
+    public function test_should_delete_author(): void
+    {
+        $this->loginAsAdmin();
 
-    // This line is where the error originates if $author->id was null
-    $authorDeactivated = Author::findById($author->id);
-    $this->assertFalse($authorDeactivated->is_active);
-}
+        $author = new Author([
+            'full_name' => 'Author to Delete',
+            'bio' => 'Bio para deleção',
+            'nationality' => 'BR',
+            'birth_date' => '1970-01-01',
+            'is_active' => true,
+        ]);
+        $saveResult = $author->save();
+         $this->assertTrue($saveResult, "Falha ao salvar autor para deleção.");
 
-// In your test:
-public function test_should_delete_author(): void
-{
-    $this->loginAsAdmin();
-    $author = new Author([
-        'full_name' => 'Author to Delete',
-        'is_active' => true,
-    ]);
+        $response = $this->client->delete("/authors/{$author->id}", [
+            'cookies' => $this->cookieJar,
+        ]);
 
-    // *** IMPORTANT: Check if save() is successful and ID is set ***
-    $saveResult = $author->save();
-    $this->assertTrue($saveResult, "Failed to save author for deletion test.");
-    $this->assertNotNull($author->id, "Author ID is null after saving for deletion test.");
-    $this->assertIsInt($author->id, "Author ID is not an integer after saving for deletion test.");
+        // Deleção normalmente redireciona (302)
+        $this->assertEquals(302, $response->getStatusCode());
 
-
-    $response = $this->client->delete("/authors/{$author->id}", [
-        'cookies' => $this->cookieJar,
-    ]);
-
-    // As discussed before, verify if this should be 200, 302 or 204
-    // If controller redirects after deletion (common for web apps)
-    // $this->assertEquals(302, $response->getStatusCode());
-    // Or if it's an API returning no content
-    // $this->assertEquals(204, $response->getStatusCode());
-    $this->assertEquals(200, $response->getStatusCode());
-
-
-    // This line is where the error originates if $author->id was null
-    $deletedAuthor = Author::findById($author->id);
-    $this->assertNull($deletedAuthor);
-}
-
+        // Verificar se autor foi deletado
+        $deletedAuthor = Author::findById($author->id);
+        $this->assertNull($deletedAuthor, "Autor não foi deletado.");
+    }
 }

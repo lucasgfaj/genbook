@@ -39,7 +39,7 @@ class AuthorCest extends BaseAcceptanceCest
         $page->click('Autores');
         $page->seeInCurrentUrl('/authors');
     }
-    public function AuthSuccessfully(AcceptanceTester $page): void
+    public function authSuccessfully(AcceptanceTester $page): void
     {
         $user1 = new User([
             'full_name' => 'Bibliotecário exemplo',
