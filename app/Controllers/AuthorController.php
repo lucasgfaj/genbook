@@ -13,9 +13,14 @@ class AuthorController extends Controller
     public function index(Request $request): void
     {
         $user = Auth::userWithAdmin();
-        $paginator = Author::findBy(['is_active' => true])->paginate(page: $request->getParam('page', 1));
-        $authors = $paginator->registers();
 
+        $paginator = Author::paginate(
+            page: $request->getParam('page', 1),
+            per_page: 10,
+            conditions: ['is_active' => true]
+        );
+
+        $authors = $paginator->registers();
         $title = 'Autores';
 
         if ($request->acceptJson()) {
@@ -123,22 +128,42 @@ class AuthorController extends Controller
             return;
         }
 
-        if ($author->hasRelatedBooks()) {
-            FlashMessage::danger("Não é possível desativar o autor pois existem livros relacionados.");
-            $this->redirectTo(route('authors.index'));
-            return;
+
+        if (!empty($user['admin'])) {
+            if ($author->hasRelatedBooks()) {
+                FlashMessage::danger("Não é possível inativar o autor pois existem livros relacionados.");
+                $this->redirectTo(route('authors.index'));
+                return;
+            }
+        } else {
+            if ($author->hasRelatedBooks()) {
+                FlashMessage::danger("Não é possível deletar o autor pois existem livros relacionados.");
+                $this->redirectTo(route('authors.index'));
+                return;
+            }
         }
 
+
         $author->is_active = false;
+        $author->updated_at = date('Y-m-d H:i:s');
 
         if ($author->save()) {
-            FlashMessage::success("Autor #{$author->id} desativado com sucesso.");
+            if (!empty($user['admin'])) {
+                FlashMessage::success('Autor inativado com sucesso!');
+            } else {
+                FlashMessage::success('Autor deletado com sucesso!');
+            }
         } else {
-            FlashMessage::danger("Erro ao desativar o autor.");
+            if (!empty($user['admin'])) {
+                FlashMessage::success('Erro ao inativar o autor!');
+            } else {
+                FlashMessage::success('Erro ao deletar o autor!');
+            }
         }
 
         $this->redirectTo(route('authors.index'));
     }
+
 
     public function destroy(Request $request): void
     {

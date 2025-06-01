@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<class="container mt-5">
   <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2 flex-column flex-md-row">
 
     <!-- Título -->
@@ -27,7 +27,7 @@
 
     </div>
   </div>
-
+  
   <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
     <table class="table table-bordered table-hover align-middle mb-0 bg-white">
       <thead class="table-light">
@@ -47,9 +47,40 @@
             <td><?= htmlspecialchars($author->birth_date) ?></td>
             <!-- Biografia removida -->
             <td>
-              <a href="<?= route('authors.show', ['id' => $author->id]) ?>"class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-                <i class="bi bi-pencil-square"></i> Editar
+              <!-- Botão de editar -->
+              <a href="<?= route('authors.show', ['id' => $author->id]) ?>"
+                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                title="Editar autor">
+                <i class="bi bi-pencil-square"></i>
               </a>
+
+              <?php if (!empty($user['admin'])): ?>
+                <!-- Botão para inativar (somente admins) -->
+                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar autor">
+                    <i class="bi bi-slash-circle"></i>
+                  </button>
+                </form>
+
+                <!-- Botão para excluir permanentemente (somente admins) -->
+                <form action="<?= route('authors.destroy', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0"
+                  onsubmit="return confirm('Tem certeza que deseja excluir permanentemente este autor?')">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor permanentemente">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+
+              <?php else: ?>
+                <!-- Botão para inativar/excluir (usuário comum) -->
+                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              <?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -57,6 +88,6 @@
     </table>
 
     <!-- PAGINATOR -->
-<div class="mt-2 flex justify-center">
-    <?php $paginator->renderPagesNavigation(); ?>
-</div>
+    <div class="mt-2 flex justify-center">
+      <?php $paginator->renderPagesNavigation(); ?>
+    </div>

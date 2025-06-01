@@ -35,7 +35,6 @@ Route::middleware('auth')->group(function () {
     // Materials
     Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
 
-
     // Create Author
     Route::get('/authors/new', [AuthorController::class, 'new'])->name('authors.new');
     Route::post('/authors', [AuthorController::class, 'create'])->name('authors.create');
@@ -45,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/authors/page/{page}', [AuthorController::class, 'index'])->name('authors.paginate');
     Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
 
+    // Deactivate Author
+    Route::put('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
+
     // Update Author
     Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
     Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('authors.update');
@@ -52,8 +54,7 @@ Route::middleware('auth')->group(function () {
     // Delete Author
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
 
-    // Deactivate Author
-    Route::put('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
+
 
 
     // Categories

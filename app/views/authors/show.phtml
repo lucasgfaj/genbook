@@ -55,29 +55,6 @@
             <a href="<?= route('authors.edit', ['id' => $author->id]) ?>" class="btn btn-primary">
                 <i class="bi bi-pencil-square"></i> Editar
             </a>
-
-            <?php if (!empty($user['admin'])): ?>
-                <form action="/authors/<?= $author->id ?>/deactivate" method="POST" class="d-inline m-0">
-                    <input type="hidden" name="_method" value="PUT">
-                    <button type="submit" class="btn btn-warning">
-                        <i class="bi bi-trash"></i> Inativar
-                    </button>
-                </form>
-                <form action="<?= route('authors.destroy', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0"
-                    onsubmit="return confirm('Tem certeza que deseja excluir permanentemente este autor?')">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-exclamation-triangle-fill"></i> Excluir permanentemente
-                    </button>
-                </form>
-            <?php else: ?>
-                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-trash"></i> Excluir
-                    </button>
-                </form>
-            <?php endif; ?>
         </div>
     </form>
 </div>

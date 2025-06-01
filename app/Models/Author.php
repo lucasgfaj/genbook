@@ -44,7 +44,6 @@ class Author extends Model
 
     public function hasRelatedBooks(): bool
     {
-        $books = $this->books()->get();
-        return count($books) > 0;
+        return count($this->books()->get()) > 0;
     }
 }
