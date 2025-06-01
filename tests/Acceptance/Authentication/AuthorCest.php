@@ -112,7 +112,8 @@ class AuthorCest extends BaseAcceptanceCest
         $page->see('Autores');
         $page->click('Autores');
         $page->seeInCurrentUrl('/authors');
-        $page->click('a[href="/authors/' . $author->id . '"]');;
+        $page->click('a[href="/authors/' . $author->id . '"]');
+        ;
         $page->see('Detalhes do Autor');
         $page->amOnPage('/authors/' . $author->id . '/edit');
         $page->seeInCurrentUrl('/authors/' . $author->id . '/edit');
