@@ -107,7 +107,7 @@ class AuthorController extends Controller
         $author->updated_at = date('Y-m-d H:i:s');
 
         if ($author->save()) {
-            FlashMessage::success('Author atualizado com sucesso!');
+            FlashMessage::success('Autor atualizado com sucesso!');
             $this->redirectTo(route('authors.index'));
         } else {
             FlashMessage::danger('Existem dados incorretos! Por favor, verifique!');
