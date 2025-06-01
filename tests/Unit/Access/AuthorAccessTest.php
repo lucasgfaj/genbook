@@ -138,7 +138,7 @@ class AuthorAccessTest extends TestCase
         $this->assertEquals('Updated bio', $authorUpdated->bio);
     }
 
-/*
+
 public function test_should_deactivate_author(): void
 {
     $this->loginAsAdmin();
@@ -201,5 +201,5 @@ public function test_should_delete_author(): void
     $deletedAuthor = Author::findById($author->id);
     $this->assertNull($deletedAuthor);
 }
-*/
+
 }
