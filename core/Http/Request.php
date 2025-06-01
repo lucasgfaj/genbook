@@ -58,4 +58,19 @@ class Request
     {
         return $this->params[$key] ?? $default;
     }
+
+    public function hasFile(string $key): bool
+    {
+        return isset($_FILES[$key]) && is_uploaded_file($_FILES[$key]['tmp_name']);
+    }
+    /**
+     * Retorna os dados do arquivo enviado.
+     *
+     * @param string $key Chave do arquivo no array $_FILES
+     * @return array|null Retorna os dados do arquivo ou null se não existir
+     */
+    public function file(string $key): ?array
+    {
+        return $this->hasFile($key) ? $_FILES[$key] : null;
+    }
 }

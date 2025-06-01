@@ -19,6 +19,10 @@ abstract class Model
     protected array $errors = [];
     protected ?int $id = null;
 
+    /** @var string|null */
+    protected ?string $created_at = null;
+    protected ?string $updated_at = null;
+
     /** @var array<string, mixed> */
     private array $attributes = [];
 
@@ -136,56 +140,71 @@ abstract class Model
     public function validates(): void {}
 
     /* ------------------- DATABASE METHODS ------------------- */
- public function save(): bool
-{
-    if ($this->isValid()) {
-        $pdo = Database::getDatabaseConn();
-        if ($this->newRecord()) {
-            $table = static::$table;
-            $attributes = implode(', ', static::$columns);
-            $values = ':' . implode(', :', static::$columns);
+    public function save(): bool
+    {
+        if ($this->isValid()) {
+            $pdo = Database::getDatabaseConn();
 
-            $sql = <<<SQL
-                INSERT INTO {$table} ({$attributes}) VALUES ({$values});
-            SQL;
+            // Define timestamps agora
+            $now = date('Y-m-d H:i:s');
 
-            $stmt = $pdo->prepare($sql);
-            foreach (static::$columns as $column) {
-                $value = $this->$column;
-                $paramType = is_bool($value) ? \PDO::PARAM_BOOL : \PDO::PARAM_STR;
-                $stmt->bindValue(':' . $column, $value, $paramType);
+            if ($this->newRecord()) {
+                // Para novo registro, set created_at e updated_at se existir nas colunas
+                if (in_array('created_at', static::$columns)) {
+                    $this->created_at = $now;
+                }
+                if (in_array('updated_at', static::$columns)) {
+                    $this->updated_at = $now;
+                }
+
+                $table = static::$table;
+                $attributes = implode(', ', static::$columns);
+                $values = ':' . implode(', :', static::$columns);
+
+                $sql = "INSERT INTO {$table} ({$attributes}) VALUES ({$values});";
+
+                $stmt = $pdo->prepare($sql);
+                foreach (static::$columns as $column) {
+                    $value = $this->$column;
+                    $paramType = is_bool($value) ? \PDO::PARAM_BOOL : \PDO::PARAM_STR;
+                    $stmt->bindValue(':' . $column, $value, $paramType);
+                }
+
+                $stmt->execute();
+
+                $this->id = (int) $pdo->lastInsertId();
+            } else {
+                // Para update, atualiza updated_at
+                if (in_array('updated_at', static::$columns)) {
+                    $this->updated_at = $now;
+                }
+
+                $table = static::$table;
+
+                // Remove o campo 'id' da lista para não tentar atualizar
+                $updatableColumns = array_filter(static::$columns, fn($col) => $col !== 'id');
+
+                $sets = array_map(fn($col) => "{$col} = :{$col}", $updatableColumns);
+                $sets = implode(', ', $sets);
+
+                $sql = "UPDATE {$table} SET {$sets} WHERE id = :id;";
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+                foreach ($updatableColumns as $column) {
+                    $value = $this->$column;
+                    $paramType = is_bool($value) ? PDO::PARAM_BOOL : PDO::PARAM_STR;
+                    $stmt->bindValue(':' . $column, $value, $paramType);
+                }
+
+                $stmt->execute();
             }
-
-            $stmt->execute();
-
-            $this->id = (int) $pdo->lastInsertId();
-        } else {
-            $table = static::$table;
-
-            $sets = array_map(function ($column) {
-                return "{$column} = :{$column}";
-            }, static::$columns);
-            $sets = implode(', ', $sets);
-
-            $sql = <<<SQL
-                UPDATE {$table} set {$sets} WHERE id = :id;
-            SQL;
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-
-            foreach (static::$columns as $column) {
-                $value = $this->$column;
-                $paramType = is_bool($value) ? PDO::PARAM_BOOL : PDO::PARAM_STR;
-                $stmt->bindValue(':' . $column, $value, $paramType);
-            }
-
-            $stmt->execute();
+            return true;
         }
-        return true;
+        return false;
     }
-    return false;
-}
+
 
 
     /**
@@ -286,7 +305,11 @@ abstract class Model
         return $models;
     }
 
-    public static function paginate(int $page = 1, int $per_page = 10, string $route = null): Paginator
+    /**
+     * @param array<string, mixed> $conditions
+     */
+
+    public static function paginate(int $page = 1, int $per_page = 10, ?array $conditions = [], ?string $route = null): Paginator
     {
         return new Paginator(
             class: static::class,
@@ -294,6 +317,7 @@ abstract class Model
             per_page: $per_page,
             table: static::$table,
             attributes: static::$columns,
+            conditions: $conditions,
             route: $route
         );
     }

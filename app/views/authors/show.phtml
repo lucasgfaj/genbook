@@ -1,0 +1,60 @@
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-person-fill me-2"></i>Detalhes do Autor
+        </h2>
+        <a href="/authors" class="btn btn-outline-secondary d-flex align-items-center">
+            <i class="bi bi-arrow-left me-1"></i> Voltar
+        </a>
+    </div>
+
+    <form class="shadow-lg p-4 rounded bg-white border">
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label for="full_name" class="form-label">Nome Completo</label>
+                <input id="full_name" type="text" class="form-control"
+                    value="<?= htmlspecialchars($author->full_name) ?>" disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label for="nationality" class="form-label">Nacionalidade</label>
+                <input id="nationality" type="text" class="form-control"
+                    value="<?= htmlspecialchars($author->nationality) ?>" disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label for="birth_date" class="form-label">Data de Nascimento</label>
+                <input id="birth_date" type="text" class="form-control"
+                    value="<?= htmlspecialchars(date('d/m/Y', strtotime($author->birth_date))) ?>" disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label for="is_active" class="form-label">Status</label>
+                <input id="is_active" type="text" class="form-control"
+                    value="<?= $author->is_active ? 'Ativo' : 'Inativo' ?>" disabled>
+            </div>
+
+
+            <div class="col-md-12">
+                <label for="bio" class="form-label">Biografia</label>
+                <textarea id="bio" class="form-control" rows="5"
+                    disabled><?= htmlspecialchars($author->bio) ?></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label for="created_at" class="form-label">Cadastrado em</label>
+                <input id="created_at" type="text" class="form-control"
+                    value="<?= htmlspecialchars(date('d/m/Y', strtotime($author->created_at))) ?>"
+                    disabled>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end mt-4 gap-2">
+            <a href="<?= route('authors.edit', ['id' => $author->id]) ?>" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i> Editar
+            </a>
+        </div>
+    </form>
+</div>

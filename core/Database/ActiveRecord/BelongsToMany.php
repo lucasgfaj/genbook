@@ -13,8 +13,7 @@ class BelongsToMany
         private string $pivot_table,
         private string $from_foreign_key,
         private string $to_foreign_key,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<Model>
@@ -79,5 +78,42 @@ class BelongsToMany
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $rows[0]['total'];
+    }
+
+    public function attach(int $id): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "INSERT INTO {$this->pivot_table} ({$this->from_foreign_key}, {$this->to_foreign_key}) VALUES (:from_id, :to_id)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->bindValue(':to_id', $id);
+        $stmt->execute();
+    }
+
+    public function detach(int $id): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "DELETE FROM {$this->pivot_table} WHERE {$this->from_foreign_key} = :from_id AND {$this->to_foreign_key} = :to_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->bindValue(':to_id', $id);
+        $stmt->execute();
+    }
+    
+    /**
+     * @param array<int, Model> $ids
+     */
+    public function sync(array $ids): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "DELETE FROM {$this->pivot_table} WHERE {$this->from_foreign_key} = :from_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->execute();
+
+
+        foreach ($ids as $id => $value) {            
+            $this->attach($id);
+        }
     }
 }

@@ -1,0 +1,93 @@
+<class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2 flex-column flex-md-row">
+
+    <!-- Título -->
+    <h2 class="fw-bold m-0 text-center text-md-start w-100 w-md-auto">Autores</h2>
+
+    <!-- Grupo de busca e botões -->
+    <div class="d-flex align-items-stretch flex-wrap gap-2 w-100 justify-content-center justify-content-md-end">
+      <!-- Campo de busca -->
+      <div class="input-group shadow-sm rounded" style="min-width: 250px; max-width: 300px;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" name="search" class="form-control border-start-0" placeholder="Buscar autores...">
+      </div>
+
+      <!-- Botão de buscar -->
+      <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+        <i class="bi bi-search"></i>
+        Buscar
+      </button>
+
+      <a href="<?= route('authors.new') ?>" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm">
+        <i class="bi bi-person-plus"></i>
+        Adicionar Autor
+      </a>
+
+    </div>
+  </div>
+  
+  <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
+    <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+      <thead class="table-light">
+        <tr>
+          <th><i class="bi bi-person-fill me-1"></i>Nome Completo</th>
+          <th><i class="bi bi-flag-fill me-1"></i>Nacionalidade</th>
+          <th><i class="bi bi-calendar3 me-1"></i>Data de Nascimento</th>
+          <!-- Biografia removida -->
+          <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($authors as $author): ?>
+          <tr>
+            <td><?= htmlspecialchars($author->full_name) ?></td>
+            <td><?= htmlspecialchars($author->nationality) ?></td>
+            <td><?= htmlspecialchars($author->birth_date) ?></td>
+            <!-- Biografia removida -->
+            <td>
+              <!-- Botão de editar -->
+              <a href="<?= route('authors.show', ['id' => $author->id]) ?>"
+                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                title="Editar autor">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+
+              <?php if (!empty($user['admin'])): ?>
+                <!-- Botão para inativar (somente admins) -->
+                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar autor">
+                    <i class="bi bi-slash-circle"></i>
+                  </button>
+                </form>
+
+                <!-- Botão para excluir permanentemente (somente admins) -->
+                <form action="<?= route('authors.destroy', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0"
+                  onsubmit="return confirm('Tem certeza que deseja excluir permanentemente este autor?')">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor permanentemente">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+
+              <?php else: ?>
+                <!-- Botão para inativar/excluir (usuário comum) -->
+                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+
+    <!-- PAGINATOR -->
+    <div class="mt-2 flex justify-center">
+      <?php $paginator->renderPagesNavigation(); ?>
+    </div>

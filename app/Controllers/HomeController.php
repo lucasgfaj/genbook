@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $title = 'GenBook';
+        $title = 'Home';
         $user = Auth::userWithAdmin();
         $this->render('home/index', compact('title', 'user'));
     }

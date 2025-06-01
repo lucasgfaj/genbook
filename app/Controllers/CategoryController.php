@@ -5,12 +5,12 @@ namespace App\Controllers;
 use Core\Http\Controllers\Controller;
 use Lib\Authentication\Auth;
 
-class MaterialController extends Controller
+class CategoryController extends Controller
 {
     public function index(): void
     {
-        $title = 'Materials';
+        $title = 'Categories';
         $user = Auth::userWithAdmin();
-        $this->render('materials/index', compact('title', 'user'));
+        $this->render('categories/index', compact('title', 'user'));
     }
 }

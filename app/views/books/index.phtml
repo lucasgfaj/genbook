@@ -30,146 +30,141 @@
     </div>
   </div>
 
- <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
-  <table class="table table-bordered table-hover align-middle mb-0 bg-white">
-    <thead class="table-light">
-      <tr>
-        <th><i class="bi bi-book-fill me-1"></i>Título</th>
-        <th><i class="bi bi-person-fill me-1"></i>Autor</th>
-        <th><i class="bi bi-upc-scan me-1"></i>ISBN</th>
-        <th><i class="bi bi-tags-fill me-1"></i>Categoria</th>
-        <th><i class="bi bi-calendar3 me-1"></i>Ano</th>
-        <th><i class="bi bi-stack me-1"></i>Disponível / Total</th>
-        <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Dom Casmurro</td>
-        <td>Machado de Assis</td>
-        <td>9788535902202</td>
-        <td>Literatura Brasileira</td>
-        <td>1899</td>
-        <td>3 / 5</td>
-        <td>
-          <a href="/books/show/1" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-            <i class="bi bi-pencil-square"></i> Editar
-          </a>
-          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
-            <i class="bi bi-box-arrow-up-right"></i> Emprestar
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>O Pequeno Príncipe</td>
-        <td>Antoine de Saint-Exupéry</td>
-        <td>9788574069197</td>
-        <td>Literatura Estrangeira</td>
-        <td>1943</td>
-        <td>5 / 8</td>
-        <td>
-          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-            <i class="bi bi-pencil-square"></i> Editar
-          </a>
-          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
-            <i class="bi bi-box-arrow-up-right"></i> Emprestar
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Matemática para o Ensino Médio</td>
-        <td>Maria Eduarda Santos</td>
-        <td>9788576894518</td>
-        <td>Didático</td>
-        <td>2018</td>
-        <td>9 / 12</td>
-        <td>
-          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-            <i class="bi bi-pencil-square"></i> Editar
-          </a>
-          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
-            <i class="bi bi-box-arrow-up-right"></i> Emprestar
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Harry Potter e a Pedra Filosofal</td>
-        <td>J.K. Rowling</td>
-        <td>9788532511010</td>
-        <td>Literatura Fantástica</td>
-        <td>1997</td>
-        <td>2 / 6</td>
-        <td>
-          <a href="#" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-            <i class="bi bi-pencil-square"></i> Editar
-          </a>
-          <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
-            <i class="bi bi-box-arrow-up-right"></i> Emprestar
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
+    <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+      <thead class="table-light">
+        <tr>
+          <th><i class="bi bi-book-fill me-1"></i>Título</th>
+          <th><i class="bi bi-person-fill me-1"></i>Autor</th>
+          <th><i class="bi bi-upc-scan me-1"></i>ISBN</th>
+          <th><i class="bi bi-tags-fill me-1"></i>Categoria</th>
+          <th><i class="bi bi-calendar3 me-1"></i>Ano</th>
+          <th><i class="bi bi-stack me-1"></i>Disponível / Total</th>
+          <th><i class="bi bi-gear-fill me-1"></i>Ações</th>
+        </tr>
+      </thead>
+      <?php
+      foreach ($books as $book): ?>
+        <tbody>
+          <tr>
+            <td><?= htmlspecialchars($book->title) ?></td>
+            <td><?= htmlspecialchars($book->book_authors[0]->full_name ?? 'Sem autor') ?>
+            </td>
+            <td><?= htmlspecialchars($book->isbn) ?></td>
+            <td><?= htmlspecialchars($book->category->name ?? 'Sem categoria') ?>
+            </td>
+            <td><?= htmlspecialchars($book->year) ?></td>
+
+            <td><?= htmlspecialchars($book->isAvailable()) ?> / <?= htmlspecialchars($book->quantity) ?></td>
+            <td>
+              <a href="/books/show/<?= $book->id ?>" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                <i class="bi bi-pencil-square"></i> Editar
+              </a>
+              <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
+                <i class="bi bi-box-arrow-up-right"></i> Emprestar
+              </a>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl custom-modal-width">
     <div class="modal-content">
-    
+
       <div class="modal-header">
         <h5 class="modal-title" id="addBookModalLabel">Adicionar Novo Livro</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-      
+
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="bookTitle" class="form-label">Título</label>
-            <input type="text" class="form-control" id="bookTitle" placeholder="Título do livro">
-          </div>
-          
-          <div class="mb-3">
-            <label for="bookAuthor" class="form-label">Autor</label>
-            <input type="text" class="form-control" id="bookAuthor" placeholder="Nome do autor">
-          </div>
-          
-          <div class="mb-3">
-            <label for="bookISBN" class="form-label">ISBN</label>
-            <input type="text" class="form-control" id="bookISBN" placeholder="ISBN do livro">
-          </div>
-          
-          <div class="mb-3">
-            <label for="bookCategory" class="form-label">Categoria</label>
-            <input type="text" class="form-control" id="bookCategory" placeholder="Categoria do livro">
-          </div>
-          
-          <div class="mb-3">
-            <label for="bookYear" class="form-label">Ano de Publicação</label>
-            <input type="number" class="form-control" id="bookYear" value="2025" min="0">
+        <form id="addBookForm" method="POST" action="/books/create" enctype="multipart/form-data">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="bookTitle" class="form-label">Título</label>
+              <input type="text" class="form-control" id="bookTitle" name="title" placeholder="Título do livro">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="bookAuthor" class="form-label">Autor</label>
+              <select class="form-select" id="bookAuthor" name="author_id">
+                <option selected disabled>Selecione um autor</option>
+                <option value="1">Autor 1</option>
+                <option value="2">Autor 2</option>
+              </select>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label for="materialValidity" class="form-label">Data de Validade</label>
-            <input type="date" class="form-control" id="materialValidity" placeholder="dd/mm/aaaa">
-          </div>
-          
-          <div class="mb-3">
-            <label for="bookQuantity" class="form-label">Quantidade</label>
-            <input type="number" class="form-control" id="bookQuantity" value="1" min="1">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="bookCategory" class="form-label">Categoria</label>
+              <select class="form-select" id="bookCategory" name="category_id">
+                <option selected disabled>Selecione uma categoria</option>
+                <option value="1">Ficção</option>
+                <option value="2">Tecnologia</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="bookYear" class="form-label">Ano de Publicação</label>
+              <input type="number" class="form-control" id="bookYear" name="year" value="2025" min="0">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="bookISBN" class="form-label">ISBN</label>
+              <input type="text" class="form-control" id="bookISBN" name="isbn" placeholder="ISBN do livro">
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label for="bookImage" class="form-label">Imagem do Livro</label>
-            <input type="file" class="form-control" id="bookImage" accept="image/*">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="bookEdition" class="form-label">Edição</label>
+              <input type="text" class="form-control" id="bookEdition" name="edition" placeholder="Edição do livro">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="bookPublisher" class="form-label">Editora</label>
+              <input type="text" class="form-control" id="bookPublisher" name="publisher" placeholder="Nome da editora">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="bookShelf" class="form-label">Local na Estante</label>
+              <input type="text" class="form-control" id="bookShelf" name="shelf_location" placeholder="Ex: A3-2">
+            </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="bookQuantity" class="form-label">Quantidade</label>
+              <input type="number" class="form-control" id="bookQuantity" name="quantity" value="1" min="1">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="bookImage" class="form-label">Imagem do Livro</label>
+              <input type="file" class="form-control" id="bookImage" name="image" accept="image/*">
+            </div>
+          </div>
+
+          <div class="row align-items-end">
+            <div class="col-md-3 mb-2">
+              <label for="hasValidity" class="form-label fw-semibold">Este livro possui validade?</label>
+              <select id="hasValidity" name="has_validity" class="form-select form-select-sm">
+                <option value="2" selected>Não</option>
+                <option value="1">Sim</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-2" id="validityDateContainer" style="display: none;">
+              <label for="validityDate" class="form-label fw-semibold">Data de Validade</label>
+              <input type="date" class="form-control form-control-sm" id="validityDate" name="validity_date">
+            </div>
+          </div>
+
         </form>
       </div>
-      
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Adicionar Livro</button>
+        <button type="submit" form="addBookForm" class="btn btn-primary">Adicionar Livro</button>
       </div>
-      
+
     </div>
   </div>
 </div>
