@@ -38,6 +38,7 @@ class AuthorController extends Controller
 
         $this->render('authors/show', compact('title', 'user', 'author'));
     }
+
     public function new(): void
     {
         $user = Auth::userWithAdmin();
@@ -66,10 +67,16 @@ class AuthorController extends Controller
         $user = Auth::userWithAdmin();
         $id = $request->getParam('id');
         $author = Author::findById($id);
+        if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
         $title = "Editar Autor #{$author->id}";
 
         $this->render('authors/edit', compact('author', 'user', 'title'));
     }
+
     public function update(Request $request): void
     {
         $user = Auth::userWithAdmin();
@@ -124,12 +131,13 @@ class AuthorController extends Controller
 
         $author->is_active = false;
 
-        $this->persist(
-            $author,
-            'show',
-            "Autor #{$author->id} desativado com sucesso.",
-            "Erro ao desativar o autor."
-        );
+        if ($author->save()) {
+            FlashMessage::success("Autor #{$author->id} desativado com sucesso.");
+        } else {
+            FlashMessage::danger("Erro ao desativar o autor.");
+        }
+
+        $this->redirectTo(route('authors.index'));
     }
 
     public function destroy(Request $request): void
@@ -157,19 +165,5 @@ class AuthorController extends Controller
         }
 
         $this->redirectTo(route('authors.index'));
-    }
-
-
-
-    private function persist(Author $author, string $view, string $successMsg, string $errorMsg): void
-    {
-        if ($author->save()) {
-            FlashMessage::success($successMsg);
-            $this->redirectTo(route('authors.index'));
-        } else {
-            FlashMessage::danger($errorMsg);
-            $title = $view === 'new' ? 'Novo Autor' : "Editar Autor #{$author->id}";
-            $this->render("authors/{$view}", compact('author', 'title'));
-        }
     }
 }

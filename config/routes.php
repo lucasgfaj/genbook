@@ -32,13 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     //Books
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
-    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('users.books.show');
-    Route::get('/books/edit/{id}', [BookController::class, 'edit'])->name('books.edit');
-    Route::post('/books/update/{id}', [BookController::class, 'update'])->name('books.update');
-    Route::post('/books/create/', [BookController::class, 'create'])->name('books.create');
-    Route::get('/books/delete/{id}', [BookController::class, 'delete'])->name('books.delete');
     // Materials
-    Route::get('/materials', [MaterialController::class, 'index'])->name('users.materials');
+    Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
 
 
     // Create Author
@@ -62,15 +57,15 @@ Route::middleware('auth')->group(function () {
 
 
     // Categories
-    Route::get('/categories', [CategoryController::class, 'index'])->name('users.categories');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     // Loans
-    Route::get('/loans', [LoanController::class, 'index'])->name('users.loans');
+    Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
     // Users
-    Route::get('/users', [UserController::class, 'index'])->name('users.users');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     // Reports
-    Route::get('/reports', [ReportController::class, 'index'])->name('users.reports');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     // Config
-    Route::get('/config', [ConfigController::class, 'index'])->name('users.config');
+    Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
 });
 // Admin Routes
 Route::middleware('admin')->group(function () {
