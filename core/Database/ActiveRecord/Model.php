@@ -22,6 +22,7 @@ abstract class Model
     /** @var string|null */
     protected ?string $created_at = null;
     protected ?string $updated_at = null;
+    protected ?bool $is_active = null;
 
     /** @var array<string, mixed> */
     private array $attributes = [];
