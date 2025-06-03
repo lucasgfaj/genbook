@@ -156,6 +156,9 @@ abstract class Model
                 if (in_array('updated_at', static::$columns)) {
                     $this->updated_at = $now;
                 }
+                if (in_array('is_active', static::$columns)) {
+                    $this->is_active = true;
+                }
 
                 $table = static::$table;
                 $attributes = implode(', ', static::$columns);
