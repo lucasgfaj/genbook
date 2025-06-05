@@ -22,6 +22,7 @@ use Core\Database\ActiveRecord\Model;
  * @property string $cover_name
  * @property string $created_at
  * @property string $updated_at
+ * @property string $validity_date
  * @property Author[] $book_authors
  * @property Category $category
  */
@@ -41,6 +42,7 @@ class Book extends Model
         'shelf_location',
         'is_active',
         'cover_name',
+        'validity_date',
         'created_at',
         'updated_at',
     ];
@@ -57,6 +59,10 @@ class Book extends Model
     public function isAvailable(): bool
     {
         return $this->quantity > 0 && $this->is_active;
+    }
+    public function hasRelatedAuthors(): bool
+    {
+        return count($this->bookAuthors()->get()) > 0;
     }
 
     public function getCoverPhotoUrl(): string

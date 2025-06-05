@@ -20,12 +20,11 @@
         Buscar
       </button>
 
-      <!-- Botão de adicionar -->
-      <button type="button" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal"
-        data-bs-target="#addBookModal">
-        <i class="bi bi-journal-plus"></i>
-        Adicionar Livro
-      </button>
+      <!-- Botão de adicionar livro -->
+      <a href="<?= route('books.new') ?>" class="btn btn-warning d-flex align-items-center gap-2 shadow-sm">
+        <i class="bi bi-book-plus"></i>
+        Adicionar Livros
+      </a>
 
     </div>
   </div>
@@ -57,7 +56,7 @@
 
             <td><?= htmlspecialchars($book->isAvailable()) ?> / <?= htmlspecialchars($book->quantity) ?></td>
             <td>
-              <a href="/books/show/<?= $book->id ?>" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+              <a href="/books/<?= $book->id ?>" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
                 <i class="bi bi-pencil-square"></i> Editar
               </a>
               <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
@@ -68,103 +67,5 @@
         <?php endforeach; ?>
         </tbody>
     </table>
-  </div>
-</div>
-
-<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl custom-modal-width">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="addBookModalLabel">Adicionar Novo Livro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-
-      <div class="modal-body">
-        <form id="addBookForm" method="POST" action="/books/create" enctype="multipart/form-data">
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="bookTitle" class="form-label">Título</label>
-              <input type="text" class="form-control" id="bookTitle" name="title" placeholder="Título do livro">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="bookAuthor" class="form-label">Autor</label>
-              <select class="form-select" id="bookAuthor" name="author_id">
-                <option selected disabled>Selecione um autor</option>
-                <option value="1">Autor 1</option>
-                <option value="2">Autor 2</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="bookCategory" class="form-label">Categoria</label>
-              <select class="form-select" id="bookCategory" name="category_id">
-                <option selected disabled>Selecione uma categoria</option>
-                <option value="1">Ficção</option>
-                <option value="2">Tecnologia</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="bookYear" class="form-label">Ano de Publicação</label>
-              <input type="number" class="form-control" id="bookYear" name="year" value="2025" min="0">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="bookISBN" class="form-label">ISBN</label>
-              <input type="text" class="form-control" id="bookISBN" name="isbn" placeholder="ISBN do livro">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="bookEdition" class="form-label">Edição</label>
-              <input type="text" class="form-control" id="bookEdition" name="edition" placeholder="Edição do livro">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="bookPublisher" class="form-label">Editora</label>
-              <input type="text" class="form-control" id="bookPublisher" name="publisher" placeholder="Nome da editora">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="bookShelf" class="form-label">Local na Estante</label>
-              <input type="text" class="form-control" id="bookShelf" name="shelf_location" placeholder="Ex: A3-2">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="bookQuantity" class="form-label">Quantidade</label>
-              <input type="number" class="form-control" id="bookQuantity" name="quantity" value="1" min="1">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="bookImage" class="form-label">Imagem do Livro</label>
-              <input type="file" class="form-control" id="bookImage" name="image" accept="image/*">
-            </div>
-          </div>
-
-          <div class="row align-items-end">
-            <div class="col-md-3 mb-2">
-              <label for="hasValidity" class="form-label fw-semibold">Este livro possui validade?</label>
-              <select id="hasValidity" name="has_validity" class="form-select form-select-sm">
-                <option value="2" selected>Não</option>
-                <option value="1">Sim</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-2" id="validityDateContainer" style="display: none;">
-              <label for="validityDate" class="form-label fw-semibold">Data de Validade</label>
-              <input type="date" class="form-control form-control-sm" id="validityDate" name="validity_date">
-            </div>
-          </div>
-
-        </form>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" form="addBookForm" class="btn btn-primary">Adicionar Livro</button>
-      </div>
-
-    </div>
   </div>
 </div>

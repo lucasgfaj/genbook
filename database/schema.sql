@@ -109,6 +109,7 @@ CREATE TABLE books (
     shelf_location VARCHAR(100),
     is_active BOOLEAN DEFAULT TRUE,
     cover_name VARCHAR(255),
+    validity_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -31,7 +31,18 @@ Route::middleware('auth')->group(function () {
     // Home or Dashboard
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     //Books
+       // Create Book
+    Route::get('/books/new', [BookController::class, 'new'])->name('books.new');
+    Route::post('/books', [BookController::class, 'create'])->name('books.create');
+    // List Books
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/page/{page}', [BookController::class, 'index'])->name('books.paginate');
+    Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
+    Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+    Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+    Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+
+
     // Materials
     Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
 

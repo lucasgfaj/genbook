@@ -1,0 +1,142 @@
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Adicionar Novo Livro</h2>
+
+    <form id="addBookForm" method="POST" action="/books" enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="bookTitle" class="form-label">Título</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="bookTitle"
+                    name="book[title]"
+                    placeholder="Título do livro"
+                    required
+                    value="<?= htmlspecialchars($book->title ?? '') ?>">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="bookAuthor" class="form-label">Autor</label>
+                <select class="form-select" id="bookAuthor" name="authors[author_id]" required>
+                    <option selected disabled>Selecione um autor</option>
+                    <option value="1">Autor 1</option>
+                    <option value="2">Autor 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="bookCategory" class="form-label">Categoria</label>
+                <select class="form-select" id="bookCategory" name="book[category_id]" required>
+                    <option selected disabled>Selecione uma categoria</option>
+                    <option value="1">Ficção</option>
+                    <option value="2">Tecnologia</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="bookYear" class="form-label">Ano de Publicação</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    id="bookYear"
+                    name="book[year]"
+                    placeholder="Ex: 2025"
+                    min="0"
+                    required
+                    value="<?= htmlspecialchars($book->year ?? '2025') ?>">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="bookISBN" class="form-label">ISBN</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="bookISBN"
+                    name="book[isbn]"
+                    placeholder="ISBN do livro"
+                    required
+                    value="<?= htmlspecialchars($book->isbn ?? '') ?>">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="bookEdition" class="form-label">Edição</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="bookEdition"
+                    name="book[edition]"
+                    placeholder="Edição do livro"
+                    required
+                    value="<?= htmlspecialchars($book->edition ?? '') ?>">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="bookPublisher" class="form-label">Editora</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="bookPublisher"
+                    name="book[publisher]"
+                    placeholder="Nome da editora"
+                    required
+                    value="<?= htmlspecialchars($book->publisher ?? '') ?>">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="bookShelf" class="form-label">Local na Estante</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="bookShelf"
+                    name="book[shelf_location]"
+                    placeholder="Ex: A3-2"
+                    required
+                    value="<?= htmlspecialchars($book->shelf_location ?? '') ?>">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="bookQuantity" class="form-label">Quantidade</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    id="bookQuantity"
+                    name="book[quantity]"
+                    min="1"
+                    required
+                    value="<?= htmlspecialchars($book->quantity ?? '1') ?>">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="bookImage" class="form-label">Imagem do Livro</label>
+                <input
+                    type="file"
+                    class="form-control"
+                    id="bookImage"
+                    name="image"
+                    accept="image/*">
+            </div>
+        </div>
+
+        <div class="row align-items-end">
+            <div class="col-md-4 mb-2" id="validityDateContainer">
+                <label for="validityDate" class="form-label fw-semibold">Data de Validade</label>
+                <input
+                    type="date"
+                    class="form-control form-control-sm"
+                    id="validityDate"
+                    name="book[validity_date]"
+                    value="<?= htmlspecialchars($book->validity_date ?? '') ?>">
+            </div>
+        </div>
+
+        <a href="/books" class="btn btn-secondary me-2 mt-3">Cancelar</a>
+        <button type="submit" class="btn btn-primary mt-3">Adicionar Livro</button>
+    </form>
+</div>
