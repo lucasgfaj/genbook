@@ -34,7 +34,7 @@ class BookController extends Controller
         $user = Auth::userWithAdmin();
         $bookData = $request->getParam('book');
         $book = new Book($bookData);
-        $authors = $request->getParam('authors',[]);
+        $authors = $request->getParam('authors', []);
         if ($book->hasErrors()) {
             FlashMessage::danger('Erro ao criar o livro: ' . $book->errors());
             $this->redirectTo(route('books.index'));
