@@ -67,21 +67,36 @@
         </div>
 
         <div class="d-flex justify-content-end mt-4 gap-2">
-            <a href="/books/edit/<?= $book->id ?>" class="btn btn-primary">
+            <a href="/books/<?= $book->id ?>/edit" class="btn btn-primary">
                 <i class="bi bi-pencil-square"></i> Editar
             </a>
             <?php if (!empty($user['admin'])): ?>
-                <a href="/books/delete/<?= $book->id ?>" class="btn btn-warning">
-                    <i class="bi bi-trash"></i> Inativar
-                </a>
-                <a href="/books/destroy/<?= $book->id ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir permanentemente este livro?')">
-                    <i class="bi bi-exclamation-triangle-fill"></i> Excluir permanentemente
-                </a>
-            <?php else: ?>
-                <a href="/books/delete/<?= $book->id ?>" class="btn btn-danger">
-                <i class="bi bi-trash"></i> Deletar
-            </a>
-            <?php endif; ?>            
+                <!-- Botão para inativar (somente admins) -->
+                <form action="<?= route('books.deactivate', ['id' => $book->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar livro">
+                    <i class="bi bi-slash-circle"></i>
+                  </button>
+                </form>
+
+                <!-- Botão para excluir permanentemente (somente admins) -->
+                <form action="<?= route('books.destroy', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0"
+                  onsubmit="return confirm('Tem certeza que deseja excluir permanentemente este livro?')">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir livro permanentemente">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+
+              <?php else: ?>
+                <!-- Botão para inativar/excluir (usuário comum) -->
+                <form action="<?= route('books.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir livro">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              <?php endif; ?>            
         </div>
     </form>
 </div>

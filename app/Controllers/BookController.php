@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Category;
 use App\Services\BookCover;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
@@ -25,37 +26,36 @@ class BookController extends Controller
         $title = 'Novo Livro';
         $book = new Book();
         $authors = Author::all();
-        $this->render('books/new', compact('title', 'book', 'authors', 'user'));
+        $categories = Category::all();
+        $this->render('books/new', compact('title', 'book', 'authors', 'user', 'categories'));
     }
     public function create(Request $request): void
     {
+        $user = Auth::userWithAdmin();
         $bookData = $request->getParam('book');
-        $authors = $request->getParam('authors');
-        $authors = is_array($authors) ? $authors : [$authors];
-
         $book = new Book($bookData);
-
-        // Validações
+        $authors = $request->getParam('authors',[]);
         if ($book->hasErrors()) {
             FlashMessage::danger('Erro ao criar o livro: ' . $book->errors());
             $this->redirectTo(route('books.index'));
             return;
         }
-        // Salva o livro
         if ($book->save()) {
-            FlashMessage::success('Livro criado com sucesso!');
-            foreach ($authors as $key => $author) {
-                if (is_numeric($author)) {
-                    $authors[$key] = (int) $author;
-                } elseif (is_string($author)) {
-                    $authors[$key] = Author::findBy(['full_name' => $author])->id ?? null;
-                }
-                $book->bookAuthors()->attach($authors[$key]);
-            }
+            FlashMessage::success('livro registrado com sucesso!');
             $this->redirectTo(route('books.index'));
-            return;
+        } else {
+            FlashMessage::danger('Erro ao registrar o livro: ' . $book->errors());
+            $title = 'Novo Autor';
+            $this->redirectBack();
         }
-        FlashMessage::danger('Erro ao criar o livro.');
+        // foreach ($authors as $key => $author) {
+        //             if (is_numeric($author)) {
+        //                 $authors[$key] = (int) $author;
+        //             } elseif (is_string($author)) {
+        //                 $authors[$key] = Author::findBy(['full_name' => $author])->id ?? null;
+        //             }
+        //             $book->bookAuthors()->attach($authors[$key]);
+        //         }
     }
     public function show(Request $request): void
     {
@@ -77,42 +77,31 @@ class BookController extends Controller
         $book = Book::findById($params['id']);
 
         if (!$book) {
-            $this->redirectTo(route('users.books'));
+            $this->redirectTo(route('books.index'));
             return;
         }
-
-        $book->bookAuthors()->get();
-        $book->category()->get();
+        $book->getAll();
         $authors = Author::all();
+        $categories = Category::all();
+        $book->bookAuthors()->get();
         $title = "Editar Livro";
 
         $user = Auth::userWithAdmin();
-        $this->render('books/update', compact('title', 'book', 'authors', 'user'));
+        $this->render('books/update', compact('title', 'book', 'authors', 'categories', 'user'));
     }
     public function update(Request $request): void
     {
-        $params = $request->getParams();
-        $book = Book::findById($params['id']);
-
+        $newBook = $request->getParam('book');
+        $authors = $request->getParam('authors');
+        $authors = is_array($authors) ? $authors : [$authors];
+        $book = Book::findById($newBook['id']);
         if (!$book) {
-            $this->redirectTo(route('users.books'));
+            FlashMessage::danger('Livro não encontrado.');
+            $this->redirectTo(route('books.index'));
             return;
         }
 
-        // Atualiza dados do livro
-        $book->title = $request->getParam('title');
-        $book->publisher = $request->getParam('publisher');
-        $book->isbn = $request->getParam('isbn');
-        $book->edition = $request->getParam('edition');
-        $book->year = (int) $request->getParam('year');
-        $book->quantity = (int) $request->getParam('quantity');
-        $book->shelf_location = $request->getParam('shelf_location');
-        $book->is_active = (bool) $request->getParam('is_active');
-        $book->category_id = (int) $request->getParam('category_id', $book->category_id);
-
-        $book->save();
-        // Atualiza autores
-        $book->bookAuthors();
+        $book->update($newBook);
 
         $book->validates();
         if ($book->hasErrors()) {
@@ -120,7 +109,18 @@ class BookController extends Controller
             $this->redirectTo(route('books.edit', ['id' => $book->id]));
             return;
         }
-
-        $this->redirectTo(route('users.books'));
+        // Remove autores antigos
+        $book->bookAuthors()->detach($book->id);
+        // Adiciona novos autores
+        foreach ($authors as $key => $author) {
+            if (is_numeric($author)) {
+                $authors[$key] = (int) $author;
+            } elseif (is_string($author)) {
+                $authors[$key] = Author::findBy(['full_name' => $author])->id ?? null;
+            }
+            $book->bookAuthors()->attach($authors[$key]);
+        }
+        FlashMessage::success('Livro atualizado com sucesso!');
+        $this->redirectTo(route('books.index'));
     }
 }
