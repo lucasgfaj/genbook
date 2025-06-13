@@ -23,7 +23,7 @@ use Core\Database\ActiveRecord\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property string $validity_date
- * @property Author[] $book_authors
+ * @property Author[] $authors
  * @property Category $category
  */
 
@@ -47,7 +47,7 @@ class Book extends Model
         'updated_at',
     ];
 
-    public function bookAuthors(): BelongsToMany
+    public function authors(): BelongsToMany
     {
         return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id');
     }
@@ -55,23 +55,13 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-
-    public function isAvailable(): bool
-    {
-        return $this->quantity > 0 && $this->is_active;
-    }
     public function hasRelatedAuthors(): bool
     {
-        return count($this->bookAuthors()->get()) > 0;
+        return count($this->authors()->get()) > 0;
     }
-
     public function getCoverPhotoUrl(): string
     {
         return (new BookCover($this))->path();
-    }
-    public function getById(int $id): ?Book
-    {
-        return Book::findBy(['id' => $id]);
     }
     public static function findByTitle(string $title): ?Book
     {
@@ -81,7 +71,6 @@ class Book extends Model
     {
         return Book::findBy(['isbn' => $isbn]);
     }
-
     public function validates(): void
     {
         Validations::notEmpty('title', $this);
@@ -91,16 +80,18 @@ class Book extends Model
         Validations::notEmpty('year', $this);
         Validations::notEmpty('quantity', $this);
     }
-
+    public function isAvailable(): bool
+    {
+        return $this->quantity > 0 && $this->is_active;
+    }
     /** @return array<mixed, mixed>*/
     public static function getAll(): array
     {
         $books = Book::all();
         foreach ($books as $book) {
-            $book->bookAuthors()->get();
+            $book->authors()->get();
             $book->category()->get();
         }
-
         return $books;
     }
 }
