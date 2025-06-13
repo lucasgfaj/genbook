@@ -47,7 +47,7 @@
         <tbody>
           <tr>
             <td><?= htmlspecialchars($book->title) ?></td>
-            <td><?= htmlspecialchars($book->book_authors[0]->full_name ?? 'Sem autor') ?>
+            <td><?= htmlspecialchars($book->authors[0]->full_name ?? 'Sem autor') ?>
             </td>
             <td><?= htmlspecialchars($book->isbn) ?></td>
             <td><?= htmlspecialchars($book->category->name ?? 'Sem categoria') ?>
@@ -56,12 +56,40 @@
 
             <td><?= htmlspecialchars($book->isAvailable()) ?> / <?= htmlspecialchars($book->quantity) ?></td>
             <td>
-              <a href="/books/<?= $book->id ?>" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-                <i class="bi bi-pencil-square"></i> Editar
+              <!-- Botão de editar -->
+              <a href="<?= route('books.show', ['id' => $book->id]) ?>"
+                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                title="Editar autor">
+                <i class="bi bi-pencil-square"></i>
               </a>
-              <a href="#" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 ms-2">
-                <i class="bi bi-box-arrow-up-right"></i> Emprestar
-              </a>
+
+              <?php if (!empty($user['admin'])): ?>
+                <!-- Botão para inativar (somente admins) -->
+                <form action="<?= route('books.deactivate', ['id' => $book->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar autor">
+                    <i class="bi bi-slash-circle"></i>
+                  </button>
+                </form>
+
+                <!-- Botão para excluir permanentemente (somente admins) -->
+                <form action="<?= route('books.destroy', ['id' => $book->id]) ?>" method="POST" class="d-inline m-0"
+                  onsubmit="return confirm('Tem certeza que deseja excluir permanentemente este autor?')">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor permanentemente">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+
+              <?php else: ?>
+                <!-- Botão para inativar/excluir (usuário comum) -->
+                <form action="<?= route('books.deactivate', ['id' => $book->id]) ?>" method="POST" class="d-inline m-0">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1" title="Excluir autor">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              <?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>

@@ -21,7 +21,7 @@
                 <select name="authors[]" class="form-select" multiple required>
                     <?php foreach ($authors as $author): ?>
                         <option value="<?= $author->id ?>"
-                            <?= in_array($author->id, array_map(fn($a) => $a->id, $book->book_authors)) ? 'selected' : '' ?>>
+                            <?= in_array($author->id, array_map(fn($a) => $a->id, $book->authors)) ? 'selected' : '' ?>>
                             <?= $author->full_name ?>
                         </option>
                     <?php endforeach; ?>
@@ -33,10 +33,10 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="form-label">Categoria</label>
-                <select name="category_id" class="form-select" required>
+                <select name="book[category_id]" class="form-select" required>
                     <option value="">Selecione uma categoria</option>
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?= htmlspecialchars($book->category_id ?? '') ?>"> <?= $book->category_id == $category->id ? 'selected' : '' ?>>
+                        <option value="<?= $category->id ?>" <?= $book->category_id == $category->id ? 'selected' : '' ?>>
                             <?= $category->name ?>
                         </option>
                     <?php endforeach; ?>
