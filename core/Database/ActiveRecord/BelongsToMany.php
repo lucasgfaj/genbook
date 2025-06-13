@@ -100,6 +100,12 @@ class BelongsToMany
         $stmt->execute();
     }
 
+    /**
+     * Syncs the related models by their IDs.
+     * This will remove all existing relations and add the new ones.
+     *
+     * @param array<int> $ids
+     */
     public function sync(array $ids): void
     {
         $pdo = Database::getDatabaseConn();

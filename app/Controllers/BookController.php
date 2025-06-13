@@ -102,7 +102,7 @@ class BookController extends Controller
             $this->redirectBack();
             return;
         }
-         if ($book->update($bookData)) {
+        if ($book->update($bookData)) {
             if (!empty($authors)) {
                 $book->authors()->sync(array_map('intval', $authors));
             }
