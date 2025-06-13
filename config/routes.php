@@ -38,8 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/page/{page}', [BookController::class, 'index'])->name('books.paginate');
     Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
+    // Update Book
     Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+
     Route::put('/books/{id}/deactivate', [BookController::class, 'deactivate'])->name('books.deactivate');
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
