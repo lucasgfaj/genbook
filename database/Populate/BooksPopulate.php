@@ -38,7 +38,7 @@ class BooksPopulate
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book1->save();
-        $book1->bookAuthors()->attach($machado->id);
+        $book1->authors()->attach($machado->id);
 
         // Livro 2
         $book2 = new Book([
@@ -57,7 +57,7 @@ class BooksPopulate
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book2->save();
-        $book2->bookAuthors()->attach($monteiro->id);
+        $book2->authors()->attach($monteiro->id);
 
         // Livro 3 - dois autores
         $book3 = new Book([
@@ -76,7 +76,7 @@ class BooksPopulate
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $book3->save();
-        $book3->bookAuthors()->attach($clarice->id);
-        $book3->bookAuthors()->attach($jorge->id);
+        $book3->authors()->attach($clarice->id);
+        $book3->authors()->attach($jorge->id);
     }
 }
