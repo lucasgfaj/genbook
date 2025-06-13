@@ -216,6 +216,9 @@ abstract class Model
      */
     public function update(array $data): bool
     {
+        if (empty($data)) {
+            throw new \InvalidArgumentException("Dados de atualização vazios.");
+        }
         $table = static::$table;
 
         $sets = array_map(function ($column) {
