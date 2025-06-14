@@ -31,7 +31,22 @@ Route::middleware('auth')->group(function () {
     // Home or Dashboard
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     //Books
+       // Create Book
+    Route::get('/books/new', [BookController::class, 'new'])->name('books.new');
+    Route::post('/books', [BookController::class, 'create'])->name('books.create');
+    // List Books
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/page/{page}', [BookController::class, 'index'])->name('books.paginate');
+    Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
+    // Update Book
+    Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+    Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+
+    Route::put('/books/{id}/deactivate', [BookController::class, 'deactivate'])->name('books.deactivate');
+    Route::put('/books/{id}/activate', [BookController::class, 'activate'])->name('books.activate');
+    Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+
+
     // Materials
     Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
 
@@ -44,18 +59,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/authors/page/{page}', [AuthorController::class, 'index'])->name('authors.paginate');
     Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
 
-    // Deactivate Author
+    // Deactivate e Activate Author
     Route::put('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
-
+    Route::put('/authors/{id}/activate', [AuthorController::class, 'activate'])->name('authors.activate');
     // Update Author
     Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
     Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('authors.update');
 
     // Delete Author
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
-
-
-
 
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

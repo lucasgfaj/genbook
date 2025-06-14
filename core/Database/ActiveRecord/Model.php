@@ -22,6 +22,7 @@ abstract class Model
     /** @var string|null */
     protected ?string $created_at = null;
     protected ?string $updated_at = null;
+    protected ?bool $is_active = null;
 
     /** @var array<string, mixed> */
     private array $attributes = [];
@@ -156,6 +157,9 @@ abstract class Model
                 if (in_array('updated_at', static::$columns)) {
                     $this->updated_at = $now;
                 }
+                if (in_array('is_active', static::$columns)) {
+                    $this->is_active = true;
+                }
 
                 $table = static::$table;
                 $attributes = implode(', ', static::$columns);
@@ -212,6 +216,9 @@ abstract class Model
      */
     public function update(array $data): bool
     {
+        if (empty($data)) {
+            throw new \InvalidArgumentException("Dados de atualização vazios.");
+        }
         $table = static::$table;
 
         $sets = array_map(function ($column) {

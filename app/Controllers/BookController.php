@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Category;
 use App\Services\BookCover;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
@@ -12,14 +13,64 @@ use Lib\FlashMessage;
 
 class BookController extends Controller
 {
-    public function index(): void
+    public function index(Request $request): void
     {
-        $title = 'GenBook';
         $user = Auth::userWithAdmin();
         $books = Book::getAll();
-        $this->render('books/index', compact('title', 'user', 'books'));
-    }
 
+        $page = (int) $request->getParam('page', 1);
+        if (!$user['admin']) {
+            $aux = ['is_active' => true];
+        } else {
+            $aux = [];
+        }
+        $paginator = Book::paginate(
+            page: $page,
+            per_page: 10,
+            conditions: $aux,
+        );
+        $books = $paginator->registers();
+        $title = 'GenBook';
+        if ($request->acceptJson()) {
+            $this->renderJson('books/index', compact('paginator', 'books', 'user', 'title'));
+        } else {
+            $this->render('books/index', compact('paginator', 'books', 'user', 'title'));
+        }
+    }
+    public function new(): void
+    {
+        $user = Auth::userWithAdmin();
+        $title = 'Novo Livro';
+        $book = new Book();
+        $authors = Author::all();
+        $categories = Category::all();
+        $this->render('books/new', compact('title', 'book', 'authors', 'user', 'categories'));
+    }
+    public function create(Request $request): void
+    {
+        $bookData = $request->getParam('book');
+        $authors = $request->getParam('authors', []);
+        $bookData['category_id'] = $bookData['category_id'] ?? null;
+
+        $book = new Book($bookData);
+
+        if ($book->hasErrors()) {
+            FlashMessage::danger('Erro ao criar o livro: ' .  $book->errors());
+            $this->redirectBack();
+            return;
+        }
+
+        if ($book->save()) {
+            if (!empty($authors)) {
+                $book->authors()->sync(array_map('intval', $authors));
+            }
+            FlashMessage::success('Livro registrado com sucesso!');
+            $this->redirectTo(route('books.index'));
+        } else {
+            FlashMessage::danger('Erro ao registrar o livro: ' . $book->errors());
+            $this->redirectBack();
+        }
+    }
     public function show(Request $request): void
     {
         $params = $request->getParams();
@@ -27,11 +78,11 @@ class BookController extends Controller
         $title = "Visualização do Livro #{$params['id']}";
         $book = Book::findById($params['id']);
         if (!$book) {
-            $this->redirectTo(route('users.books'));
+            $this->redirectTo(route('books.index'));
+            FlashMessage::danger("Livro não encontrado.");
             return;
         }
-        $book->bookAuthors()->get();
-
+        $book->authors()->get();
         $this->render('books/show', compact('title', 'user', 'book'));
     }
     public function edit(Request $request): void
@@ -40,95 +91,115 @@ class BookController extends Controller
         $book = Book::findById($params['id']);
 
         if (!$book) {
-            $this->redirectTo(route('users.books'));
+            $this->redirectTo(route('books.index'));
             return;
         }
-
-        $book->bookAuthors()->get();
-        $book->category()->get();
+        $book->getAll();
         $authors = Author::all();
+        $categories = Category::all();
         $title = "Editar Livro";
 
         $user = Auth::userWithAdmin();
-        $this->render('books/update', compact('title', 'book', 'authors', 'user'));
+        $this->render('books/edit', compact('title', 'book', 'authors', 'categories', 'user'));
     }
     public function update(Request $request): void
     {
-        $params = $request->getParams();
-        $book = Book::findById($params['id']);
+        $bookData = $request->getParam('book');
+        $authors = $request->getParam('authors', []);
+        $bookData['category_id'] = $bookData['category_id'] ?? null;
 
-        if (!$book) {
-            $this->redirectTo(route('users.books'));
-            return;
-        }
+        $book = new Book($bookData);
+        $book->id = $request->getParam('id');
 
-        // Atualiza dados do livro
-        $book->title = $request->getParam('title');
-        $book->publisher = $request->getParam('publisher');
-        $book->isbn = $request->getParam('isbn');
-        $book->edition = $request->getParam('edition');
-        $book->year = (int) $request->getParam('year');
-        $book->quantity = (int) $request->getParam('quantity');
-        $book->shelf_location = $request->getParam('shelf_location');
-        $book->is_active = (bool) $request->getParam('is_active');
-        $book->category_id = (int) $request->getParam('category_id', $book->category_id);
 
-        $book->save();
-        // Atualiza autores
-        $book->bookAuthors();
-
-        $book->validates();
         if ($book->hasErrors()) {
             FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
-            $this->redirectTo(route('books.edit', ['id' => $book->id]));
+            $this->redirectBack();
             return;
         }
-
-        $this->redirectTo(route('users.books'));
-    }
-    public function create(Request $request): void
-    {
-        var_dump($request); // Adicionado var_dump para depuração
-
-        $book = new Book();
-        $book->title = $request->getParam('bookTitle');
-        $book->publisher = $request->getParam('publisher');
-        $book->isbn = $request->getParam('bookISBN');
-        $book->edition = $request->getParam('edition');
-        $book->year = (int) $request->getParam('bookYear');
-        $book->quantity = (int) $request->getParam('bookQuantity');
-        $book->shelf_location = $request->getParam('shelf_location');
-        $book->is_active = (bool) $request->getParam('is_active');
-        $book->category_id = (int) $request->getParam('bookCategory', 0);
-        $book->created_at = date('Y-m-d H:i:s');
-        $book->updated_at = date('Y-m-d H:i:s');
-        $book->save();
-
-        if ($request->hasFile('bookImage')) {
-            $coverService = new BookCover($book, $request->file('bookImage'));
-            if (!$coverService->update($request->file('bookImage'))) {
-                FlashMessage::danger('Erro ao atualizar a capa do livro: ');
-                $this->redirectTo(route('users.books'));
-                return;
+        if ($book->update($bookData)) {
+            if (!empty($authors)) {
+                $book->authors()->sync(array_map('intval', $authors));
             }
-            $book->cover_name = $coverService->path();
+            FlashMessage::success('Livro registrado com sucesso!');
+            $this->redirectTo(route('books.index'));
+        } else {
+            FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
+            $this->redirectBack();
         }
+    }
+    public function deactivate(Request $request): void
+    {
+        $user = Auth::userWithAdmin();
+        $id = (int) $request->getParam('id');
+        $book = Book::findById($id);
 
-        // Validações
-        $book->validates();
-        if (!$book->hasErrors()) {
-            FlashMessage::danger('Erro ao criar o livro: ' . $book->errors());
-            $this->redirectTo(route('users.books'));
+        if (!$book) {
+            FlashMessage::danger("Livro não encontrado.");
+            $this->redirectTo(route('books.index'));
             return;
         }
-        // Salva o livro
+
+        $book->is_active = false;
+        $book->updated_at = date('Y-m-d H:i:s');
+
         if ($book->save()) {
-            FlashMessage::success('Livro criado com sucesso!');
-            $this->redirectTo(route('users.books'));
+            $message = !empty($user['admin']) ? 'Livro inativado com sucesso!' : 'Livro deletado com sucesso!';
+            FlashMessage::success($message);
+        } else {
+            $message = !empty($user['admin']) ? 'Erro ao inativar o livro!' : 'Erro ao deletar o livro!';
+            FlashMessage::danger($message);
+        }
+
+        $this->redirectTo(route('books.index'));
+    }
+    public function activate(Request $request): void
+    {
+        $user = Auth::userWithAdmin();
+        $id = (int) $request->getParam('id');
+        $book = Book::findById($id);
+
+        if (!$book) {
+            FlashMessage::danger("Livro não encontrado.");
+            $this->redirectTo(route('books.index'));
+            return;
+        }
+        if (!$book->hasRelatedAuthors()) {
+            FlashMessage::danger("Livro não pode ser ativado sem autores relacionados.");
+            $this->redirectTo(route('books.index'));
             return;
         }
 
+        $book->is_active = true;
+        $book->updated_at = date('Y-m-d H:i:s');
 
-        FlashMessage::danger('Erro ao criar o livro.');
+        if ($book->save()) {
+            FlashMessage::success("Livro #{$book->id} ativado com sucesso.");
+        } else {
+            FlashMessage::danger("Erro ao ativar o livro.");
+        }
+
+        $this->redirectTo(route('books.index'));
+    }
+
+    public function destroy(Request $request): void
+    {
+        $user = Auth::userWithAdmin();
+        $id = (int) $request->getParam('id');
+        $book = Book::findById($id);
+
+        if (!$book) {
+            FlashMessage::danger("Livro não encontrado.");
+            $this->redirectTo(route('books.index'));
+            return;
+        }
+
+        if ($book->destroy()) {
+            FlashMessage::success("Livro #{$book->id} excluído com sucesso.");
+        } else {
+            FlashMessage::danger("Erro ao excluir o livro.");
+        }
+
+        $this->redirectTo(route('books.index'));
     }
 }

@@ -14,13 +14,16 @@ class AuthorController extends Controller
     {
         $user = Auth::userWithAdmin();
         $page = (int) $request->getParam('page', 1);
-
+        if (!$user['admin']) {
+            $aux = ['is_active' => true];
+        } else {
+            $aux = [];
+        }
         $paginator = Author::paginate(
             page: $page,
             per_page: 10,
-            conditions: ['is_active' => true]
+            conditions: $aux,
         );
-
         $authors = $paginator->registers();
         $title = 'Autores';
 
@@ -143,6 +146,35 @@ class AuthorController extends Controller
         } else {
             $message = !empty($user['admin']) ? 'Erro ao inativar o autor!' : 'Erro ao deletar o autor!';
             FlashMessage::danger($message);
+        }
+
+        $this->redirectTo(route('authors.index'));
+    }
+    public function activate(Request $request): void
+    {
+        $user = Auth::userWithAdmin();
+        $id = (int) $request->getParam('id');
+        $author = Author::findById($id);
+
+        if (!$author) {
+            FlashMessage::danger("Autor não encontrado.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        if ($author->is_active) {
+            FlashMessage::danger("Autor já está ativo.");
+            $this->redirectTo(route('authors.index'));
+            return;
+        }
+
+        $author->is_active = true;
+        $author->updated_at = date('Y-m-d H:i:s');
+
+        if ($author->save()) {
+            FlashMessage::success("Autor #{$author->id} ativado com sucesso.");
+        } else {
+            FlashMessage::danger("Erro ao ativar o autor.");
         }
 
         $this->redirectTo(route('authors.index'));

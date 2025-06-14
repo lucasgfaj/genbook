@@ -100,28 +100,30 @@ CREATE TABLE categories (
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
-    category_id INTEGER REFERENCES categories(id),
+    category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
     publisher VARCHAR(255),
     isbn VARCHAR(20),
     edition VARCHAR(50),
     year INTEGER,
     quantity INTEGER,
     shelf_location VARCHAR(100),
-    is_active BOOLEAN DEFAULT TRUE,
     cover_name VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    validity_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- BOOK_AUTHORS
 CREATE TABLE book_authors (
-    book_id INTEGER REFERENCES books(id),
-    author_id INTEGER REFERENCES authors(id),
+    book_id INTEGER REFERENCES books(id) ON DELETE CASCADE,
+    author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
+    PRIMARY KEY (book_id, author_id),
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (book_id, author_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- MATERIALS
 CREATE TABLE materials (

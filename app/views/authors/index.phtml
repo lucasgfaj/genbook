@@ -27,7 +27,7 @@
 
     </div>
   </div>
-  
+
   <div class="table-responsive shadow-lg rounded-3 border border-light bg-white p-3">
     <table class="table table-bordered table-hover align-middle mb-0 bg-white">
       <thead class="table-light">
@@ -55,13 +55,21 @@
               </a>
 
               <?php if (!empty($user['admin'])): ?>
-                <!-- Botão para inativar (somente admins) -->
-                <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
-                  <input type="hidden" name="_method" value="PUT">
-                  <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar autor">
-                    <i class="bi bi-slash-circle"></i>
-                  </button>
-                </form>
+                <?php if ($author->is_active): ?>
+                  <form action="<?= route('authors.deactivate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button type="submit" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1" title="Inativar autor">
+                      <i class="bi bi-slash-circle"></i>
+                    </button>
+                  </form>
+                <?php else: ?>
+                  <form action="<?= route('authors.activate', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button type="submit" class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1" title="Ativar autor">
+                      <i class="bi bi-check-circle"></i>
+                    </button>
+                  </form>
+                <?php endif; ?>
 
                 <!-- Botão para excluir permanentemente (somente admins) -->
                 <form action="<?= route('authors.destroy', ['id' => $author->id]) ?>" method="POST" class="d-inline m-0"

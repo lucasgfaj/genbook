@@ -12,13 +12,16 @@
                 <label class="form-label">Título</label>
                 <input type="text" class="form-control" value="<?= $book->title ?>" disabled>
             </div>
-            <?php foreach ($book->book_authors as $author): ?>
-                <div class="col-md-6">
-                <label class="form-label">Autor(a)</label>
-                    <input type="text" class="form-control" value="<?= $author->full_name ?>" disabled>
-                </div>
-            <?php endforeach; ?>
-            
+            <div class="col-md-6">
+                <?php if (count($book->authors) > 1): ?>
+                    <label class="form-label">Autores(as)</label>
+                    <input type="text" class="form-control" value="<?= implode(', ', array_map(fn($author) => $author->full_name, $book->authors)) ?>" disabled>
+                <?php else: ?>
+                    <label class="form-label">Autor(a)</label>
+                    <input type="text" class="form-control" value="<?= $book->authors[0]->full_name ?>" disabled>
+                <?php endif; ?>
+            </div>
+
 
             <div class="col-md-6">
                 <label class="form-label">Editora</label>
@@ -67,21 +70,9 @@
         </div>
 
         <div class="d-flex justify-content-end mt-4 gap-2">
-            <a href="/books/edit/<?= $book->id ?>" class="btn btn-primary">
+            <a href="/books/<?= $book->id ?>/edit" class="btn btn-primary">
                 <i class="bi bi-pencil-square"></i> Editar
             </a>
-            <?php if (!empty($user['admin'])): ?>
-                <a href="/books/delete/<?= $book->id ?>" class="btn btn-warning">
-                    <i class="bi bi-trash"></i> Inativar
-                </a>
-                <a href="/books/destroy/<?= $book->id ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir permanentemente este livro?')">
-                    <i class="bi bi-exclamation-triangle-fill"></i> Excluir permanentemente
-                </a>
-            <?php else: ?>
-                <a href="/books/delete/<?= $book->id ?>" class="btn btn-danger">
-                <i class="bi bi-trash"></i> Deletar
-            </a>
-            <?php endif; ?>            
         </div>
     </form>
 </div>

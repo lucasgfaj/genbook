@@ -99,9 +99,12 @@ class BelongsToMany
         $stmt->bindValue(':to_id', $id);
         $stmt->execute();
     }
-    
+
     /**
-     * @param array<int, Model> $ids
+     * Syncs the related models by their IDs.
+     * This will remove all existing relations and add the new ones.
+     *
+     * @param array<int> $ids
      */
     public function sync(array $ids): void
     {
@@ -111,8 +114,7 @@ class BelongsToMany
         $stmt->bindValue(':from_id', $this->model->id);
         $stmt->execute();
 
-
-        foreach ($ids as $id => $value) {            
+        foreach ($ids as $id) {
             $this->attach($id);
         }
     }
