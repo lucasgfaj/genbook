@@ -17,7 +17,7 @@ class BookController extends Controller
     {
         $title = 'GenBook';
         $user = Auth::userWithAdmin();
-        $books = Book::getAll();        
+        $books = Book::getAll();
         $this->render('books/index', compact('title', 'user', 'books'));
     }
     public function new(): void
@@ -65,7 +65,7 @@ class BookController extends Controller
             FlashMessage::danger("Livro não encontrado.");
             return;
         }
-        $book->authors()->get();        
+        $book->authors()->get();
         $this->render('books/show', compact('title', 'user', 'book'));
     }
     public function edit(Request $request): void
