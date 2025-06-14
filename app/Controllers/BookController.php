@@ -15,9 +15,9 @@ class BookController extends Controller
 {
     public function index(Request $request): void
     {
-        $user = Auth::userWithAdmin();        
+        $user = Auth::userWithAdmin();
         $books = Book::getAll();
-        
+
         $page = (int) $request->getParam('page', 1);
         if (!$user['admin']) {
             $aux = ['is_active' => true];
