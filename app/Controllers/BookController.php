@@ -147,6 +147,11 @@ class BookController extends Controller
             $this->redirectTo(route('books.index'));
             return;
         }
+        if (!$book->hasRelatedAuthors()) {
+            FlashMessage::danger("Livro não pode ser ativado sem autores relacionados.");
+            $this->redirectTo(route('books.index'));
+            return;
+        }
 
         $book->is_active = true;
         $book->updated_at = date('Y-m-d H:i:s');

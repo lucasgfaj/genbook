@@ -59,9 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/authors/page/{page}', [AuthorController::class, 'index'])->name('authors.paginate');
     Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show');
 
-    // Deactivate Author
+    // Deactivate e Activate Author
     Route::put('/authors/{id}/deactivate', [AuthorController::class, 'deactivate'])->name('authors.deactivate');
-
+    Route::put('/authors/{id}/activate', [AuthorController::class, 'activate'])->name('authors.activate');
     // Update Author
     Route::get('/authors/{id}/edit', [AuthorController::class, 'edit'])->name('authors.edit');
     Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('authors.update');

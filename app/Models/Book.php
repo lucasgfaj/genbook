@@ -80,9 +80,9 @@ class Book extends Model
         Validations::notEmpty('year', $this);
         Validations::notEmpty('quantity', $this);
     }
-    public function isAvailable(): bool
+    public function isAvailable(): int
     {
-        return $this->quantity > 0 && $this->is_active;
+        return $this->quantity - 1;
     }
 
     /** @return array<mixed, mixed>*/
