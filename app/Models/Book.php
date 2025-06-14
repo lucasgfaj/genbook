@@ -84,6 +84,7 @@ class Book extends Model
     {
         return $this->quantity > 0 && $this->is_active;
     }
+
     /** @return array<mixed, mixed>*/
     public static function getAll(): array
     {

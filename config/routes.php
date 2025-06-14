@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
 
     Route::put('/books/{id}/deactivate', [BookController::class, 'deactivate'])->name('books.deactivate');
+    Route::put('/books/{id}/activate', [BookController::class, 'activate'])->name('books.activate');
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
 
