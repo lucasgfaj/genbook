@@ -13,12 +13,29 @@ use Lib\FlashMessage;
 
 class BookController extends Controller
 {
-    public function index(): void
+    public function index(Request $request): void
     {
-        $title = 'GenBook';
-        $user = Auth::userWithAdmin();
+        $user = Auth::userWithAdmin();        
         $books = Book::getAll();
-        $this->render('books/index', compact('title', 'user', 'books'));
+        
+        $page = (int) $request->getParam('page', 1);
+        if (!$user['admin']) {
+            $aux = ['is_active' => true];
+        } else {
+            $aux = [];
+        }
+        $paginator = Book::paginate(
+            page: $page,
+            per_page: 10,
+            conditions: $aux,
+        );
+        $books = $paginator->registers();
+        $title = 'GenBook';
+        if ($request->acceptJson()) {
+            $this->renderJson('books/index', compact('paginator', 'books', 'user', 'title'));
+        } else {
+            $this->render('books/index', compact('paginator', 'books', 'user', 'title'));
+        }
     }
     public function new(): void
     {
