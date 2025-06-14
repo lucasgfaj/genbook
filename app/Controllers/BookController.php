@@ -100,7 +100,7 @@ class BookController extends Controller
         $title = "Editar Livro";
 
         $user = Auth::userWithAdmin();
-        $this->render('books/update', compact('title', 'book', 'authors', 'categories', 'user'));
+        $this->render('books/edit', compact('title', 'book', 'authors', 'categories', 'user'));
     }
     public function update(Request $request): void
     {
