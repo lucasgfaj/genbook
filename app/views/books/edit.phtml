@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Autores</label>
-                <select name="authors[]" class="form-select" multiple required>
+                <select name="authors[]" class="form-control js-choices" multiple required>
                     <?php foreach ($authors as $author): ?>
                         <option value="<?= $author->id ?>"
                             <?= in_array($author->id, array_map(fn($a) => $a->id, $book->authors)) ? 'selected' : '' ?>>
@@ -135,3 +135,4 @@
         </div>
     </form>
 </div>
+
