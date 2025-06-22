@@ -202,4 +202,60 @@ class BookController extends Controller
 
         $this->redirectTo(route('books.index'));
     }
+
+    public function cover(Request $request): void
+    {
+        $params = $request->getParams();
+        $book = Book::findById($params['id']);
+
+        if (!$book) {
+            FlashMessage::danger("Livro não encontrado.");
+            $this->redirectTo(route('books.index'));
+            return;
+        }
+
+         $file = $_FILES['image_file'] ?? null;
+
+        if ($file && $file['error'] === UPLOAD_ERR_OK) {
+            $maxFileSize = 2 * 1024 * 1024; // 2MB
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+
+            if ($file['size'] > $maxFileSize) {
+                FlashMessage::danger('A imagem excede o tamanho máximo permitido de 2MB.');
+                $title = "Editar Cogumelo #{$book->id}";
+                $this->render('mushrooms/edit', compact('mushroom', 'title'));
+                return;
+            }
+
+            if (!in_array(mime_content_type($file['tmp_name']), $allowedTypes)) {
+                FlashMessage::danger('Formato de imagem inválido. Utilize JPEG, PNG ou GIF.');
+                $title = "Editar Cogumelo #{$book->id}";
+                $this->render('mushrooms/edit', compact('mushroom', 'title'));
+                return;
+            }
+
+            $uploadDir = __DIR__ . '/../../public/uploads';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $filename = uniqid() . '_' . basename($file['name']);
+            $targetPath = $uploadDir . '/' . $filename;
+
+            if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+                if ($book->cover_name) {
+                    $oldImagePath = __DIR__ . '/../../public' . $book->cover_name;
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+
+                $book->image_url = '/uploads/' . $filename;
+            } else {
+                FlashMessage::danger('Erro ao salvar a imagem. Tente novamente.');
+                $title = "Editar Cogumelo #{$book->id}";
+                $this->render('mushrooms/edit', compact('mushroom', 'title'));
+                return;
+            }
+        }}
 }
