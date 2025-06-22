@@ -13,6 +13,9 @@
 
 ```
  git clone git@github.com:lucasgfaj/genbook.git
+```
+
+```
  cd genbook
 ```
 
