@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Lib\Validations;
 use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\HasMany;
 use Core\Database\ActiveRecord\Model;
 
 /**
@@ -26,9 +27,9 @@ class Category extends Model
         Validations::notEmpty('description', $this);
     }
 
-    public function books(): BelongsTo
+    public function books(): HasMany
     {
-        return $this->belongsTo(Book::class, 'category_id');
+        return $this->hasMany(Book::class, 'category_id');
     }
     public function authors(): BelongsTo
     {
