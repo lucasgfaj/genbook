@@ -5,8 +5,7 @@
             <i class="bi bi-arrow-left me-1"></i> Voltar
         </a>
     </div>
-
-    <form method="POST" action="<?= route('books.update', ['id' => $book->id]) ?>">
+    <form method="POST" enctype="multipart/form-data" action="<?= route('books.update', ['id' => $book->id]) ?>">
         <input type="hidden" name="_method" value="PUT">
         <div class="row g-3">
             <div class="col-md-6 mb-3">
@@ -118,12 +117,17 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Capa do Livro (opcional)</label>
-                <input type="file" name="cover_name" class="form-control">
+                <input
+                    type="file"
+                    class="form-control"
+                    id="bookImage"
+                    name="cover_name"
+                    accept="image/*">
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Capa Atual</label><br>
-                <img src="<?= $book->cover_name ?>" alt="Capa do Livro" class="img-thumbnail" style="max-height: 200px;">
+                <img src="<?= $book->cover()->path() ?>" alt="Capa do Livro" class="img-thumbnail" style="max-height: 200px;">
             </div>
         </div>
 
@@ -135,4 +139,3 @@
         </div>
     </form>
 </div>
-

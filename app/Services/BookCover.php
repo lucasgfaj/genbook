@@ -7,26 +7,25 @@ use Core\Database\ActiveRecord\Model;
 
 class BookCover
 {
-   /** @var array<string, mixed> $image */
+    /** @var array<string, mixed> $image */
     private array $image;
 
     /** @param array<string, mixed> $validations */
     public function __construct(
         private Model $model,
         private array $validations = []
-    ) {
-    }
+    ) {}
 
     public function path(): string
     {
         if ($this->model->cover_name) {
-            // Generate MD5 hash of the cover file to use as cache buster in URL
-            $hash = md5_file($this->getAbsoluteSavedFilePath());
+            $filePath = $this->getAbsoluteSavedFilePath();
 
-            // Return the cover URL with hash parameter to force browser to reload when file changes
-            return $this->baseDir() . $this->model->cover_name . '?' . $hash;
+            if (file_exists($filePath)) {
+                $hash = md5_file($filePath);
+                return $this->baseDir() . $this->model->cover_name . '?' . $hash;
+            }
         }
-
         return "/assets/images/defaults/genbook.png";
     }
 
