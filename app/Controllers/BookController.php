@@ -52,32 +52,17 @@ class BookController extends Controller
         $authors = $request->getParam('authors', []);
         $bookData['category_id'] = $bookData['category_id'] ?? null;
 
-          if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../../public/assets/uploads/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $fileTmpPath = $_FILES['image']['tmp_name'];
-            $fileName = basename($_FILES['image']['name']);
-
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFileName = uniqid('book_cover_', true) . '.' . $ext;
-
-            $destPath = $uploadDir . $newFileName;
-
-            if (move_uploaded_file($fileTmpPath, $destPath)) {
-                // Aqui você salva o caminho relativo para a capa no banco
-                $bookData['cover_name'] = '/assets/uploads/' . $newFileName;
-            } else {
-                FlashMessage::danger('Erro ao salvar a imagem da capa.');
-                $this->redirectBack();
-                return;
-            }
-        }
-
         $book = new Book($bookData);
 
+        if ($request->hasFile('cover_name')) {
+            $image = $_FILES['cover_name'];
+            if ($image && $bookData->cover()->update($image)) {
+                $bookData['cover_name'] = $book->cover()->path();
+            }
+            if (!$bookData['cover_name']) {
+                $bookData['cover_name'] = $book->cover()->path();
+            }
+        }
         if ($book->hasErrors()) {
             FlashMessage::danger('Erro ao criar o livro: ' .  $book->errors());
             $this->redirectBack();
@@ -135,7 +120,6 @@ class BookController extends Controller
         $book = new Book($bookData);
         $book->id = $request->getParam('id');
 
-
         if ($book->hasErrors()) {
             FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
             $this->redirectBack();
@@ -145,6 +129,18 @@ class BookController extends Controller
             if (!empty($authors)) {
                 $book->authors()->sync(array_map('intval', $authors));
             }
+            if (isset($_FILES['cover_name']) && $_FILES['cover_name']['error'] === UPLOAD_ERR_OK) {
+                $image = $_FILES['cover_name'];
+
+                if ($book->cover()->update($image)) {
+                    FlashMessage::success('Capa do livro atualizada com sucesso!');
+                } else {
+                    FlashMessage::danger('Erro ao atualizar a capa do livro: ' . implode(', ', $book->errors()));
+                    $this->redirectBack();
+                    return;
+                }
+            }
+
             FlashMessage::success('Livro registrado com sucesso!');
             $this->redirectTo(route('books.index'));
         } else {
