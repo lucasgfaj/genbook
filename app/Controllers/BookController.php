@@ -135,7 +135,7 @@ class BookController extends Controller
                 if ($book->cover()->update($image)) {
                     FlashMessage::success('Capa do livro atualizada com sucesso!');
                 } else {
-                    FlashMessage::danger('Erro ao atualizar a capa do livro: ' . implode(', ', $book->errors()));
+                    FlashMessage::danger('Erro ao atualizar a capa do livro: ' . $book->errors());
                     $this->redirectBack();
                     return;
                 }

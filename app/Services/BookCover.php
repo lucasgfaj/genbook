@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Book;
 use Core\Constants\Constants;
-use Core\Database\ActiveRecord\Model;
 
 class BookCover
 {
@@ -12,9 +12,10 @@ class BookCover
 
     /** @param array<string, mixed> $validations */
     public function __construct(
-        private Model $model,
+        private Book $model,
         private array $validations = []
-    ) {}
+    ) {
+    }
 
     public function path(): string
     {
