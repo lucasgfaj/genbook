@@ -2,32 +2,32 @@
 
 namespace App\Services;
 
-use App\Models\Book;
 use Core\Constants\Constants;
+use Core\Database\ActiveRecord\Model;
 
 class BookCover
 {
-    /** @var array<string, mixed> $image */
+   /** @var array<string, mixed> $image */
     private array $image;
 
     /** @param array<string, mixed> $validations */
     public function __construct(
-        private Book $book,
+        private Model $model,
         private array $validations = []
     ) {
     }
 
     public function path(): string
     {
-        if ($this->book->cover_name) {
+        if ($this->model->cover_name) {
             // Generate MD5 hash of the cover file to use as cache buster in URL
             $hash = md5_file($this->getAbsoluteSavedFilePath());
 
             // Return the cover URL with hash parameter to force browser to reload when file changes
-            return $this->baseDir() . $this->book->cover_name . '?' . $hash;
+            return $this->baseDir() . $this->model->cover_name . '?' . $hash;
         }
 
-        return "/assets/images/defaults/default-cover.jpg";
+        return "/assets/images/defaults/genbook.png";
     }
 
     /**
@@ -42,7 +42,7 @@ class BookCover
         }
 
         if ($this->updateFile()) {
-            $this->book->update([
+            $this->model->update([
                 'cover_name' => $this->getFileName(),
             ]);
 
@@ -82,7 +82,7 @@ class BookCover
 
     private function removeOldImage(): void
     {
-        if ($this->book->cover_name) {
+        if ($this->model->cover_name) {
             unlink($this->getAbsoluteSavedFilePath());
         }
     }
@@ -101,7 +101,7 @@ class BookCover
 
     private function baseDir(): string
     {
-        return "/assets/uploads/{$this->book::table()}/{$this->book->id}/";
+        return "/assets/uploads/{$this->model::table()}/{$this->model->id}/";
     }
 
     private function storeDir(): string
@@ -116,7 +116,7 @@ class BookCover
 
     private function getAbsoluteSavedFilePath(): string
     {
-        return Constants::rootPath()->join('public' . $this->baseDir())->join($this->book->cover_name);
+        return Constants::rootPath()->join('public' . $this->baseDir())->join($this->model->cover_name);
     }
 
     private function isValidImage(): bool
@@ -129,7 +129,7 @@ class BookCover
             $this->validateImageSize();
         }
 
-        return $this->book->errors('cover') === null;
+        return $this->model->errors('cover') === null;
     }
 
     private function validateImageExtension(): void
@@ -138,14 +138,14 @@ class BookCover
         $file_extension = end($file_name_splitted);
 
         if (!in_array($file_extension, $this->validations['extension'])) {
-            $this->book->addError('cover', 'Extensão de arquivo inválida');
+            $this->model->addError('cover', 'Extensão de arquivo inválida');
         }
     }
 
     private function validateImageSize(): void
     {
         if ($this->image['size'] > $this->validations['size']) {
-            $this->book->addError('cover', 'Tamanho do arquivo inválido');
+            $this->model->addError('cover', 'Tamanho do arquivo inválido');
         }
     }
 }

@@ -32,7 +32,7 @@ class BooksPopulate
             'quantity' => 3,
             'shelf_location' => 'A1',
             'is_active' => true,
-            'cover_name' => 'dom-casmurro.jpg',
+            'cover_name' => '/assets/images/defaults/genbook.png',
             'validity_date' => '2025-12-31',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
@@ -51,7 +51,7 @@ class BooksPopulate
             'quantity' => 5,
             'shelf_location' => 'B3',
             'is_active' => true,
-            'cover_name' => 'sitio.jpg',
+            'cover_name' => '/assets/images/defaults/genbook.png',
             'validity_date' => '2025-12-31',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
@@ -70,7 +70,7 @@ class BooksPopulate
             'quantity' => 2,
             'shelf_location' => 'C2',
             'is_active' => true,
-            'cover_name' => 'encontros.jpg',
+            'cover_name' => '/assets/images/defaults/genbook.png',
             'validity_date' => '2025-12-31',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
