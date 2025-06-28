@@ -75,6 +75,7 @@ class Book extends Model
         Validations::notEmpty('edition', $this);
         Validations::notEmpty('year', $this);
         Validations::notEmpty('quantity', $this);
+        Validations::uniqueness('isbn', $this);
     }
     public function isAvailable(): int
     {

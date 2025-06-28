@@ -5,7 +5,7 @@
             <i class="bi bi-arrow-left me-1"></i> Voltar
         </a>
     </div>
-    <form method="POST" enctype="multipart/form-data" action="<?= route('books.update', ['id' => $book->id]) ?>">
+    <form method="POST" enctype="multipart/form-data" action="<?= route('books.update', ['id' => $book->id]) ?>" novalidate='novalidate'>
         <input type="hidden" name="_method" value="PUT">
         <div class="row g-3">
             <div class="col-md-6 mb-3">
