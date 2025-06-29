@@ -10,6 +10,7 @@ use Core\Http\Controllers\Controller;
 use Core\Http\Request;
 use Lib\Authentication\Auth;
 use Lib\FlashMessage;
+use PhpParser\Node\Scalar\Float_;
 
 class BookController extends Controller
 {
@@ -54,23 +55,44 @@ class BookController extends Controller
 
         $book = new Book($bookData);
 
+    // Valida antes de salvar
         if ($book->hasErrors()) {
-            FlashMessage::danger('Erro ao criar o livro: ' .  $book->errors());
+            FlashMessage::danger('Erro ao validar os dados:<br>' . $book->errors());
             $this->redirectBack();
             return;
         }
 
-        if ($book->save()) {
-            if (!empty($authors)) {
-                $book->authors()->sync(array_map('intval', $authors));
-            }
-            FlashMessage::success('Livro registrado com sucesso!');
-            $this->redirectTo(route('books.index'));
-        } else {
-            FlashMessage::danger('Erro ao registrar o livro: ' . $book->errors());
+        if (!$book->save()) {
+            FlashMessage::danger('Erro ao registrar o livro:<br>' . $book->errors());
             $this->redirectBack();
+            return;
         }
+
+        if (!empty($authors)) {
+            $book->authors()->sync(array_map('intval', $authors));
+        }
+
+        if (isset($_FILES['cover_name']) && $_FILES['cover_name']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['cover_name'];
+
+            $validations = [
+            'extension' => ['jpg', 'jpeg', 'png', 'webp'],
+            'size' => 1024 * 1024 * 2 // 2MB
+            ];
+
+            $coverService = new BookCover($book, $validations);
+
+            if ($coverService->update($image)) {
+                FlashMessage::success('Capa do livro adicionada com sucesso!');
+            } else {
+                FlashMessage::danger('Livro registrado, mas ocorreu um erro ao salvar a capa:<br>' . $book->errors('cover'));
+            }
+        }
+
+        FlashMessage::success('Livro registrado com sucesso!');
+        $this->redirectTo(route('books.index'));
     }
+
     public function show(Request $request): void
     {
         $params = $request->getParams();
@@ -111,23 +133,49 @@ class BookController extends Controller
         $book = new Book($bookData);
         $book->id = $request->getParam('id');
 
-
+        // Validação inicial
         if ($book->hasErrors()) {
-            FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
+            FlashMessage::danger('Erro ao validar os dados:<br>' . $book->errors('book'));
             $this->redirectBack();
             return;
         }
-        if ($book->update($bookData)) {
-            if (!empty($authors)) {
-                $book->authors()->sync(array_map('intval', $authors));
-            }
-            FlashMessage::success('Livro registrado com sucesso!');
-            $this->redirectTo(route('books.index'));
-        } else {
-            FlashMessage::danger('Erro ao atualizar o livro: ' . $book->errors());
+
+        // Atualiza os dados do livro
+        if (!$book->update($bookData)) {
+            FlashMessage::danger('Erro ao atualizar o livro:<br>' . $book->errors('book'));
             $this->redirectBack();
+            return;
         }
+
+        // Atualiza autores
+        if (!empty($authors)) {
+            $book->authors()->sync(array_map('intval', $authors));
+        }
+
+        // Atualiza capa se enviada
+        if (isset($_FILES['cover_name']) && $_FILES['cover_name']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['cover_name'];
+
+            $validations = [
+                'extension' => ['jpg', 'jpeg', 'png', 'webp'], // adicione 'svg' aqui se quiser permitir
+                'size' => 1024 * 1024 * 2 // 2MB, por exemplo
+            ];
+
+            $coverService = new BookCover($book, $validations);
+
+            if ($coverService->update($image)) {
+                FlashMessage::success('Capa do livro atualizada com sucesso!');
+            } else {
+                FlashMessage::danger('Erro ao atualizar a capa do livro:<br>' . $book->errors('cover'));
+                $this->redirectBack();
+                return;
+            }
+        }
+
+        FlashMessage::success('Livro atualizado com sucesso!');
+        $this->redirectTo(route('books.index'));
     }
+
     public function deactivate(Request $request): void
     {
         $user = Auth::userWithAdmin();

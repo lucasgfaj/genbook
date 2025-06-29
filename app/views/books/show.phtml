@@ -64,8 +64,8 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Capa do Livro</label><br>
-                <img src="<?= $book->cover_name ?>" alt="Capa do Livro" class="img-thumbnail" style="max-height: 200px;">
+                <label class="form-label">Capa Atual</label><br>
+                <img src="<?= $book->cover()->path() ?>" alt="Capa do Livro" class="img-thumbnail" style="max-height: 200px;">
             </div>
         </div>
 

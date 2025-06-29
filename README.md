@@ -13,6 +13,9 @@
 
 ```
  git clone git@github.com:lucasgfaj/genbook.git
+```
+
+```
  cd genbook
 ```
 
@@ -50,6 +53,11 @@ ou
 
 ```
  ./run db:populate
+```
+
+#### Fixed uploads folder permission
+```
+sudo chown www-data:www-data public/assets/uploads
 ```
 
 

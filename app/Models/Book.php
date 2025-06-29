@@ -59,13 +59,9 @@ class Book extends Model
     {
         return count($this->authors()->get()) > 0;
     }
-    public function getCoverPhotoUrl(): string
+    public function cover(): BookCover
     {
-        return (new BookCover($this))->path();
-    }
-    public static function findByTitle(string $title): ?Book
-    {
-        return Book::findBy(['title' => $title]);
+        return new BookCover($this);
     }
     public static function findByIsbn(string $isbn): ?Book
     {
@@ -79,6 +75,7 @@ class Book extends Model
         Validations::notEmpty('edition', $this);
         Validations::notEmpty('year', $this);
         Validations::notEmpty('quantity', $this);
+        Validations::uniqueness('isbn', $this);
     }
     public function isAvailable(): int
     {
