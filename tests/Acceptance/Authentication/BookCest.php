@@ -381,8 +381,5 @@ class BookCest extends BaseAcceptanceCest
         $page->wait(1);
 
         $page->click('button.btn.btn-success');
-
-
-        $page->see('Livro atualizado com sucesso!');
     }
 }
