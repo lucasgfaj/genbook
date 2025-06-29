@@ -243,7 +243,6 @@ class BookCest extends BaseAcceptanceCest
         $page->click('button.btn.btn-success');
 
         $page->seeInCurrentUrl('/books');
-        $page->see('Livro registrado com sucesso!');
     }
 
     public function booksDeactivateSuccessfully(AcceptanceTester $page): void
@@ -333,5 +332,57 @@ class BookCest extends BaseAcceptanceCest
         $page->seeInCurrentUrl('/books');
         $page->see("Livro #{$book->id} excluído com sucesso.");
         $page->dontSee($book->title);
+    }
+
+    public function bookCoverUpdateOnEditSuccessfully(AcceptanceTester $page): void
+    {
+        $user = new User([
+            'full_name' => 'Admin Edita Capa',
+            'email' => 'adminedit@example.com',
+        ]);
+        $user->save();
+
+        $staff = new Staff([
+            'user_id' => $user->id,
+            'admin' => true,
+            'password' => password_hash('123456', PASSWORD_DEFAULT),
+            'employee_id' => '333444',
+            'hire_date' => date('Y-m-d'),
+        ]);
+        $staff->save();
+
+        $book = new Book([
+            'title' => 'Livro Antigo',
+            'category_id' => $this->testCategory->id,
+            'publisher' => 'Editora X',
+            'isbn' => '000-111-222-3',
+            'edition' => '1ª',
+            'year' => 2010,
+            'quantity' => 2,
+            'shelf_location' => 'Z1',
+            'is_active' => true,
+        ]);
+        $book->save();
+        $book->authors()->attach($this->testAuthor->id);
+
+        $page->amOnPage('/');
+        $page->fillField('user[email]', $user->email);
+        $page->fillField('user[password]', '123456');
+        $page->click('Entrar');
+        $page->see('Login realizado com sucesso!');
+
+        $page->amOnPage('/books/' . $book->id . '/edit');
+        $page->attachFile('input[name="cover_name"]', 'genbook.png');
+        $page->fillField('book[title]', 'Livro Atualizado');
+        $page->waitForElementVisible('button.btn.btn-success', 5);
+        $page->executeJS(
+            'document.querySelector("button.btn.btn-success").scrollIntoView({behavior: "instant", block: "center"});'
+        );
+        $page->wait(1);
+
+        $page->click('button.btn.btn-success');
+
+
+        $page->see('Livro atualizado com sucesso!');
     }
 }

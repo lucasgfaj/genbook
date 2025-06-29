@@ -195,4 +195,105 @@ class BookAccessTest extends TestCase
         $deletedBook = Book::findById($book->id);
         $this->assertNull($deletedBook, "Livro não foi deletado.");
     }
+
+    public function test_should_create_book_with_cover(): void
+    {
+        $this->loginAsAdmin();
+
+        $multipart = [
+            [
+                'name' => 'book[title]',
+                'contents' => 'Book with Cover'
+            ],
+            [
+                'name' => 'book[category_id]',
+                'contents' => $this->testCategory->id
+            ],
+            [
+                'name' => 'book[publisher]',
+                'contents' => 'Publisher Test'
+            ],
+            [
+                'name' => 'book[isbn]',
+                'contents' => '123-456-789-0'
+            ],
+            [
+                'name' => 'book[edition]',
+                'contents' => '1a'
+            ],
+            [
+                'name' => 'book[quantity]',
+                'contents' => 2
+            ],
+            [
+                'name' => 'book[shelf_location]',
+                'contents' => 'Z9'
+            ],
+            [
+                'name' => 'book[is_active]',
+                'contents' => true
+            ],
+            [
+                'name' => 'authors[]',
+                'contents' => $this->testAuthor->id
+            ],
+            [
+                'name' => 'cover_name',
+                'contents' => fopen(__DIR__ . '/../../files/genbook.png', 'r'),
+
+                'filename' => 'genbook.png'
+            ]
+        ];
+
+        $response = $this->client->request('POST', '/books', [
+            'multipart' => $multipart,
+            'cookies' => $this->cookieJar,
+        ]);
+
+        $this->assertEquals(302, $response->getStatusCode());
+    }
+    public function test_should_update_book_with_new_cover(): void
+    {
+        $this->loginAsAdmin();
+
+        $book = new Book([
+        'title' => 'Old Title',
+        'category_id' => $this->testCategory->id,
+        'publisher' => 'Old Pub',
+        'isbn' => '000-111-222-3',
+        'edition' => '1a',
+        'quantity' => 1,
+        'shelf_location' => 'X1',
+        'is_active' => true,
+        ]);
+        $book->save();
+
+
+        $multipart = [
+        [
+            'name' => '_method',
+            'contents' => 'PUT'
+        ],
+        [
+            'name' => 'book[title]',
+            'contents' => 'Updated Title'
+        ],
+        [
+            'name' => 'authors[]',
+            'contents' => $this->testAuthor->id
+        ],
+        [
+            'name' => 'cover_name',
+            'contents' => fopen(__DIR__ . '/../../files/genbook.png', 'r'),
+            'filename' => 'genbook.png'
+        ]
+        ];
+
+        $response = $this->client->request('POST', "/books/{$book->id}", [
+        'multipart' => $multipart,
+        'cookies' => $this->cookieJar,
+        ]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }
