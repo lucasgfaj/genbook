@@ -206,4 +206,21 @@ class AuthorController extends Controller
 
         $this->redirectTo(route('authors.index'));
     }
+    public function fetchFromOpenLibrary(Request $request): void
+{
+    $q = $request->getParam('q');
+
+    if (!$q) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Parâmetro "q" é obrigatório.']);
+        return;
+    }
+
+    $url = "https://openlibrary.org/search/authors.json?q=" . urlencode($q);
+    $response = file_get_contents($url);
+
+    header('Content-Type: application/json');
+    echo $response;
+}
+
 }
