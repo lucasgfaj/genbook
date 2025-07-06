@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     // Home or Dashboard
     Route::get('/home', [HomeController::class, 'index'])->name('users.home');
     //Books
-       // Create Book
+    // Create Book
     Route::get('/books/new', [BookController::class, 'new'])->name('books.new');
     Route::post('/books', [BookController::class, 'create'])->name('books.create');
     // List Books
@@ -68,6 +68,10 @@ Route::middleware('auth')->group(function () {
 
     // Delete Author
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
+
+    // Fetch Author
+    Route::get('/authors-api/fetch', [AuthorController::class, 'fetchFromOpenLibrary'])->name('authors.fetch');
+
 
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

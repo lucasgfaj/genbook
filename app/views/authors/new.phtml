@@ -3,7 +3,7 @@
 
     <form id="addAuthorForm" method="POST" action="/authors">
 
-        <div class="mb-3">
+        <div class="mb-3 position-relative">
             <label for="authorFullName" class="form-label">Nome Completo</label>
             <input
                 type="text"
@@ -11,9 +11,20 @@
                 id="authorFullName"
                 name="author[full_name]"
                 placeholder="Nome completo do autor"
+                autocomplete="off"
                 required
-                value="<?= htmlspecialchars($author->full_name ?? '') ?>">
+                value="<?= htmlspecialchars($author->full_name ?? '') ?>"
+                aria-autocomplete="list"
+                aria-controls="authorSuggestions"
+                aria-haspopup="true"
+                aria-expanded="false" />
+
+            <ul id="authorSuggestions"
+                class="list-group position-absolute w-100 shadow-sm"
+                style="z-index: 1050; max-height: 250px; overflow-y: auto; top: 100%; left: 0; margin-top: 0.25rem; border-radius: 0 0 0.25rem 0.25rem;">
+            </ul>
         </div>
+
 
         <div class="mb-3">
             <label for="authorNationality" class="form-label">Nacionalidade</label>

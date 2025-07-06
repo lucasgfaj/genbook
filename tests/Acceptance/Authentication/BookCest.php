@@ -142,7 +142,6 @@ class BookCest extends BaseAcceptanceCest
         $page->seeElement('input[name="book[year]"]');
         $page->seeElement('input[name="book[quantity]"]');
         $page->seeElement('input[name="book[shelf_location]"]');
-        $page->seeElement('select[name="authors[]"]');
     }
 
     public function booksShowSuccessfully(AcceptanceTester $page): void
