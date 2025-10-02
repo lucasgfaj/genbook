@@ -1,10 +1,7 @@
 parameters:
-  level: 0   # nível mínimo para não reportar nada
+  level: 0
   paths:
     - app
-
-  ignoreErrors:
-    - '#.*#'   # ignora todos os erros (regex que casa tudo)
 
   excludePaths:
     - tests/*
