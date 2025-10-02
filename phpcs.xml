@@ -14,9 +14,7 @@
     <exclude-pattern>/vendor/</exclude-pattern>
     <exclude-pattern>/tests/Support/_generated/</exclude-pattern>
     <exclude-pattern>/storage/</exclude-pattern>
-
-    <!-- ✅ Arquivos a ignorar -->
-    <exclude-pattern>/bootstrap/cache/services.php</exclude-pattern>
+    <exclude-pattern>/bootstrap/</exclude-pattern>
     <exclude-pattern>/public/index.php</exclude-pattern>
 
     <!-- Allow snake_case method names in classes that end with "Test" -->
