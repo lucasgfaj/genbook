@@ -4,13 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('loans', function (Blueprint $table) {
+         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade');
@@ -22,10 +23,7 @@ return new class extends Migration {
             $table->string('status', 50)->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-
-            // Opção: Adicionar constraint CHECK no PostgreSQL usando raw
-            $table->check("enum_type IN ('book', 'material')");
-        });
+         });
     }
 
     /**
