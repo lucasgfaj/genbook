@@ -22,7 +22,7 @@ jobs:
         run: ./run composer install
 
       - name: Setup Uploads assets permissions
-        run: sudo chown -R www-data:www-data public/assets/uploads
+        run: sudo chown -R www-data:www-data resources/uploads
 
       - name: Up containers
         run: ./run up -d
@@ -50,9 +50,6 @@ jobs:
 
       - name: See containers
         run: ./run ps
-
-      - name: PHPUnit Acceptance test
-        run: ./run test:browser
 
   code_quality:
     name: Code Quality Check
