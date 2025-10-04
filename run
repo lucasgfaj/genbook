@@ -10,8 +10,16 @@ function ps {
 }
 
 function up {
-    docker compose up "${@}"
+    docker compose up -d "$@"
+
+    echo "⚙️ Ajustando permissões..."
+    sudo chown -R www-data:www-data storage bootstrap/cache
+    sudo chmod -R 775 storage bootstrap/cache
+
+    echo "🔑 Gerando chave da aplicação..."
+    docker compose exec php php artisan key:generate
 }
+
 
 function down {
     docker compose down "${@}"

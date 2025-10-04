@@ -556,6 +556,11 @@ concurrently@^9.0.1:
     tree-kill "1.2.2"
     yargs "17.7.2"
 
+daisyui@^5.1.27:
+  version "5.1.27"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.1.27.tgz#4fef17338c2ab8e00b2407714cebf5a59c49967e"
+  integrity sha512-oCC2RwjrGRPTeEpaXoNmYydzVfSRdyJCthFsi/Q5PErAvaoD8kDarxlW+wiPAx2WmM8W8lXvyAHJUqjObCMWOQ==
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -756,6 +761,11 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/install/-/install-0.13.0.tgz#6af6e9da9dd0987de2ab420f78e60d9c17260776"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
+
 is-fullwidth-code-point@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz#f116f8064fe90b3f7844a38997c0b75051269f1d"
@@ -841,6 +851,11 @@ lightningcss@1.30.1:
     lightningcss-linux-x64-musl "1.30.1"
     lightningcss-win32-arm64-msvc "1.30.1"
     lightningcss-win32-x64-msvc "1.30.1"
+
+lucide@^0.544.0:
+  version "0.544.0"
+  resolved "https://registry.yarnpkg.com/lucide/-/lucide-0.544.0.tgz#5674f6f2175cbb2f3c36f79e9e4007ef61bd2672"
+  integrity sha512-U5ORwr5z9Sx7bNTDFaW55RbjVdQEnAcT3vws9uz3vRT1G4XXJUDAhRZdxhFoIyHEvjmTkzzlEhjSLYM5n4mb5w==
 
 magic-string@^0.30.19:
   version "0.30.19"
