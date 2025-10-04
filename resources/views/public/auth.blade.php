@@ -3,60 +3,90 @@
 @section('title', 'GenBook')
 
 @section('content')
-<div class="min-h-screen flex flex-col md:flex-row">
-    <!-- Login Section -->
-    <div class="w-full md:w-1/2 flex items-center justify-center bg-white p-8">
-        <div class="w-full max-w-md">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">Bem-vindo de volta ao <span class="text-blue-600">GenBook</span></h2>
+    <div class="min-h-screen flex flex-col md:flex-row bg-cover bg-center relative"
+        style="background-image: url('{{ asset('images/background.jpg') }}');">
 
-            @if(session('error'))
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                    {{ session('error') }}
-                </div>
-            @endif
+        <div class="absolute inset-0 bg-black/40"></div>
 
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
+        <div class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-12 relative z-10">
+            <div class="w-full max-w-md bg-white/90 rounded-xl shadow-md p-6 md:p-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6 text-center">
+                    Bem-vindo(a) ao <span class="text-blue-600">GenBook</span>
+                </h2>
 
-                <div class="mb-4">
-                    <label for="login" class="block text-gray-700 font-semibold mb-2">Usuário ou E-mail</label>
-                    <input type="text" name="login" id="login" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
-                        value="{{ old('login') }}">
-                    @error('login')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                @if(session('error'))
+                    <div class="bg-red-100 text-red-700 p-2 rounded mb-4 text-center font-semibold text-sm">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Senha</label>
-                    <input type="password" name="password" id="password" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
-                    @error('password')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="login" class="block text-gray-700 font-medium mb-1 text-sm">E-mail ou usuário</label>
+                        <input type="text" name="login" id="login" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm text-sm"
+                            value="{{ old('login') }}">
+                        @error('login')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">
-                    Entrar
-                </button>
-            </form>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 font-medium mb-1 text-sm">Senha</label>
+                        <input type="password" name="password" id="password" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm text-sm">
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 rounded-lg font-semibold shadow hover:from-blue-700 hover:to-blue-600 transition duration-200 transform hover:-translate-y-0.5 text-sm">
+                        Entrar
+                    </button>
+                </form>
+
+                <p class="mt-3 text-xs text-gray-700 text-center">
+                    Não possui conta? <a href="#" class="text-blue-600 hover:underline">Cadastre-se</a>
+                </p>
+            </div>
         </div>
-    </div>
 
-    <!-- Info Section -->
-    <div class="hidden md:flex md:w-1/2 bg-blue-50 items-center justify-center p-8">
-        <div class="text-center max-w-md">
-            <img src="https://source.unsplash.com/400x300/?books,library" alt="GenBook" class="rounded-lg shadow mb-6 w-full h-auto">
-            <h2 class="text-2xl font-bold text-blue-700 mb-2">GenBook</h2>
-            <p class="text-gray-700 mb-4">A solução moderna para gerenciar sua biblioteca escolar com eficiência e praticidade.</p>
-            <ul class="text-left text-gray-600 space-y-2">
-                <li>✅ Empréstimo e devolução de livros</li>
-                <li>✅ Relatórios e histórico de uso</li>
-                <li>✅ Controle de usuários e notificações</li>
-            </ul>
+        <div class="hidden md:flex md:w-1/2 items-center justify-center p-6 relative z-10">
+            <div
+                class="max-w-md w-full space-y-6 text-center bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-8 shadow-lg">
+
+                <h3 class="text-2xl font-bold text-white mb-2">Recursos do GenBook</h3>
+                <p class="text-white/80 text-base mb-6">
+                    Gerencie sua biblioteca escolar com eficiência e praticidade. Tenha controle completo de usuários,
+                    livros e histórico de empréstimos.
+                </p>
+
+                <ul class="flex flex-col space-y-4">
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="book-open" class="w-5 h-5 text-blue-300"></i>
+                        <span class="text-white/80 font-medium text-sm">Empréstimo e devolução de livros</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-green-300"></i>
+                        <span class="text-white/80 font-medium text-sm">Relatórios e histórico de uso</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="users" class="w-5 h-5 text-purple-300"></i>
+                        <span class="text-white/80 font-medium text-sm">Controle de usuários e notificações</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="calendar" class="w-5 h-5 text-yellow-300"></i>
+                        <span class="text-white/80 font-medium text-sm">Agendamento de reservas de livros</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <i data-lucide="bell" class="w-5 h-5 text-red-300"></i>
+                        <span class="text-white/80 font-medium text-sm">Notificações de atraso ou novidades</span>
+                    </li>
+                </ul>
+            </div>
         </div>
+
     </div>
-</div>
 @endsection
