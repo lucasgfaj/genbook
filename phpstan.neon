@@ -1,0 +1,11 @@
+parameters:
+  level: 0
+  paths:
+    - app
+
+  excludePaths:
+    - tests/*
+    - app/views/*
+    - tests/Acceptance/_output/*
+    - tests/Support/_generated/*
+    - tests/Support/Data/*
