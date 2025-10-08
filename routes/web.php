@@ -17,9 +17,12 @@ Route::view('/terms', 'public.terms')->name('terms');
 Route::view('/about', 'public.about')->name('about');
 Route::view('/contact', 'public.contact')->name('contact');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // Protected Routes
+    Route::get('/dashboard', function () {
+        return view('dashboard.index');
+    })->name('dashboard');
+});
 
 Route::fallback(function () {
     return response()->view('errors.generic', [
