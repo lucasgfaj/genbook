@@ -4,29 +4,54 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         $request->validate([
-            'login' => 'required|string',
+            'auth' => 'required|string',
             'password' => 'required|string',
         ]);
- 
-        $login_type = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $credentials = [
-            $login_type => $request->login,
-            'password' => $request->password,
-        ];
+        // Identifica se o campo é um e-mail
+        $isEmail = filter_var($request->auth, FILTER_VALIDATE_EMAIL);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+        // Busca o usuário pelo email
+        $user = $isEmail
+            ? User::where('email', $request->auth)->first()
+            : null; // se quiser login por username, adiciona depois
+
+        if (!$user) {
+            return back()->with('error', 'Usuário não encontrado.');
         }
 
-        return back()->with('error', 'As credenciais estão incorretas.');
+        // Busca o staff correspondente
+        $staff = Staff::where('user_id', $user->id)->first();
+
+        if (!$staff || !Hash::check($request->password, $staff->password)) {
+            return back()->with('error', 'Senha incorreta.');
+        }
+
+        // Loga o usuário manualmente
+        Auth::login($user);
+
+        // Regenera sessão
+        $request->session()->regenerate();
+
+        return redirect()->intended('/dashboard');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Sessão encerrada com sucesso.');
     }
 }

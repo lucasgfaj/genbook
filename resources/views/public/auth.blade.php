@@ -56,7 +56,7 @@
 
         <div class="hidden md:flex md:w-1/2 items-center justify-center p-6 relative z-10">
             <div
-                class="max-w-md w-full space-y-6 text-center bg-white/20 backdrop-blur-sm bor   der border-white/30 rounded-xl p-8 shadow-lg">
+                class="max-w-md w-full space-y-6 text-center bg-white/20 backdrop-blur-sm border-white/30 rounded-xl p-8 shadow-lg">
 
                 <h3 class="text-2xl font-bold text-white mb-2">Recursos do GenBook</h3>
                 <p class="text-white/80 text-base mb-6">
