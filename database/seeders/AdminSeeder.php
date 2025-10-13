@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
         Staff::firstOrCreate(
             ['user_id' => $user->id],
             [
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('123'),
                 'admin' => true,
                 'employee_id' => 'GEN-ADM-001',
                 'hire_date' => now(),
