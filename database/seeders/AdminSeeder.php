@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Staff;
-use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -27,7 +26,7 @@ class AdminSeeder extends Seeder
         Staff::firstOrCreate(
             ['user_id' => $user->id],
             [
-                'password' => Hash::make('123'),
+                'password' => '12345678',
                 'admin' => true,
                 'employee_id' => 'GEN-ADM-001',
                 'hire_date' => now(),

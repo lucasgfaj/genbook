@@ -92,10 +92,11 @@ class Staff extends Model
     /**
      * Busca um staff pelo ID do usuário.
      */
-    public static function findByUserId(int $userId): ?self
-    {
-        return self::where('user_id', $userId)->first();
-    }
+   public static function findByUserId($userId)
+{
+    return static::where('user_id', $userId)->first();
+}
+
 
     /**
      * Verifica se o usuário é administrador.

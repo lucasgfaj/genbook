@@ -11,40 +11,52 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
     public function login(Request $request)
-    {
-        $request->validate([
-            'auth' => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'auth' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        // Identifica se o campo é um e-mail
-        $isEmail = filter_var($request->auth, FILTER_VALIDATE_EMAIL);
+    \Log::info('Iniciando login', ['auth' => $request->auth]);
 
-        // Busca o usuário pelo email
-        $user = $isEmail
-            ? User::where('email', $request->auth)->first()
-            : null; // se quiser login por username, adiciona depois
+    $user = User::where('email', $request->auth)->first();
 
-        if (!$user) {
-            return back()->with('error', 'Usuário não encontrado.');
-        }
-
-        // Busca o staff correspondente
-        $staff = Staff::where('user_id', $user->id)->first();
-
-        if (!$staff || !Hash::check($request->password, $staff->password)) {
-            return back()->with('error', 'Senha incorreta.');
-        }
-
-        // Loga o usuário manualmente
-        Auth::login($user);
-
-        // Regenera sessão
-        $request->session()->regenerate();
-
-        return redirect()->intended('/dashboard');
+    if (!$user) {
+        \Log::warning('Usuário não encontrado', ['auth' => $request->auth]);
+        return back()->with('error', 'Usuário não encontrado.');
     }
+
+    $staff = Staff::findByUserId($user->id);
+
+    if (!$staff) {
+        \Log::warning('Staff não encontrado', ['user_id' => $user->id]);
+        return back()->with('error', 'Conta inexistente.');
+    }
+
+    if (!$staff->is_active) {
+        \Log::warning('Staff inativo', ['user_id' => $user->id]);
+        return back()->with('error', 'Conta inativa.');
+    }
+
+    if (!Hash::check($request->password, $staff->password)) {
+        \Log::warning('Senha incorreta', ['user_id' => $user->id]);
+        return back()->with('error', 'Senha incorreta.');
+    }
+
+    Auth::login($user);
+    $request->session()->regenerate();
+
+    \Log::info('Usuário logado', [
+        'id' => $user->id,
+        'auth_check' => Auth::check(),
+        'session_id' => session()->getId(),
+    ]);
+    
+    return redirect()->intended('/dashboard');
+}
+
 
     public function logout(Request $request)
     {

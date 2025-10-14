@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('password', 255);
+            $table->string('password');
             $table->boolean('admin')->default(false);
             $table->string('employee_id', 50)->nullable();
             $table->date('hire_date')->nullable();
