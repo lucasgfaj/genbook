@@ -55,9 +55,15 @@
                     <li><a href="/config" class="flex items-center px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600">
                         <i data-lucide="settings" class="w-5 h-5 mr-2"></i> Configurações</a></li>
 
-                    <li><a href="/logout" class="flex items-center px-3 py-2 rounded-md hover:bg-red-50 text-gray-700 hover:text-red-600">
-                        <i data-lucide="log-out" class="w-5 h-5 mr-2"></i> Sair</a></li>
-                </ul>
+              <li>
+    <form method="POST" action="{{ route('logout') }}" id="logout-form">
+        @csrf
+        <button type="submit"
+                class="w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-red-50 text-gray-700 hover:text-red-600">
+            <i data-lucide="log-out" class="w-5 h-5 mr-2"></i> Sair
+        </button>
+    </form>
+</li>         </ul>
             </nav>
         </aside>
 

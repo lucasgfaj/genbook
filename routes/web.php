@@ -1,11 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 
 // Página de login
-Route::get('/', fn() => view('public.auth'))->name('login');
-
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return view('public.auth');
+})->name('login');
 // Processa login
 Route::post('/login', [AuthController::class, 'login'])->name('auth');
 
