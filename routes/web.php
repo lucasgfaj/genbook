@@ -11,6 +11,7 @@ Route::get('/', function () {
     }
     return view('public.auth');
 })->name('login');
+
 // Processa login
 Route::post('/login', [AuthController::class, 'login'])->name('auth');
 
@@ -28,8 +29,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', fn() => view('dashboard.index'))->name('dashboard');
 });
 
-// Fallback 404
-Route::fallback(fn() => response()->view('errors.generic', [
-    'code' => 404,
-    'message' => 'A página que você procura não existe.'
-], 404));
+// Fallback dinâmico
+Route::fallback(function () {
+    if (Auth::check()) {
+        // Usuário logado: exibe 404 interna ou redireciona pro dashboard
+        return response()->view('errors.authenticated', [
+            'code' => 404,
+            'message' => 'Página não encontrada dentro do sistema.'
+        ], 404);
+        // ou: return redirect()->route('dashboard');
+    }
+
+    // Usuário não autenticado: exibe 404 pública
+    return response()->view('errors.generic', [
+        'code' => 404,
+        'message' => 'A página que você procura não existe.'
+    ], 404);
+});
