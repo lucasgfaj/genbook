@@ -56,4 +56,5 @@
         Última atualização: <span class="font-medium">{{ now()->format('d/m/Y') }}</span>
     </footer>
 </div>
+</div>
 @endsection

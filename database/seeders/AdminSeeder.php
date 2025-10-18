@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
         $user = User::firstOrCreate(
             ['email' => 'admin@genbook.com'],
             [
-                'full_name' => 'Administrador GenBook',
+                'full_name' => 'GenBook',
                 'is_active' => true,
             ]
         );

@@ -9,7 +9,7 @@
 @section('title', "Erro {$code} - GenBook")
 
 @section('content')
-<div class="mt-40 flex flex-col items-center justify-center bg-gray-100 text-center">
+<div class="mt-40 flex flex-col items-center justify-center text-center">
     <h1 class="text-6xl font-bold text-blue-500">{{ $code }}</h1>
     <p class="text-2xl font-semibold text-gray-600 mt-4">{{ $title }}</p>
     <p class="text-gray-500 mt-2">

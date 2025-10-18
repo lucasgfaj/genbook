@@ -13,7 +13,7 @@ Route::get('/', function () {
 })->name('login');
 
 // Processa login
-Route::post('/login', [AuthController::class, 'login'])->name('auth');
+Route::post('/', [AuthController::class, 'login'])->name('auth');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
