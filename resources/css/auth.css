@@ -1,0 +1,19 @@
+.typing::after {
+    content: "!";
+    margin-left: 2px;
+    animation: blink 0.7s infinite;
+    color: #2563eb;
+}
+
+@keyframes blink {
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: 0;
+    }
+}

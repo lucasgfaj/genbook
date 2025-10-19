@@ -56,7 +56,7 @@
 
         <div class="hidden md:flex md:w-1/2 items-center justify-center p-6 relative z-10">
             <div
-                class="max-w-md w-full space-y-6 text-center bg-white/20 backdrop-blur-sm bor   der border-white/30 rounded-xl p-8 shadow-lg">
+                class="max-w-md w-full space-y-6 text-center bg-white/20 backdrop-blur-sm border-white/30 rounded-xl p-8 shadow-lg">
 
                 <h3 class="text-2xl font-bold text-white mb-2">Recursos do GenBook</h3>
                 <p class="text-white/80 text-base mb-6">
@@ -88,66 +88,6 @@
                 </ul>
             </div>
         </div>
-
-        <style>
-            .typing::after {
-                content: '!';
-                margin-left: 2px;
-                animation: blink 0.7s infinite;
-                color: #2563EB;
-            }
-
-            @keyframes blink {
-
-                0%,
-                50%,
-                100% {
-                    opacity: 1;
-                }
-
-                25%,
-                75% {
-                    opacity: 0;
-                }
-            }
-        </style>
-
-        <script>
-             function typeWriteLoop(element, speed = 100, pause = 1500) {
-    const text = element.textContent;
-    element.textContent = "";
-
-    function writeText() {
-      element.textContent = "";
-      text.split("").forEach((letter, i) => {
-        setTimeout(() => {
-          element.textContent += letter;
-
-          // Quando terminar de escrever, espera e apaga
-          if (i === text.length - 1) {
-            setTimeout(() => eraseText(), pause);
-          }
-        }, speed * i);
-      });
-    }
-
-    function eraseText() {
-      let i = text.length;
-      const interval = setInterval(() => {
-        element.textContent = text.substring(0, i--);
-        if (i < 0) {
-          clearInterval(interval);
-          setTimeout(() => writeText(), 500);
-        }
-      }, 50); // velocidade de apagar
-    }
-
-    writeText();
-  }
-
-  const title = document.querySelector(".writing");
-  typeWriteLoop(title, 100, 2000); // speed=100ms, pause=2s
-        </script>
 
     </div>
 @endsection

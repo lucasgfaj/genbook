@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.authenticated')
 
 @php
     $code = $code ?? 500;
@@ -9,9 +9,9 @@
 @section('title', "Erro {$code} - GenBook")
 
 @section('content')
-<div class="min-h-screen flex flex-col items-center justify-center  text-center px-4">
-    <h1 class="text-6xl font-extrabold text-blue-600">{{ $code }}</h1>
-    <p class="text-2xl font-semibold text-gray-800 mt-4">{{ $title }}</p>
+<div class="mt-40 flex flex-col items-center justify-center text-center">
+    <h1 class="text-6xl font-bold text-blue-500">{{ $code }}</h1>
+    <p class="text-2xl font-semibold text-gray-600 mt-4">{{ $title }}</p>
     <p class="text-gray-500 mt-2">
         {{ $message ?? 'Ocorreu um erro. Por favor, tente novamente mais tarde.' }}
     </p>
