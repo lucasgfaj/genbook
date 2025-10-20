@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
         // Chama o seeder do administrador
         $this->call([
             AdminSeeder::class,
+            CategorySeeder::class,
+            AuthorSeeder::class,
+            BookSeeder::class,
         ]);
     }
 }
