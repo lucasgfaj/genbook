@@ -7,15 +7,14 @@
     <title>@yield('title', 'GenBook')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ Vite::asset('resources/images/favicon.ico') }}">
 </head>
 
 <body class="bg-[#F9FAFB] text-gray-900 font-sans antialiased">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen">
 
-        <!-- Sidebar -->
-        <aside class="w-64 bg-[#1E40AF] text-white flex flex-col px-4 py-6">
+        <!-- Sidebar fixo -->
+        <aside class="w-64 bg-[#1E40AF] text-white flex flex-col px-4 py-6 fixed h-full overflow-y-auto">
             <div class="flex items-center mb-8">
                 <i data-lucide="book-open" class="w-6 h-6 text-white mr-2"></i>
                 <a href="/home" class="text-xl font-bold text-white">GenBook</a>
@@ -81,9 +80,9 @@
         </aside>
 
         <!-- Conteúdo principal -->
-        <div class="flex flex-col flex-1">
+        <div class="flex flex-col flex-1 ml-64">
 
-            <!-- Header -->
+            <!-- Header fixo -->
             <header
                 class="flex items-center justify-between bg-[#1E40AF] shadow px-6 py-4 border-b border-gray-200 sticky top-0 z-10">
                 <h1 class="text-lg font-semibold text-white">Painel</h1>
@@ -96,7 +95,6 @@
                             <span class="absolute top-0 right-0 block w-2 h-2 bg-red-500 rounded-full"></span>
                         </button>
 
-                        <!-- Dropdown de notificações -->
                         <div id="notifDropdown"
                             class="hidden absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
                             <div class="flex items-center justify-between px-4 py-2 border-b border-gray-100">
@@ -108,12 +106,10 @@
                                 <div class="p-3 text-sm text-gray-700 flex items-start gap-2">
                                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1"></i>
                                     <div>
-                                        <p><strong>Carlos Santos</strong> está com o livro <strong>“Harry Potter e a
-                                                Pedra Filosofal”</strong> atrasado</p>
+                                        <p><strong>Carlos Santos</strong> está com o livro <strong>“Harry Potter e a Pedra Filosofal”</strong> atrasado</p>
                                         <small class="text-gray-500">há 2 anos</small>
                                     </div>
                                 </div>
-
                                 <div class="p-3 text-sm text-gray-700 flex items-start gap-2">
                                     <i data-lucide="alert-triangle" class="w-4 h-4 text-yellow-500 mt-1"></i>
                                     <div>
@@ -143,7 +139,8 @@
                 </div>
             </header>
 
-            <main class="flex-1 p-6">
+            <!-- Conteúdo principal rolável -->
+            <main class="flex-1 p-6 overflow-y-auto">
                 @yield('content')
             </main>
         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -24,9 +25,20 @@ Route::view('/terms', 'public.terms')->name('terms');
 Route::view('/about', 'public.about')->name('about');
 Route::view('/contact', 'public.contact')->name('contact');
 
-// Dashboard protegido
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', fn() => view('dashboard.index'))->name('dashboard');
+
+    Route::controller(BookController::class)->prefix('books')->name('books.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/new', 'create')->name('new');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{book}', 'show')->name('show');
+        Route::get('/{book}/edit', 'edit')->name('edit');
+        Route::put('/{book}', 'update')->name('update');
+        Route::put('/{book}/deactivate', 'deactivate')->name('deactivate');
+        Route::put('/{book}/activate', 'activate')->name('activate');
+        Route::delete('/{book}', 'destroy')->name('destroy');
+    });
 });
 
 // Fallback dinâmico
