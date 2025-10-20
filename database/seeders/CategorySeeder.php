@@ -50,6 +50,6 @@ class CategorySeeder extends Seeder
             ],
         ];
 
-        Category::insert($categories); // Inserção em massa
+        Category::insert($categories);
     }
 }

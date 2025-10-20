@@ -8,12 +8,10 @@ use Carbon\Carbon;
 
 class AuthorSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
-        $now = Carbon::now(); // Usa Carbon para datas
+        $now = Carbon::now();
 
         $authors = [
             [
@@ -34,7 +32,6 @@ class AuthorSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
-            // ... (demais autores)
             [
                 'full_name' => 'Rachel de Queiroz',
                 'birth_date' => '1910-11-17',
@@ -46,6 +43,6 @@ class AuthorSeeder extends Seeder
             ],
         ];
 
-        Author::insert($authors); // Inserção em massa (mais eficiente)
+        Author::insert($authors); 
     }
 }

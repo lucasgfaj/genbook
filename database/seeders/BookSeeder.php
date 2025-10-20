@@ -14,18 +14,15 @@ class BookSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        // Busca categorias por nome
         $romance = Category::where('name', 'Romance')->first();
         $ficcao = Category::where('name', 'Ficção Científica')->first();
         $tecnologia = Category::where('name', 'Tecnologia')->first();
 
-        // Busca autores por nome
         $machado = Author::where('full_name', 'Machado de Assis')->first();
         $monteiro = Author::where('full_name', 'Monteiro Lobato')->first();
         $clarice = Author::where('full_name', 'Clarice Lispector')->first();
         $jorge = Author::where('full_name', 'Jorge Amado')->first();
 
-        // Livro 1
         $book1 = Book::create([
             'title' => 'Dom Casmurro',
             'category_id' => $romance?->id,
@@ -43,7 +40,6 @@ class BookSeeder extends Seeder
         ]);
         $book1->authors()->attach($machado?->id);
 
-        // Livro 2
         $book2 = Book::create([
             'title' => 'O Sítio do Picapau Amarelo',
             'category_id' => $tecnologia?->id,

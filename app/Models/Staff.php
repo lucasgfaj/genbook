@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 
 class Staff extends Model
-
 {
     protected $table = 'staff';
 
@@ -26,9 +25,7 @@ class Staff extends Model
         'hire_date' => 'date',
     ];
 
-    protected $hidden = [
-        'password',
-    ];
+    protected $hidden = ['password'];
 
     public function user()
     {
@@ -52,13 +49,13 @@ class Staff extends Model
         return $query->where('is_active', true);
     }
 
-    public static function findByUserId($userId)
+    public static function findByUserId(int $userId): ?self
     {
         return static::where('user_id', $userId)->first();
     }
 
     public static function isAdmin(int $userId): bool
     {
-        return self::where('user_id', $userId)->value('admin') ?? false;
+        return static::where('user_id', $userId)->value('admin') ?? false;
     }
 }

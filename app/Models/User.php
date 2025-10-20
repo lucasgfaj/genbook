@@ -8,8 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory;
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'users';
 
@@ -23,6 +22,21 @@ class User extends Authenticatable
         'is_active' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+    public function getAdminAttribute(): bool
+    {
+        return (bool) ($this->staff?->admin ?? false);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
 
     public static function findByEmail(string $email): ?User
     {
