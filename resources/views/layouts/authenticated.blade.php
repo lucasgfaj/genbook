@@ -13,7 +13,6 @@
 
     <div class="flex h-screen">
 
-        <!-- Sidebar fixo -->
         <aside class="w-64 bg-[#1E40AF] text-white flex flex-col px-4 py-6 fixed h-full overflow-y-auto">
             <div class="flex items-center mb-8">
                 <i data-lucide="book-open" class="w-6 h-6 text-white mr-2"></i>
@@ -23,55 +22,48 @@
             <nav class="flex-1">
                 <ul class="space-y-1">
                     <li><a href="/dashboard"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5 mr-2 text-white"></i> Dashboard</a></li>
+                            class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5 mr-2 text-white"></i> Dashboard</a></li>
 
-                    <li><a href="/books"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="book" class="w-5 h-5 mr-2 text-white"></i> Livros</a></li>
+                    <li><a href="/books" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="book" class="w-5 h-5 mr-2 text-white"></i> Livros</a></li>
 
                     <li><a href="/materials"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="box" class="w-5 h-5 mr-2 text-white"></i> Materiais</a></li>
+                            class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="box" class="w-5 h-5 mr-2 text-white"></i> Materiais</a></li>
 
-                    <li><a href="/authors"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="users" class="w-5 h-5 mr-2 text-white"></i> Autores</a></li>
+                    <li><a href="/authors" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="users" class="w-5 h-5 mr-2 text-white"></i> Autores</a></li>
 
                     <li><a href="/categories"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="tags" class="w-5 h-5 mr-2 text-white"></i> Categorias</a></li>
+                            class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="tags" class="w-5 h-5 mr-2 text-white"></i> Categorias</a></li>
 
-                    <li><a href="/loans"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="refresh-cw" class="w-5 h-5 mr-2 text-white"></i> Empréstimos</a></li>
+                    <li><a href="/loans" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="refresh-cw" class="w-5 h-5 mr-2 text-white"></i> Empréstimos</a></li>
 
-                    <li><a href="/users"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="user-circle" class="w-5 h-5 mr-2 text-white"></i> Usuários</a></li>
+                    <li><a href="/users" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="user-circle" class="w-5 h-5 mr-2 text-white"></i> Usuários</a></li>
 
-                    <li><a href="/reports"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2 text-white"></i> Relatórios</a></li>
+                    <li><a href="/reports" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2 text-white"></i> Relatórios</a></li>
 
                     @if(auth()->user()?->admin)
-                    <li><a href="/admin"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="shield-check" class="w-5 h-5 mr-2 text-white"></i> Admin</a></li>
+                        <li><a href="/admin" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                                <i data-lucide="shield-check" class="w-5 h-5 mr-2 text-white"></i> Admin</a></li>
                     @endif
 
                     <li class="mt-6 text-xs font-semibold text-white uppercase opacity-80">Sistema</li>
 
-                    <li><a href="/config"
-                        class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
-                        <i data-lucide="settings" class="w-5 h-5 mr-2 text-white"></i> Configurações</a></li>
+                    <li><a href="/config" class="flex items-center px-3 py-2 rounded-md hover:bg-[#3B82F6] text-white">
+                            <i data-lucide="settings" class="w-5 h-5 mr-2 text-white"></i> Configurações</a></li>
 
                     <li>
                         <form method="POST" action="{{ route('logout') }}" id="logout-form">
                             @csrf
                             <button type="submit"
-                            class="w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-red-600 text-white">
-                            <i data-lucide="log-out" class="w-5 h-5 mr-2 text-white"></i> Sair
+                                class="w-full text-left flex items-center px-3 py-2 rounded-md hover:bg-red-600 text-white">
+                                <i data-lucide="log-out" class="w-5 h-5 mr-2 text-white"></i> Sair
                             </button>
                         </form>
                     </li>
@@ -79,16 +71,17 @@
             </nav>
         </aside>
 
-        <!-- Conteúdo principal -->
         <div class="flex flex-col flex-1 ml-64">
 
-            <!-- Header fixo -->
             <header
                 class="flex items-center justify-between bg-[#1E40AF] shadow px-6 py-4 border-b border-gray-200 sticky top-0 z-10">
+                <button class="menu-button lg:hidden">
+                    <i data-lucide="list"></i>
+                </button>
+
                 <h1 class="text-lg font-semibold text-white">Painel</h1>
 
                 <div class="flex items-center gap-6">
-                    <!-- Notificações -->
                     <div class="relative">
                         <button id="notifBtn" class="relative focus:outline-none">
                             <i data-lucide="bell" class="w-6 h-6 text-white"></i>
@@ -106,7 +99,8 @@
                                 <div class="p-3 text-sm text-gray-700 flex items-start gap-2">
                                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mt-1"></i>
                                     <div>
-                                        <p><strong>Carlos Santos</strong> está com o livro <strong>“Harry Potter e a Pedra Filosofal”</strong> atrasado</p>
+                                        <p><strong>Carlos Santos</strong> está com o livro <strong>“Harry Potter e a
+                                                Pedra Filosofal”</strong> atrasado</p>
                                         <small class="text-gray-500">há 2 anos</small>
                                     </div>
                                 </div>
@@ -125,7 +119,6 @@
                         </div>
                     </div>
 
-                    <!-- Usuário -->
                     <div class="flex items-center">
                         <div
                             class="w-9 h-9 rounded-full bg-white text-[#1E40AF] flex items-center justify-center font-bold mr-2">
@@ -145,24 +138,8 @@
             </main>
         </div>
     </div>
-
-    <script>
-        // Toggle dropdown de notificações
-        const btn = document.getElementById('notifBtn');
-        const dropdown = document.getElementById('notifDropdown');
-        btn.addEventListener('click', () => dropdown.classList.toggle('hidden'));
-        window.addEventListener('click', (e) => {
-            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
-    </script>
-
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
-    </script>
+    @vite(['resources/js/authenticated.js'])
 </body>
 
 </html>

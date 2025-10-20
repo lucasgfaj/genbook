@@ -8,7 +8,6 @@ function typeWriteLoop(element, speed = 100, pause = 1500) {
         setTimeout(() => {
           element.textContent += letter;
 
-          // Quando terminar de escrever, espera e apaga
           if (i === text.length - 1) {
             setTimeout(() => eraseText(), pause);
           }
@@ -24,11 +23,11 @@ function typeWriteLoop(element, speed = 100, pause = 1500) {
           clearInterval(interval);
           setTimeout(() => writeText(), 500);
         }
-      }, 50); // velocidade de apagar
+      }, 50); 
     }
 
     writeText();
   }
 
   const title = document.querySelector(".writing");
-  typeWriteLoop(title, 100, 2000); // speed=100ms, pause=2s
+  typeWriteLoop(title, 100, 2000); 

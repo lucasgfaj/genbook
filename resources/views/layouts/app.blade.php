@@ -12,7 +12,6 @@
 
 <body class="bg-[#F9FAFB] text-gray-800 font-sans">
 
-    <!-- Header -->
     <header class="bg-[#1E40AF] text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <!-- Logo -->
@@ -29,17 +28,16 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="min-h-screen  mx-auto">
         @yield('content')
     </main>
 
-    <!-- Footer -->
     <footer class="bg-[#1E40AF] text-white">
         <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between">
             <p class="text-sm">&copy; {{ date('Y') }} GenBook. Todos os direitos reservados.</p>
             <div class="space-x-4 mt-2 md:mt-0">
-                <a href="{{ route('policies') }}" class="text-sm hover:text-[#3B82F6] transition-colors">Política de Privacidade</a>
+                <a href="{{ route('policies') }}" class="text-sm hover:text-[#3B82F6] transition-colors">Política de
+                    Privacidade</a>
                 <a href="{{ route('terms') }}" class="text-sm hover:text-[#3B82F6] transition-colors">Termos de Uso</a>
                 <a href="{{ route('contact') }}" class="text-sm hover:text-[#3B82F6] transition-colors">Contato</a>
                 <a href="{{ route('about') }}" class="text-sm hover:text-[#3B82F6] transition-colors">Sobre</a>
@@ -47,7 +45,10 @@
         </div>
     </footer>
 
-    @stack('scripts')
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 
