@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -38,6 +39,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{book}/deactivate', 'deactivate')->name('deactivate');
         Route::put('/{book}/activate', 'activate')->name('activate');
         Route::delete('/{book}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(AuthorController::class)->prefix('authors')->name('authors.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/new', 'create')->name('new');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{author}', 'show')->name('show');
+        Route::get('/{author}/edit', 'edit')->name('edit');
+        Route::put('/{author}', 'update')->name('update');
+        Route::put('/{author}/deactivate', 'deactivate')->name('deactivate');
+        Route::put('/{author}/activate', 'activate')->name('activate');
+        Route::delete('/{author}', 'destroy')->name('destroy');
     });
 });
 
