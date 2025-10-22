@@ -11,7 +11,7 @@ class CategoryController extends Controller
     {
         $query = Category::query();
 
-        if($search = $request->input('q')) {
+        if ($search = $request->input('q')) {
             $query->where('name', 'like', "%{$search}%");
         }
 

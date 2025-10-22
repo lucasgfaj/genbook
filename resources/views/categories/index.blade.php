@@ -39,12 +39,10 @@
             <table class="min-w-full text-sm text-gray-700">
                 <thead class="bg-gray-100 text-gray-800 uppercase text-xs">
                     <tr>
-                        <th class="px-4 py-3 text-left"><i data-lucide="user" class="inline w-4 h-4 mr-1"></i>Nome do Autor
+                        <th class="px-4 py-3 text-left"><i data-lucide="user" class="inline w-4 h-4 mr-1"></i>Nome
                         </th>
                         <th class="px-4 py-3 text-left"><i data-lucide="flag"
-                                class="inline w-4 h-4 mr-1"></i>Nacionalidade</th>
-                        <th class="px-4 py-3 text-left"><i data-lucide="calendar" class="inline w-4 h-4 mr-1"></i>Data de
-                            Nascimento</th>
+                                class="inline w-4 h-4 mr-1"></i>Descrição</th>
                         <th class="px-4 py-3 text-left"><i data-lucide="settings" class="inline w-4 h-4 mr-1"></i>Ações</th>
                     </tr>
                 </thead>
@@ -53,12 +51,11 @@
                     @foreach ($categories as $category)
                         @if ($category->is_active || auth()->user()?->admin)
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-4 py-3 font-medium text-gray-800">{{ $author->full_name }}</td>
-                                <td class="px-4 py-3">{{ $author->nationality ?: '—' }}</td>
-                                <td class="px-4 py-3">{{ $author->birth_date ?: '—' }}</td>
+                                <td class="px-4 py-3 font-medium text-gray-800">{{ $category->name }}</td>
+                                <td class="px-4 py-3">{{ $category->description ?: '—' }}</td>
 
                                 <td class="px-4 py-3 space-x-1 whitespace-nowrap flex items-center">
-                                    <a href="{{ route('authors.show', $author->id) }}"
+                                    <a href="{{ route('categories.show', $category->id) }}"
                                         class="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-100 rounded-md transition"
                                         title="Editar Autor">
                                         <i data-lucide="pencil-line" class="w-4 h-4"></i>
