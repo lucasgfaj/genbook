@@ -28,6 +28,12 @@
         </div>
     </header>
 
+    <div id="loading-overlay"
+        class="fixed inset-0 flex items-center justify-center z-[9999] pointer-events-none opacity-0 transition-opacity duration-300">
+        <span class="loading loading-spinner loading-lg text-blue-600 drop-shadow-lg"></span>
+    </div>
+
+
     <main class="min-h-screen  mx-auto">
         @yield('content')
     </main>
@@ -46,9 +52,8 @@
     </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
-    </script>
+    @vite(['resources/js/loading.js'])
+
 
 </body>
 
