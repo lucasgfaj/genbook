@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -52,7 +53,20 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{author}/activate', 'activate')->name('activate');
         Route::delete('/{author}', 'destroy')->name('destroy');
     });
+
+    Route::controller(CategoryController::class)->prefix('categories')->name('categories.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/new', 'create')->name('new');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{category}', 'show')->name('show');
+        Route::get('/{category}/edit', 'edit')->name('edit');
+        Route::put('/{category}', 'update')->name('update');
+        Route::put('/{category}/deactivate', 'deactivate')->name('deactivate');
+        Route::put('/{category}/activate', 'activate')->name('activate');
+        Route::delete('/{category}', 'destroy')->name('destroy');
+    });
 });
+
 
 // Fallback dinâmico
 Route::fallback(function () {
