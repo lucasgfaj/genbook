@@ -1,19 +1,30 @@
-name: Continous Integration
+name: Continuous Integration
 
 on:
   push:
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
 
 jobs:
   tests:
-    name: Tests
+    name: Unit Tests
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_DB: genbook_test
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: 05092004
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U root -d genbook_test"
+          --health-interval=2s
+          --health-timeout=5s
+          --health-retries=15
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -21,34 +32,26 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
-      - name: Setup Uploads assets permissions
-        run: sudo chown -R www-data:www-data public/uploads
-
-      - name: Setup storage permissions
-        run: sudo chown -R www-data:www-data storage bootstrap/cache
-
       - name: Up containers
         run: ./run up:ci -d
 
-      - name: Wait for DB
+      - name: Wait for Postgres
         run: |
-          echo "Waiting for Postgres..."
+          echo "Waiting for Postgres to be ready..."
           for i in {1..30}; do
-            docker compose exec db pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE} && break
+            docker compose run --rm php_test pg_isready -h db -U root -d genbook_test && break
             sleep 2
           done
 
-      - name: PHPUnit tests
+      - name: Run Unit Tests
         run: ./run tests
 
   acceptance_tests:
     name: Acceptance Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -66,10 +69,8 @@ jobs:
     name: Code Quality Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env

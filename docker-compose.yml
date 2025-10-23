@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   web:
     image: nginx:latest
@@ -7,7 +9,6 @@ services:
       - ./server/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
-      - 8080:8080
     networks:
       - app-network
     depends_on:
@@ -24,31 +25,26 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:16
-    env_file:
-      - .env
     environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: genbook_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 05092004
     volumes:
       - dbdata:/var/lib/postgresql/data
-      - ./db-init:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      test: ["CMD-SHELL", "pg_isready -U root -d genbook_test"]
       interval: 2s
       retries: 15
 
   selenium:
     image: selenium/standalone-chrome-debug:latest
-    container_name: selenium
     ports:
       - 4444:4444
       - 5900:5900
@@ -65,15 +61,17 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
-      - selenium
+      db:
+        condition: service_healthy
+      selenium:
+        condition: service_started
     environment:
       APP_ENV: testing
       DB_HOST: db
       DB_PORT: 5432
       DB_DATABASE: genbook_test
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: root
+      DB_PASSWORD: 05092004
 
 networks:
   app-network:
