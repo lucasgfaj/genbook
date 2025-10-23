@@ -30,15 +30,18 @@ jobs:
       - name: See containers
         run: ./run ps
 
-      - name: Wait for DB
+     - name: Wait for PostgreSQL
         run: |
           echo "Waiting for PostgreSQL to be ready..."
-          until docker exec genbook-db-1 pg_isready -U ${DB_USERNAME}; do
+          # Usa docker-compose exec com -T (sem TTY) e checa conexão
+          until docker-compose exec -T db pg_isready -U $DB_USERNAME > /dev/null 2>&1; do
             sleep 2
           done
+          echo "PostgreSQL is ready!"
 
       - name: Create test database
-        run: docker exec genbook-db-1 psql -U ${DB_USERNAME} -c "CREATE DATABASE genbook_test;" || true
+        run: docker-compose exec -T db psql -U $DB_USERNAME -c "CREATE DATABASE genbook_test;" || true
+
 
       - name: PHPUnit Units test
         run: ./run tests
