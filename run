@@ -20,6 +20,7 @@ function up {
     sudo chown -R www-data:www-data storage bootstrap/cache
     sudo chmod -R 775 storage bootstrap/cache
     docker compose exec php php artisan key:generate
+    docker compose exec db psql -U root -d genbook -c "CREATE DATABASE genbook_test;"
 }
 
 
