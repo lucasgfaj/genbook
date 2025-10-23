@@ -30,10 +30,17 @@ jobs:
       - name: See containers
         run: ./run ps
 
-      - name: Ensure test database exists
-        run: ./run bash scripts/wait-for-db.sh
+      - name: Wait for DB
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          until docker exec db pg_isready -U ${DB_USERNAME}; do
+            sleep 2
+          done
 
-      - name: PHPUnit Units test
+      - name: Create test database
+        run: docker exec db psql -U ${DB_USERNAME} -c "CREATE DATABASE genbook_test;" || true
+
+            - name: PHPUnit Units test
         run: ./run tests
 
   acceptance_tests:
