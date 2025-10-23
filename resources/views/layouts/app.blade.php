@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ Vite::asset('resources/images/favicon.ico') }}">
     <title>@yield('title', 'GenBook')</title>
@@ -53,8 +53,7 @@
     </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    @vite(['resources/js/loading.js'])
-
+    @vite(['resources/js/app.js'])
 
 </body>
 

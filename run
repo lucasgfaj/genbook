@@ -52,8 +52,33 @@ function php:console {
 
 function tests {
     TEST_PATH="${@:-tests}"
-    docker compose exec php  php artisan migrate:fresh --env=testing --seed
+
+    echo "Waiting for PostgreSQL..."
+    until docker compose exec -T db pg_isready -U $DB_USERNAME > /dev/null 2>&1; do
+        sleep 2
+    done
+    echo "PostgreSQL ready!"
+
+    # Remove e cria banco de teste do zero
+    echo "Resetting test database..."
+    docker compose exec -T db psql -U $DB_USERNAME -d genbook -c "DROP DATABASE IF EXISTS genbook_test;"
+    docker compose exec -T db psql -U $DB_USERNAME -d genbook -c "CREATE DATABASE genbook_test;"
+
+    # Instala dependências JS e compila assets
+    echo "Installing JS dependencies..."
+    docker compose exec php_test yarn install -y
+    echo "Building front-end assets..."
+    docker compose exec php_test yarn run build
+
+    # Roda migrations no banco de teste
+    docker compose exec -T php_test php artisan migrate --force --env=testing
+
+    # Executa os testes
     docker compose run --rm php_test ./vendor/bin/phpunit --colors=always ${TEST_PATH}
+
+    # Deleta banco de teste
+    echo "Cleaning up test database..."
+    docker compose exec -T db psql -U $DB_USERNAME -d genbook -c "DROP DATABASE IF EXISTS genbook_test;"
 }
 
 function phpcs {
