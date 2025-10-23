@@ -27,6 +27,21 @@ jobs:
       - name: Up containers
         run: ./run up -d
 
+      - name: See containers
+        run: ./run ps
+
+      - name: Wait for Postgres to be ready
+        run: |
+          echo "⏳ Aguardando Postgres iniciar..."
+          for i in {1..20}; do
+            if docker compose exec -T db pg_isready -U $DB_USERNAME > /dev/null 2>&1; then
+              echo "✅ Postgres está pronto!"
+              break
+            fi
+            echo "Tentando novamente ($i/20)..."
+            sleep 2
+          done
+
       - name: PHPUnit Units test
         run: ./run tests
 
