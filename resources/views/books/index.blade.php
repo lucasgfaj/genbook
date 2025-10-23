@@ -1,7 +1,5 @@
 @extends('layouts.authenticated')
 
-@section('title', 'GenBook')
-
 @section('content')
   <div class="max-w-7xl mx-auto px-4 py-10">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">

@@ -29,8 +29,9 @@
     </header>
 
     <div id="loading-overlay"
-        class="fixed inset-0 flex items-center justify-center z-[9999] pointer-events-none opacity-0 transition-opacity duration-300">
-        <span class="loading loading-spinner loading-lg text-blue-600 drop-shadow-lg"></span>
+        class="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm z-[9999] pointer-events-none opacity-0 transition-opacity duration-300">
+        <span
+            class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin drop-shadow-lg"></span>
     </div>
 
 

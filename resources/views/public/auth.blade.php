@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'GenBook')
-
 @section('content')
 
     <div class="min-h-screen flex flex-col md:flex-row bg-cover bg-center relative"

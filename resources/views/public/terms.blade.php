@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Termos de Uso - GenBook')
 
 @section('content')
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-md mt-8 mb-12">

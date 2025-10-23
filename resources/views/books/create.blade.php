@@ -1,7 +1,5 @@
 @extends('layouts.authenticated')
 
-@section('title', 'GenBook')
-
 @section('content')
   <div class="max-w-6xl mx-auto mt-10 mb-20 bg-white shadow-md rounded-2xl p-8">
 
