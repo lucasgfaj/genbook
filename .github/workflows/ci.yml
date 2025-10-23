@@ -28,7 +28,7 @@ jobs:
         run: sudo chown -R www-data:www-data storage bootstrap/cache
 
       - name: Up containers
-        run: ./run up -d
+        run: ./run up:ci -d
 
       - name: PHPUnit tests
         run: ./run tests

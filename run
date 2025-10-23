@@ -9,6 +9,11 @@ function ps {
     docker compose ps
 }
 
+function up:ci {
+    docker compose up -d "$@"
+    docker compose exec php php artisan key:generate || true
+}
+
 function up {
     docker compose up -d "$@"
 
