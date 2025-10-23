@@ -1,30 +1,19 @@
-name: Continuous Integration
+name: Continous Integration
 
 on:
   push:
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
 
 jobs:
   tests:
-    name: Unit Tests
+    name: Tests
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:16
-        env:
-          POSTGRES_DB: genbook_test
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: 05092004
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U root -d genbook_test"
-          --health-interval=2s
-          --health-timeout=5s
-          --health-retries=15
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -32,39 +21,23 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
-      - name: Up containers
-        run: ./run up:ci -d
+      - name: Setup Uploads assets permissions
+        run: sudo chown -R www-data:www-data public/uploads
 
-      - name: Run Unit Tests
+      - name: Up containers
+        run: ./run up -d
+
+      - name: PHPUnit Units test
         run: ./run tests
 
   acceptance_tests:
     name: Acceptance Tests
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:16
-        env:
-          POSTGRES_DB: genbook_test
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: 05092004
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U root -d genbook_test"
-          --health-interval=2s
-          --health-timeout=5s
-          --health-retries=15
-
-      selenium:
-        image: selenium/standalone-chrome-debug:latest
-        ports:
-          - 4444:4444
-          - 5900:5900
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -82,8 +55,10 @@ jobs:
     name: Code Quality Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
