@@ -9,20 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
             sidebar.classList.toggle("active");
             menuButton.classList.toggle("active");
-            if (menuIcon) {
-                menuIcon.classList.toggle("bi-list");
-                menuIcon.classList.toggle("bi-x");
-            }
         });
 
         document.addEventListener("click", (e) => {
             if (!sidebar.contains(e.target) && !menuButton.contains(e.target) && sidebar.classList.contains("active")) {
                 sidebar.classList.remove("active");
                 menuButton.classList.remove("active");
-                if (menuIcon) {
-                    menuIcon.classList.add("bi-list");
-                    menuIcon.classList.remove("bi-x");
-                }
             }
         });
     }
@@ -44,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // --- LUCIDE ICONS ---
     if (window.lucide) {
         window.lucide.createIcons();
     }
 });
-
