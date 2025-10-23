@@ -45,9 +45,10 @@ function php:console {
     docker compose exec php php -a
 }
 
-function test {
+function tests {
     TEST_PATH="${@:-tests}"
-    docker compose run --rm php_test ./vendor/bin/phpunit --color ${TEST_PATH}
+    docker compose exec php  php artisan migrate:fresh --env=testing --seed
+    docker compose run --rm php_test ./vendor/bin/phpunit --colors=always ${TEST_PATH}
 }
 
 function phpcs {

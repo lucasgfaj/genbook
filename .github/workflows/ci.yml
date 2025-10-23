@@ -24,11 +24,14 @@ jobs:
       - name: Setup Uploads assets permissions
         run: sudo chown -R www-data:www-data public/uploads
 
+      - name: Setup storage permissions
+      run: sudo chown -R www-data:www-data storage bootstrap/cache
+
       - name: Up containers
         run: ./run up -d
 
-      - name: PHPUnit Units test
-        run: ./run test tests/Unit
+      - name: PHPUnit tests
+        run: ./run tests
 
   acceptance_tests:
     name: Acceptance Tests
