@@ -33,12 +33,12 @@ jobs:
       - name: Wait for DB
         run: |
           echo "Waiting for PostgreSQL to be ready..."
-          until docker exec db pg_isready -U ${DB_USERNAME}; do
+          until docker exec genbook-db-1 pg_isready -U ${DB_USERNAME}; do
             sleep 2
           done
 
       - name: Create test database
-        run: docker exec db psql -U ${DB_USERNAME} -c "CREATE DATABASE genbook_test;" || true
+        run: docker exec genbook-db-1 psql -U ${DB_USERNAME} -c "CREATE DATABASE genbook_test;" || true
 
       - name: PHPUnit Units test
         run: ./run tests
