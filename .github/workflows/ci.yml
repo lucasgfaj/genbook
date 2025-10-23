@@ -41,6 +41,27 @@ jobs:
   acceptance_tests:
     name: Acceptance Tests
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_DB: genbook_test
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: 05092004
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U root -d genbook_test"
+          --health-interval=2s
+          --health-timeout=5s
+          --health-retries=15
+
+      selenium:
+        image: selenium/standalone-chrome-debug:latest
+        ports:
+          - 4444:4444
+          - 5900:5900
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
