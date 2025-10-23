@@ -30,6 +30,14 @@ jobs:
       - name: Up containers
         run: ./run up:ci -d
 
+      - name: Wait for DB
+        run: |
+          echo "Waiting for Postgres..."
+          for i in {1..30}; do
+            docker compose exec db pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE} && break
+            sleep 2
+          done
+
       - name: PHPUnit tests
         run: ./run tests
 

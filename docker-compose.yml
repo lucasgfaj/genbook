@@ -37,9 +37,14 @@ services:
     volumes:
       - dbdata:/var/lib/postgresql/data
       - ./db-init:/docker-entrypoint-initdb.d
-
+    ports:
+      - "5432:5432"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 2s
+      retries: 15
 
   selenium:
     image: selenium/standalone-chrome-debug:latest
