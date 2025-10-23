@@ -35,14 +35,6 @@ jobs:
       - name: Up containers
         run: ./run up:ci -d
 
-      - name: Wait for Postgres
-        run: |
-          echo "Waiting for Postgres to be ready..."
-          for i in {1..30}; do
-            docker compose run --rm php_test pg_isready -h db -U root -d genbook_test && break
-            sleep 2
-          done
-
       - name: Run Unit Tests
         run: ./run tests
 
