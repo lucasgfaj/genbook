@@ -36,8 +36,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - dbdata:/var/lib/postgresql/data
-      - ./db-init/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
-
     networks:
       - app-network
 
