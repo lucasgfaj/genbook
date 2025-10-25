@@ -51,7 +51,8 @@ function php:console {
 }
 
 function tests {
-    TEST_PATH="${@:-tests}"
+    # sempre rodar apenas Unit e Feature
+    TEST_PATH="tests/Unit tests/Feature"
 
     echo "Installing JS dependencies..."
     docker compose exec php_test yarn install -y
@@ -64,6 +65,7 @@ function tests {
     echo "Running tests..."
     docker compose run --rm php_test ./vendor/bin/phpunit --colors=always ${TEST_PATH}
 }
+
 function dusk {
     docker compose exec php_test php artisan dusk --env=dusk.local
 }
