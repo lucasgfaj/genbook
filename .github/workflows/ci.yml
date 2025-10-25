@@ -67,9 +67,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create .env for Dusk
-        run: cp .env.dusk.ci .env
-
       - name: Composer install
         run: ./run composer install
 
