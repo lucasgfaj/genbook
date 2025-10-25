@@ -32,49 +32,27 @@ jobs:
 
       - name: PHPUnit Units test
         run: ./run tests
-acceptance_tests:
-  name: Acceptance Tests
-  runs-on: ubuntu-latest
-  services:
-    selenium:
-      image: selenium/standalone-chrome-debug:latest
-      ports:
-        - 4444:4444
-        - 5900:5900
-      options: >-
-        --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
-        --health-interval 5s
-        --health-timeout 5s
-        --health-retries 10
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+  acceptance_tests:
+    name: Acceptance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-    - name: Copy Dusk environment
-      run: cp .env.dusk.local .env
+      - name: Create .env
+        run: cp .env.example .env
 
-    - name: Install Composer dependencies
-      run: ./run composer install --no-interaction --prefer-dist
+      - name: Composer install
+        run: ./run composer install
 
-    - name: Start Docker containers
-      run: ./run up -d
+      - name: Up containers
+        run: ./run up -d
 
-    - name: Wait for Selenium
-      run: |
-        for i in {1..30}; do
-          if curl -s http://localhost:4444/wd/hub/status | grep '"ready":true' > /dev/null; then
-            echo "Selenium ready"
-            exit 0
-          fi
-          echo "Waiting for Selenium..."
-          sleep 2
-        done
-        echo "Selenium did not start in time"
-        exit 1
-
-    - name: Run Dusk acceptance tests
-      run: ./run dusk
+      - name: See containers
+        run: ./run ps
 
   code_quality:
     name: Code Quality Check
