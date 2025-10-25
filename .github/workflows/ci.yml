@@ -1,29 +1,46 @@
-name: Continuous Integration
+name: Continous Integration
 
 on:
   push:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
 
 jobs:
-  # -------------------------
-  # Unit Tests
-  # -------------------------
   tests:
-    name: Unit Tests
+    name: Tests
     runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:16
-        env:
-          POSTGRES_DB: genbook_test
-          POSTGRES_USER: genbook-user
-          POSTGRES_PASSWORD: genbook-pwd
-        ports:
-          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Create .env
+        run: cp .env.example .env
+
+      - name: Composer install
+        run: ./run composer install
+
+      - name: Setup Uploads assets permissions
+        run: sudo chown -R www-data:www-data public/uploads
+
+      - name: Up containers
+        run: ./run up -d
+
+      - name: See containers
+        run: ./run ps
+
+      - name: PHPUnit Units test
+        run: ./run tests
+
+  acceptance_tests:
+    name: Acceptance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -34,64 +51,20 @@ jobs:
       - name: Up containers
         run: ./run up -d
 
-      - name: Wait for DB
-        run: |
-          until docker compose exec db pg_isready -U genbook-user; do
-            echo "Waiting for DB..."
-            sleep 2
-          done
+      - name: See containers
+        run: ./run ps
 
-      - name: Run PHPUnit tests
-        run: ./run tests
+      - name: Dusk Acceptance Tests
+        run: ./run Dusk
 
-  # -------------------------
-  # Acceptance Tests (Dusk)
-  # -------------------------
-  acceptance_tests:
-    name: Acceptance Tests
-    runs-on: ubuntu-latest
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-      db:
-        image: postgres:16
-        env:
-          POSTGRES_DB: genbook_test
-          POSTGRES_USER: genbook-user
-          POSTGRES_PASSWORD: genbook-pwd
-        ports:
-          - 5432:5432
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Composer install
-        run: ./run composer install
-
-      - name: Up containers
-        run: ./run up -d
-
-      - name: Wait for Selenium
-        run: |
-          until curl -s http://localhost:4444/wd/hub/status | grep '"ready":true'; do
-            echo "Waiting for Selenium..."
-            sleep 2
-          done
-
-      - name: Run Dusk tests
-        run: ./run dusk
-
-  # -------------------------
-  # Code Quality
-  # -------------------------
   code_quality:
     name: Code Quality Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create .env
         run: cp .env.example .env
@@ -99,7 +72,7 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
-      - name: PSR-4 Autoload Check
+      - name: PSR-4 Checker
         run: ./run composer dump-autoload --optimize --strict-psr
 
       - name: PHPCS
