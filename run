@@ -67,7 +67,7 @@ function tests {
 }
 
 function dusk {
-    docker compose exec php_test php artisan dusk --env=dusk.local
+    docker compose exec php php artisan dusk --env=dusk.local
 }
 
 
