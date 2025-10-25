@@ -51,8 +51,34 @@ jobs:
       - name: Up containers
         run: ./run up -d
 
+      - name: Reset database
+        run: ./run db:reset
+
       - name: See containers
         run: ./run ps
+
+      - name: Wait for Selenium
+        run: |
+          for i in {1..15}; do
+            if nc -z selenium 4444; then
+              echo "Selenium is up"
+              break
+            fi
+            echo "Waiting for Selenium..."
+            sleep 2
+          done
+
+      - name: Wait for Web
+        run: |
+          for i in {1..15}; do
+            if curl -s http://web >/dev/null; then
+              echo "Web is up"
+              break
+            fi
+            echo "Waiting for Web..."
+            sleep 2
+          done
+
 
       - name: Dusk Acceptance Tests
         run: ./run dusk
