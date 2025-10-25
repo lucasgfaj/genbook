@@ -88,7 +88,9 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'genbook'),
+            'database' => env('APP_ENV') === 'testing'
+                ? env('DB_DATABASE', 'genbook_test')
+                : env('DB_DATABASE', 'genbook'),
             'username' => env('DB_USERNAME', 'genbook-user'),
             'password' => env('DB_PASSWORD', 'genbook-pwd'),
             'charset' => env('DB_CHARSET', 'utf8'),
