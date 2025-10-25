@@ -51,9 +51,6 @@ jobs:
       - name: Up containers
         run: ./run up -d
 
-      - name: Reset database
-        run: ./run db:reset
-
       - name: See containers
         run: ./run ps
 
