@@ -11,6 +11,13 @@ function ps {
 
 function up {
     docker compose up -d "$@"
+
+    docker compose exec php sh -c "
+        mkdir -p storage/framework/{cache,views,sessions,testing} bootstrap/cache && \
+        chown -R www-data:www-data storage bootstrap/cache && \
+        chmod -R 775 storage bootstrap/cache
+        "
+
     docker compose exec php php artisan key:generate
 }
 
