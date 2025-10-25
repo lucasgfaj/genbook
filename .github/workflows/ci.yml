@@ -55,7 +55,7 @@ jobs:
         run: ./run ps
 
       - name: Dusk Acceptance Tests
-        run: ./run Dusk
+        run: ./run dusk
 
   code_quality:
     name: Code Quality Check
