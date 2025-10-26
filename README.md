@@ -116,12 +116,4 @@ cp .env.example .env
 
 [Open in Browser](http://localhost)
 
----
-
-> ⚠️ **Note:** Ensure the `public/assets/uploads` folder has proper permissions:
-
-```bash
-sudo chown www-data:www-data public/assets/uploads
-```
-
 Made with ❤️ for library management optimization.
