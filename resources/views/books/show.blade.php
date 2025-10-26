@@ -69,10 +69,21 @@
 
       <div class="col-span-2">
         <label class="block text-sm font-semibold mb-1">Capa Atual</label>
-        <img src="{{ asset($book->cover_path ?? 'images/default-cover.jpg') }}" alt="Capa do Livro"
-          class="rounded-lg border shadow max-h-64 mt-2 object-cover">
+
+
+        @if($book->cover_name)
+          <!-- <p>URL gerada: {{ asset('storage/' . $book->cover_name) }}</p> -->
+          <img src="{{ asset('storage/' . $book->cover_name) }}" alt="Capa do Livro"
+            class="rounded-lg border shadow max-h-64 mt-2 object-cover">
+        @else
+          <p class="text-gray-500 italic">Nenhuma capa disponível</p>
+        @endif
+
       </div>
+
     </div>
+
+
 
     <div class="flex justify-end mt-6">
       <a href="{{ url('/books/' . $book->id . '/edit') }}"
@@ -81,6 +92,6 @@
         Editar
       </a>
     </div>
-  </div>
 
+  </div>
 @endsection

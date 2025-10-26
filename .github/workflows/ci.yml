@@ -21,9 +21,6 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
-      - name: Setup Uploads assets permissions
-        run: sudo chown -R www-data:www-data public/uploads
-
       - name: Up containers
         run: ./run up -d
 

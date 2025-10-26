@@ -77,7 +77,20 @@ function dusk {
     docker compose exec php php artisan dusk --env=dusk.local
 }
 
+function uploads {
+    echo "Criando link simbólico storage e ajustando permissões..."
 
+    docker compose exec php sh -c "
+        cd /var/www/public && \
+        if [ -L storage ]; then rm storage; fi && \
+        ln -s ../storage/app/public storage && \
+        mkdir -p ../storage/app/public/covers && \
+        chown -R www-data:www-data ../storage bootstrap/cache && \
+        chmod -R 775 ../storage bootstrap/cache
+    "
+
+    echo "Link simbólico criado e permissões ajustadas."
+}
 
 function phpcs {
     TEST_PATH="${@:-.}"
