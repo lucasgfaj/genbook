@@ -1,5 +1,4 @@
-import './bootstrap';
-import './auth'
-import { createIcons, icons } from 'lucide';
-
-createIcons({ icons });
+import "./bootstrap";
+import "./auth";
+import "./loading";
+import "./authenticated";

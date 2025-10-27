@@ -1,6 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
-@section('title', 'GenBook')
 
 @section('content')
 
@@ -48,9 +47,6 @@
                     </button>
                 </form>
 
-                <p class="mt-3 text-xs text-gray-700 text-center">
-                    Não possui conta? <a href="#" class="text-blue-600 hover:underline">Cadastre-se</a>
-                </p>
             </div>
         </div>
 

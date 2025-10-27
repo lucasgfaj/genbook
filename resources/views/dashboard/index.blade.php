@@ -1,7 +1,5 @@
 @extends('layouts.authenticated')
 
-@section('title', 'GenBook')
-
 @section('content')
 
 <div class="container mx-auto p-6">

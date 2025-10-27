@@ -11,23 +11,34 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    // Define a tabela (opcional, se o nome for "users")
     protected $table = 'users';
 
-    // Define quais campos podem ser preenchidos em massa
     protected $fillable = [
         'full_name',
         'email',
         'is_active',
     ];
 
-    // Casts automáticos
     protected $casts = [
         'is_active' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 
-    // Exemplo de método customizado
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+    public function getAdminAttribute(): bool
+    {
+        return (bool) ($this->staff?->admin ?? false);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
     public static function findByEmail(string $email): ?User
     {
         return self::where('email', $email)->first();

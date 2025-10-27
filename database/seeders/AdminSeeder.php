@@ -8,12 +8,8 @@ use App\Models\Staff;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Executa o seeder.
-     */
     public function run(): void
     {
-        // Cria o usuário base
         $user = User::firstOrCreate(
             ['email' => 'admin@genbook.com'],
             [
@@ -22,7 +18,6 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        // Cria o registro de staff vinculado
         Staff::firstOrCreate(
             ['user_id' => $user->id],
             [

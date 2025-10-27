@@ -1,106 +1,119 @@
-## Genbook
+# Genbook 📚
 
-"Genbook" is the ultimate solution for libraries looking to optimize the management of their collection, enhance user service, and ensure an efficient process of organization and problem resolution.
+**Genbook** is the ultimate solution for libraries looking to optimize collection management, enhance user service, and ensure efficient organization and problem resolution.
 
-### Dependências
+---
 
-- Docker
-- Docker Compose
+## 🚀 Dependencies
 
-### To run
+* Docker
+* Docker Compose
+* PHP 8.4
+* Laravel
 
-#### Clone Repository
+---
 
-```
- git clone git@github.com:lucasgfaj/genbook.git
-```
+## ⚡ Quick Start
 
-```
- cd genbook
-```
+### 1️⃣ Clone Repository
 
-#### Define the env variables
-
-```
- cp .env.example .env
+```bash
+git clone git@github.com:lucasgfaj/genbook.git
+cd genbook
 ```
 
-#### Install the dependencies
+### 2️⃣ Define Environment Variables
 
-```
- ./run composer install
-```
-
-#### Up the containers
-
-```
- docker compose up -d
+```bash
+cp .env.example .env
 ```
 
-ou
+### 3️⃣ Install Dependencies
 
-```
- ./run up -d
-```
-
-#### Create database and tables
-
-```
- ./run db:reset
+```bash
+./run composer install
 ```
 
-#### Populate database
+### 4️⃣ Up the Containers
 
-```
- ./run db:populate
-```
-
-#### Fixed uploads folder permission
-```
-sudo chown www-data:www-data public/assets/uploads
+```bash
+./run up -d
 ```
 
+### 5️⃣ Fix Storage for Images
 
-#### Run the tests
-
-```
- docker compose run --rm php ./vendor/bin/phpunit tests --color
-```
-
-ou
-
-```
- ./run test
+```bash
+./run uploads
 ```
 
-#### Run the linters
+### 6️⃣ Create Database and Tables
 
-[PHPCS](https://github.com/PHPCSStandards/PHP_CodeSniffer/)
-
-```
- ./run phpcs
+```bash
+./run db:reset
 ```
 
-[PHPStan](https://phpstan.org/)
+---
 
-```
- ./run phpstan
-```
+## 🧪 Run Tests
 
-Access [localhost](http://localhost)
+* **PHPUnit**
 
-### Teste de API
-
-#### Rota não autenticada
-
-```shell
-curl -H "Accept: application/json" localhost/genbook
+```bash
+./run test
 ```
 
-#### Rota autenticada
+* **PHPCS (Code Sniffer)**
 
-Neste caso precisa alterar o valor do PHPSESSID de acordo com a o id da sua sessão.
-
-```shell
-curl -H "Accept: application/json" -b "PHPSESSID=5f55f364a48d87fb7ef9f18425a8ae88" localhost/genbook
+```bash
+./run phpcs
 ```
+
+* **Laravel Dusk**
+
+```bash
+./run dusk
+```
+
+* **PHPStan**
+
+```bash
+./run phpstan
+```
+
+---
+
+## 🖼 Images of GenBook
+
+<div align="center">
+<img width="800" alt="GenBook Screenshot" src="https://github.com/user-attachments/assets/150c8564-5e1b-4d25-a165-cae08dcf826e" />
+
+<img width="800" alt="GenBook Screenshot" src="https://github.com/user-attachments/assets/76fbc16d-23c4-491a-8c5e-89c78e79fc4a" />
+
+<img width="800" alt="GenBook Screenshot" src="https://github.com/user-attachments/assets/9562f0ef-7239-467d-959f-129f05cf309f" />
+
+<img width="800" alt="GenBook Screenshot" src="https://github.com/user-attachments/assets/fa9fd703-af5f-4024-801b-9362e3ddf8c6" />
+</div>
+
+---
+
+## 📚 Modules from The Discipline
+
+| Module | Description                                 | Duration |
+| ------ | ------------------------------------------- | -------- |
+| 05     | Views com Blade                             | 4h       |
+| 06     | Estilização com TailwindCSS                 | 4h       |
+| 07     | Forms e Validação de Requisições            | 4h       |
+| 08     | Autenticação de Usuários                    | 4h       |
+| 09     | Migrações e Relacionamentos                 | 4h       |
+| 10     | Integridade e Integração                    | 4h       |
+| 12     | Upload de Arquivos                          | 4h       |
+| 13     | Testes de Browser no Laravel                | 4h       |
+| 14     | Pipeline CI para Laravel com Github Actions | 4h       |
+
+---
+
+## 🌐 Access
+
+[Open in Browser](http://localhost)
+
+Made with ❤️ for library management optimization.
